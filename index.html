@@ -16,6 +16,28 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyD2D3h32_PyVBsahgTPCSWyk6zQ3IWBg",
+authDomain: "kunrobux-29314.firebaseapp.com",
+projectId: "kunrobux-29314",
+storageBucket: "kunrobux-29314.appspot.com",
+messagingSenderId: "691309584196",
+appId: "1:691309584196:web:134f12d149d4fe078d0111",
+measurementId: "G-WE1H3WQPSN"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.db = db;
+
+</script>
+
     <style>
 
        :root {
@@ -599,5 +621,14 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 </script>
+    
+    <script type="module">
+
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+window.fb = { doc, setDoc, getDoc };
+
+</script>
+    
 </body>
 </html>
