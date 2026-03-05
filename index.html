@@ -17,6 +17,19 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+    // Tự động trỏ vào ô nhập tên khi mở trang
+    const loginInput = document.getElementById('login-user');
+    if(loginInput) loginInput.focus();
+    
+    // Nhấn Enter để đăng nhập luôn cho tiện
+    document.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            handleLogin();
+        }
+    });
+});
+        
     window.userData = {
         "username": "Khách Hàng",
         "balance": 0,
@@ -26,43 +39,36 @@
 
     <style>
 
-        #auth-overlay {
+       :root {
+    --primary-color: #00BAFF;
+    --bg-body: #0f172a;
+    --bg-sidebar: #1e293b;
+    --bg-card: #1e293b;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-color: #334155;
+}
+
+#auth-overlay {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(15, 23, 42, 0.95);
+    background: rgba(15, 23, 42, 0.98); /* Đậm hơn để che Dashboard */
     z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: center;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
 }
 
 .auth-card {
     background: var(--bg-card);
-    padding: 30px;
-    border-radius: 15px;
+    padding: 40px 30px;
+    border-radius: 20px;
     border: 1px solid var(--border-color);
-    width: 100%;
+    width: 90%;
     max-width: 400px;
-    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
-
-.auth-card input {
-    background: #0f172a;
-    border: 1px solid var(--border-color);
-    color: white;
-    margin-bottom: 15px;
-}
-        
-        :root {
-            --primary-color: #00BAFF; /* Màu xanh chủ đạo KUNROBUX */
-            --bg-body: #0f172a;
-            --bg-sidebar: #1e293b;
-            --bg-card: #1e293b;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: #334155;
-        }
 
         body {
             font-family: 'Signika', sans-serif;
