@@ -597,92 +597,11 @@
 
     </div>
 
-    <script>
-        // 1. Xử lý Sidebar Mobile
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('active');
-        }
-
-        // 2. Hàm thông báo khi chức năng chưa có
-        function updating() {
-            Swal.fire({
-                icon: 'info',
-                title: 'Thông báo',
-                text: 'Chức năng này đang được HOANGKUN phát triển!',
-                background: '#1e293b',
-                color: '#fff'
-            });
-        }
-
-        // 3. Hàm Đăng xuất giả lập
-        function logout() {
-            Swal.fire({
-                title: 'Bạn muốn đăng xuất?',
-                text: "Bạn sẽ quay lại màn hình chính!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Đăng xuất',
-                cancelButtonText: 'Hủy',
-                background: '#1e293b',
-                color: '#fff'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = '#'; // Chỗ này sau này điền link trang chủ
-                }
-            })
-        }
-
-        // 4. Vẽ biểu đồ (ApexCharts)
-        var options = {
-series: [{
-    name: 'Robux Đã Bán',
-    data: [0, 0, 0, 0, 0, 0, 0]
-}, {
-    name: 'Đơn Hàng',
-    data: [0, 0, 0, 0, 0, 0, 0]
-}],
-            chart: {
-                height: 350,
-                type: 'area',
-                toolbar: { show: false },
-                fontFamily: 'Signika, sans-serif'
-            },
-            colors: ['#00BAFF', '#2ecc71'],
-            dataLabels: { enabled: false },
-            stroke: { curve: 'smooth', width: 2 },
-            xaxis: {
-                type: 'datetime',
-                categories: ["2026-03-01", "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-07"],
-                labels: { style: { colors: '#94a3b8' } }
-            },
-            yaxis: {
-                labels: { style: { colors: '#94a3b8' } }
-            },
-            grid: {
-                borderColor: '#334155',
-                strokeDashArray: 4,
-            },
-            tooltip: { theme: 'dark' },
-            fill: {
-                type: 'gradient',
-                gradient: {
-                    shadeIntensity: 1,
-                    opacityFrom: 0.7,
-                    opacityTo: 0.3,
-                }
-            }
-        };
-
-        var chart = new ApexCharts(document.querySelector("#chart-revenue"), options);
-        chart.render();
-        
-// Hàm chuyển đổi Tab Đăng nhập / Đăng ký
+<script>
+// 1. Chuyển đổi qua lại giữa Đăng nhập và Đăng ký
 function switchTab(tab) {
     document.querySelectorAll('.auth-tab').forEach(btn => btn.classList.remove('active'));
     document.querySelectorAll('.auth-form-content').forEach(form => form.classList.remove('active'));
-    
     if(tab === 'login') {
         document.querySelectorAll('.auth-tab')[0].classList.add('active');
         document.getElementById('login-form-content').classList.add('active');
@@ -692,36 +611,71 @@ function switchTab(tab) {
     }
 }
 
-// Hàm xử lý đăng ký (Bổ sung thêm)
+// 2. Hàm Xử lý Đăng ký (Lưu vào bộ nhớ máy)
 function handleRegister() {
-    const user = document.getElementById('reg-user').value;
-    const pass = document.getElementById('reg-pass').value;
-    const confirm = document.getElementById('reg-pass-confirm').value;
+    const user = document.getElementById('reg-user').value.trim();
+    const pass = document.getElementById('reg-pass').value.trim();
+    const confirm = document.getElementById('reg-pass-confirm').value.trim();
 
-    if (!user || !pass || pass !== confirm) {
-        Swal.fire({ icon: 'error', title: 'Lỗi', text: 'Thông tin không hợp lệ hoặc mật khẩu không khớp!', background: '#1e293b', color: '#fff' });
+    if (!user || pass.length < 6) {
+        Swal.fire({ icon: 'error', title: 'Lỗi', text: 'Tên quá ngắn hoặc mật khẩu dưới 6 ký tự!', background: '#1e293b', color: '#fff' });
         return;
     }
-    Swal.fire({ icon: 'success', title: 'Thành công', text: 'Đã tạo tài khoản, hãy đăng nhập!', background: '#1e293b', color: '#fff' });
+    if (pass !== confirm) {
+        Swal.fire({ icon: 'error', title: 'Lỗi', text: 'Mật khẩu nhập lại không khớp!', background: '#1e293b', color: '#fff' });
+        return;
+    }
+
+    let accounts = JSON.parse(localStorage.getItem('kunrobux_users')) || [];
+    if (accounts.find(a => a.username === user)) {
+        Swal.fire({ icon: 'error', title: 'Lỗi', text: 'Tài khoản này đã có người dùng!', background: '#1e293b', color: '#fff' });
+        return;
+    }
+
+    accounts.push({ username: user, password: pass, balance: 0 });
+    localStorage.setItem('kunrobux_users', JSON.stringify(accounts));
+    Swal.fire({ icon: 'success', title: 'Thành công', text: 'Đăng ký xong rồi, đăng nhập đi bạn!', background: '#1e293b', color: '#fff' });
     switchTab('login');
 }
 
-// Chỉnh lại hàm logout để hiện lại form đăng nhập
-function logout() {
-    Swal.fire({
-        title: 'Đăng xuất?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Đồng ý',
-        background: '#1e293b',
-        color: '#fff'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            location.reload(); // Reset lại trang sẽ hiện form login
-        }
-    });
+// 3. Hàm Xử lý Đăng nhập
+function handleLogin() {
+    const user = document.getElementById('login-user').value.trim();
+    const pass = document.getElementById('login-pass').value.trim();
+
+    let accounts = JSON.parse(localStorage.getItem('kunrobux_users')) || [];
+    const userFound = accounts.find(a => a.username === user && a.password === pass);
+
+    if (userFound) {
+        Swal.fire({ title: 'Đỉnh luôn!', text: 'Đang vào Dashboard...', icon: 'success', timer: 1000, showConfirmButton: false, background: '#1e293b', color: '#fff' });
+        setTimeout(() => {
+            document.getElementById('auth-overlay').style.display = 'none';
+            document.querySelectorAll('.user-info h6').forEach(el => el.innerText = userFound.username);
+        }, 1000);
+    } else {
+        Swal.fire({ icon: 'error', title: 'Sai rồi', text: 'Tài khoản hoặc mật khẩu không đúng!', background: '#1e293b', color: '#fff' });
+    }
 }
-    </script>
+
+// 4. Các tính năng phụ
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+function updating() { Swal.fire({ icon: 'info', title: 'Chờ tí', text: 'Chức năng này HOANGKUN đang làm nhé!', background: '#1e293b', color: '#fff' }); }
+function logout() { location.reload(); }
+
+// 5. Khởi tạo Biểu đồ
+document.addEventListener("DOMContentLoaded", function() {
+    var options = {
+        series: [{ name: 'Robux', data: [10, 50, 30, 90, 40, 120, 70] }],
+        chart: { height: 350, type: 'area', toolbar: { show: false }, fontFamily: 'Signika' },
+        colors: ['#00BAFF'],
+        stroke: { curve: 'smooth' },
+        xaxis: { categories: ["T2", "T3", "T4", "T5", "T6", "T7", "CN"], labels: { style: { colors: '#94a3b8' } } },
+        yaxis: { labels: { style: { colors: '#94a3b8' } } },
+        theme: { mode: 'dark' }
+    };
+    new ApexCharts(document.querySelector("#chart-revenue"), options).render();
+});
+</script>
 
     <script>
     document.addEventListener("DOMContentLoaded", function() {
