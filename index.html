@@ -17,12 +17,12 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        window.userData = {
-            "username": "HOANGKUN",
-            "balance": 0,
-            "role": "ADMIN"
-        };
-    </script>
+    window.userData = {
+        "username": "Khách Hàng",
+        "balance": 0,
+        "role": "MEMBER"
+    };
+</script>
 
     <style>
         :root {
@@ -234,12 +234,12 @@
         </ul>
 
         <div class="user-panel">
-            <img src="https://ui-avatars.com/api/?name=Hoang+Kun&background=00BAFF&color=fff" alt="User">
-            <div class="user-info">
-                <h6>HOANGKUN</h6>
-                <span id="user-balance-display">Số dư: 0 VNĐ</span>
-            </div>
-            <i class='bx bx-log-out' style="margin-left: auto; cursor: pointer; font-size: 20px; color: #94a3b8;" onclick="logout()"></i>
+    <img src="https://ui-avatars.com/api/?name=User&background=00BAFF&color=fff" alt="User">
+    <div class="user-info">
+        <h6>Khách Hàng</h6>
+        <span id="user-balance-display">Số dư: 0 VNĐ</span>
+    </div>
+     <i class='bx bx-log-out' style="margin-left: auto; cursor: pointer; font-size: 20px; color: #94a3b8;" onclick="logout()"></i>
         </div>
     </div>
 
@@ -376,43 +376,21 @@
                 <table class="custom-table">
                     <thead>
                         <tr>
-                            <th>Khách hàng</th>
-                            <th>Dịch vụ</th>
-                            <th>Giá trị</th>
-                            <th>Trạng thái</th>
-                            <th>Thời gian</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><div class="d-flex align-items-center gap-2"><img src="https://ui-avatars.com/api/?name=Hung&background=random" width="30" class="rounded-circle"> <span>hung****</span></div></td>
-                            <td>Mua Robux 120H</td>
-                            <td class="fw-bold text-primary">200 R$</td>
-                            <td><span class="badge-soft-success">Thành công</span></td>
-                            <td>2 phút trước</td>
-                        </tr>
-                        <tr>
-                            <td><div class="d-flex align-items-center gap-2"><img src="https://ui-avatars.com/api/?name=Tuan&background=random" width="30" class="rounded-circle"> <span>tuan****</span></div></td>
-                            <td>Nạp thẻ Viettel</td>
-                            <td class="fw-bold text-success">₫50.000</td>
-                            <td><span class="badge-soft-success">Thành công</span></td>
-                            <td>5 phút trước</td>
-                        </tr>
-                        <tr>
-                            <td><div class="d-flex align-items-center gap-2"><img src="https://ui-avatars.com/api/?name=Nam&background=random" width="30" class="rounded-circle"> <span>nam****</span></div></td>
-                            <td>Gamepass Blox Fruit</td>
-                            <td class="fw-bold text-warning">Pending</td>
-                            <td><span class="badge-soft-warning">Đang xử lý</span></td>
-                            <td>12 phút trước</td>
-                        </tr>
-                        <tr>
-                            <td><div class="d-flex align-items-center gap-2"><img src="https://ui-avatars.com/api/?name=Linh&background=random" width="30" class="rounded-circle"> <span>linh****</span></div></td>
-                            <td>Mua Robux 120H</td>
-                            <td class="fw-bold text-primary">1,000 R$</td>
-                            <td><span class="badge-soft-success">Thành công</span></td>
-                            <td>15 phút trước</td>
-                        </tr>
-                    </tbody>
+                          <th>Khách hàng</th>
+                           <th>Dịch vụ</th>
+                          <th>Giá trị</th>
+                          <th>Trạng thái</th>
+                         <th>Thời gian</th>
+                    </tr>
+                 </thead>
+     <tbody>
+    <tr>
+        <td colspan="5" class="text-center py-4 text-muted">
+            <i class='bx bx-package fs-1 d-block mb-2' style="opacity: 0.2;"></i>
+            Bạn chưa có đơn hàng nào.
+        </td>
+    </tr>
+</tbody>
                 </table>
             </div>
         </div>
@@ -462,13 +440,13 @@
 
         // 4. Vẽ biểu đồ (ApexCharts)
         var options = {
-            series: [{
-                name: 'Robux Đã Bán',
-                data: [31, 40, 28, 51, 42, 109, 100]
-            }, {
-                name: 'Đơn Hàng',
-                data: [11, 32, 45, 32, 34, 52, 41]
-            }],
+series: [{
+    name: 'Robux Đã Bán',
+    data: [0, 0, 0, 0, 0, 0, 0]
+}, {
+    name: 'Đơn Hàng',
+    data: [0, 0, 0, 0, 0, 0, 0]
+}],
             chart: {
                 height: 350,
                 type: 'area',
@@ -504,5 +482,21 @@
         var chart = new ApexCharts(document.querySelector("#chart-revenue"), options);
         chart.render();
     </script>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        if(window.userData) {
+            // Cập nhật tên ở sidebar
+            const nameElements = document.querySelectorAll('.user-info h6');
+            nameElements.forEach(el => el.innerText = window.userData.username);
+            
+            // Cập nhật số dư định dạng VNĐ
+            const balanceElement = document.getElementById('user-balance-display');
+            if(balanceElement) {
+                balanceElement.innerText = "Số dư: " + window.userData.balance.toLocaleString('vi-VN') + " VNĐ";
+            }
+        }
+    });
+</script>
 </body>
 </html>
