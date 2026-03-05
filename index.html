@@ -282,23 +282,23 @@
                 </button>
             </div>
 
-            <div id="register-form-content" class="auth-form-content">
-                <div class="input-group-custom">
-                    <label><i class='bx bxs-user-detail'></i> Tên tài khoản</label>
-                    <input type="text" id="reg-user" placeholder="Ví dụ: hoangkun123...">
-                </div>
-                <div class="input-group-custom">
-                    <label><i class='bx bxs-lock'></i> Mật khẩu</label>
-                    <input type="password" id="reg-pass" placeholder="Tối thiểu 6 ký tự...">
-                </div>
-                <div class="input-group-custom">
-                    <label><i class='bx bxs-lock-open'></i> Nhập lại mật khẩu</label>
-                    <input type="password" id="reg-pass-confirm" placeholder="Nhập lại mật khẩu...">
-                </div>
-                <button class="btn-auth btn-register" onclick="handleRegister()">
-                    <i class='bx bx-user-plus'></i> TẠO TÀI KHOẢN
-                </button>
-            </div>
+           <div id="register-form-content" class="auth-form-content">
+    <div class="input-group-custom">
+        <label><i class='bx bxs-user-detail'></i> Tên tài khoản</label>
+        <input type="text" id="reg-user" placeholder="Ví dụ: hoangkun123...">
+    </div>
+    <div class="input-group-custom">
+        <label><i class='bx bxs-lock'></i> Mật khẩu</label>
+        <input type="password" id="reg-pass" placeholder="Tối thiểu 6 ký tự...">
+    </div>
+    <div class="input-group-custom">
+        <label><i class='bx bxs-lock-open'></i> Nhập lại mật khẩu</label>
+        <input type="password" id="reg-pass-confirm" placeholder="Nhập lại mật khẩu...">
+    </div>
+    <button class="btn-auth btn-register" onclick="handleRegister()">
+        <i class='bx bx-user-plus'></i> TẠO TÀI KHOẢN
+    </button>
+</div>
         </div>
     </div>
     
@@ -533,7 +533,7 @@ function switchTab(tab) {
     }
 }
 
-// 2. Hàm Xử lý Đăng ký (Lưu vào bộ nhớ máy)
+// 2. Hàm Xử lý Đăng ký
 function handleRegister() {
     const user = document.getElementById('reg-user').value.trim();
     const pass = document.getElementById('reg-pass').value.trim();
@@ -550,7 +550,7 @@ function handleRegister() {
 
     let accounts = JSON.parse(localStorage.getItem('kunrobux_users')) || [];
     if (accounts.find(a => a.username === user)) {
-        Swal.fire({ icon: 'error', title: 'Lỗi', text: 'Tài khoản này đã có người dùng!', background: '#1e293b', color: '#fff' });
+        Swal.fire({ icon: 'error', title: 'Lỗi', text: 'Tài khoản này đã tồn tại!', background: '#1e293b', color: '#fff' });
         return;
     }
 
@@ -569,50 +569,35 @@ function handleLogin() {
     const userFound = accounts.find(a => a.username === user && a.password === pass);
 
     if (userFound) {
-        Swal.fire({ title: 'Đỉnh luôn!', text: 'Đang vào Dashboard...', icon: 'success', timer: 1000, showConfirmButton: false, background: '#1e293b', color: '#fff' });
+        Swal.fire({ title: 'Thành công!', text: 'Đang vào hệ thống...', icon: 'success', timer: 1000, showConfirmButton: false, background: '#1e293b', color: '#fff' });
         setTimeout(() => {
             document.getElementById('auth-overlay').style.display = 'none';
             document.querySelectorAll('.user-info h6').forEach(el => el.innerText = userFound.username);
+            document.getElementById('user-balance-display').innerText = "Số dư: " + userFound.balance.toLocaleString() + " VNĐ";
         }, 1000);
     } else {
         Swal.fire({ icon: 'error', title: 'Sai rồi', text: 'Tài khoản hoặc mật khẩu không đúng!', background: '#1e293b', color: '#fff' });
     }
 }
 
-// 4. Các tính năng phụ
 function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
-function updating() { Swal.fire({ icon: 'info', title: 'Chờ tí', text: 'Chức năng này HOANGKUN đang làm nhé!', background: '#1e293b', color: '#fff' }); }
+function updating() { Swal.fire({ icon: 'info', title: 'Chờ tí', text: 'Chức năng này đang được làm!', background: '#1e293b', color: '#fff' }); }
 function logout() { location.reload(); }
 
-// 5. Khởi tạo Biểu đồ
+// 4. Khởi tạo Biểu đồ
 document.addEventListener("DOMContentLoaded", function() {
-    var options = {
-        series: [{ name: 'Robux', data: [10, 50, 30, 90, 40, 120, 70] }],
-        chart: { height: 350, type: 'area', toolbar: { show: false }, fontFamily: 'Signika' },
-        colors: ['#00BAFF'],
-        stroke: { curve: 'smooth' },
-        xaxis: { categories: ["T2", "T3", "T4", "T5", "T6", "T7", "CN"], labels: { style: { colors: '#94a3b8' } } },
-        yaxis: { labels: { style: { colors: '#94a3b8' } } },
-        theme: { mode: 'dark' }
-    };
-    new ApexCharts(document.querySelector("#chart-revenue"), options).render();
+    if (document.querySelector("#chart-revenue")) {
+        var options = {
+            series: [{ name: 'Robux', data: [10, 50, 30, 90, 40, 120, 70] }],
+            chart: { height: 350, type: 'area', toolbar: { show: false } },
+            colors: ['#00BAFF'],
+            stroke: { curve: 'smooth' },
+            xaxis: { categories: ["T2", "T3", "T4", "T5", "T6", "T7", "CN"] },
+            theme: { mode: 'dark' }
+        };
+        new ApexCharts(document.querySelector("#chart-revenue"), options).render();
+    }
 });
-</script>
-
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        if(window.userData) {
-            // Cập nhật tên ở sidebar
-            const nameElements = document.querySelectorAll('.user-info h6');
-            nameElements.forEach(el => el.innerText = window.userData.username);
-            
-            // Cập nhật số dư định dạng VNĐ
-            const balanceElement = document.getElementById('user-balance-display');
-            if(balanceElement) {
-                balanceElement.innerText = "Số dư: " + window.userData.balance.toLocaleString('vi-VN') + " VNĐ";
-            }
-        }
-    });
 </script>
 </body>
 </html>
