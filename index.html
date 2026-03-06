@@ -16,26 +16,24 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script type="module">
+   <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-database-compat.js"></script>
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
+<script>
 const firebaseConfig = {
-apiKey: "AIzaSyD2D3h32_PyVBsahgTPCSWyk6zQ3IWBg",
-authDomain: "kunrobux-29314.firebaseapp.com",
-projectId: "kunrobux-29314",
-storageBucket: "kunrobux-29314.appspot.com",
-messagingSenderId: "691309584196",
-appId: "1:691309584196:web:134f12d149d4fe078d0111",
-measurementId: "G-WE1H3WQPSN"
+    apiKey: "AIzaSyD2D3h32_PyvBsahgTPCSWypk6zQ3IWB3g",
+    authDomain: "kunrobux-29314.firebaseapp.com",
+    databaseURL: "https://kunrobux-29314-default-rtdb.firebaseio.com",
+    projectId: "kunrobux-29314",
+    storageBucket: "kunrobux-29314.firebasestorage.app",
+    messagingSenderId: "691309584196",
+    appId: "1:691309584196:web:134f12d149d4fe078d0111",
+    measurementId: "G-WE1H3WQPSN"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-window.db = db;
-
+// Khởi tạo đúng kiểu Compat
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
 </script>
 
     <style>
@@ -629,6 +627,76 @@ import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/
 window.fb = { doc, setDoc, getDoc };
 
 </script>
+
+    <script>
+    // 1. Hàm XỬ LÝ ĐĂNG KÝ
+function handleRegister() {
+    const user = document.getElementById('reg-user').value.trim();
+    const pass = document.getElementById('reg-pass').value.trim();
+    const confirm = document.getElementById('reg-pass-confirm').value.trim();
+
+    if (!user || pass.length < 6) {
+        return Swal.fire('Lỗi', 'Tên đăng nhập không được để trống và mật khẩu ít nhất 6 ký tự!', 'error');
+    }
+    if (pass !== confirm) {
+        return Swal.fire('Lỗi', 'Mật khẩu nhập lại không khớp!', 'error');
+    }
+
+    // Kiểm tra tài khoản đã tồn tại chưa
+    database.ref('users/' + user).once('value', (snapshot) => {
+        if (snapshot.exists()) {
+            Swal.fire('Lỗi', 'Tài khoản này đã tồn tại trên hệ thống!', 'error');
+        } else {
+            // Ghi dữ liệu lên Realtime Database
+            database.ref('users/' + user).set({
+                username: user,
+                password: pass,
+                balance: 0,
+                createdAt: new Date().toISOString()
+            }).then(() => {
+                Swal.fire('Thành công', 'Tạo tài khoản xong! Đăng nhập ngay thôi.', 'success');
+                switchTab('login'); // Chuyển sang tab đăng nhập
+            });
+        }
+    });
+}
+
+// 2. Hàm XỬ LÝ ĐĂNG NHẬP
+function handleLogin() {
+    const user = document.getElementById('login-user').value.trim();
+    const pass = document.getElementById('login-pass').value.trim();
+
+    if (!user || !pass) return Swal.fire('Chú ý', 'Vui lòng nhập đủ thông tin!', 'warning');
+
+    database.ref('users/' + user).once('value', (snapshot) => {
+        const userData = snapshot.val();
+        if (userData && userData.password === pass) {
+            Swal.fire('Thành công', 'Chào mừng ' + user + ' trở lại!', 'success');
+            
+            setTimeout(() => {
+                document.getElementById('auth-overlay').style.display = 'none'; // Ẩn bảng đăng nhập
+                document.querySelectorAll('.user-info h6').forEach(el => el.innerText = user);
+                document.getElementById('user-balance-display').innerText = "Số dư: " + userData.balance.toLocaleString() + " VNĐ";
+            }, 1000);
+        } else {
+            Swal.fire('Thất bại', 'Sai tên tài khoản hoặc mật khẩu!', 'error');
+        }
+    });
+}
+
+// 3. Hàm chuyển Tab
+function switchTab(tab) {
+    document.querySelectorAll('.auth-tab').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.auth-form-content').forEach(form => form.classList.remove('active'));
+    if(tab === 'login') {
+        document.querySelectorAll('.auth-tab')[0].classList.add('active');
+        document.getElementById('login-form-content').classList.add('active');
+    } else {
+        document.querySelectorAll('.auth-tab')[1].classList.add('active');
+        document.getElementById('register-form-content').classList.add('active');
+    }
+}
+    </script>
     
 </body>
 </html>
