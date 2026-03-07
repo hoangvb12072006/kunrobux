@@ -576,8 +576,15 @@ function handleRegister() {
 
     accounts.push({ username: user, password: pass, balance: 0 });
     localStorage.setItem('kunrobux_users', JSON.stringify(accounts));
-    Swal.fire({ icon: 'success', title: 'Thành công', text: 'Đăng ký xong rồi, đăng nhập đi bạn!', background: '#1e293b', color: '#fff' });
-    switchTab('login');
+   Swal.fire({ 
+    icon: 'success', 
+    title: 'Thành công', 
+    text: 'Đăng ký xong rồi, đăng nhập đi bạn!', 
+    background: '#1e293b', 
+    color: '#fff' 
+}).then(() => {
+    switchTab('login'); 
+});
 }
 
 // 3. Hàm Xử lý Đăng nhập
@@ -589,12 +596,17 @@ function handleLogin() {
     const userFound = accounts.find(a => a.username === user && a.password === pass);
 
     if (userFound) {
-        Swal.fire({ title: 'Thành công!', text: 'Đang vào hệ thống...', icon: 'success', timer: 1000, showConfirmButton: false, background: '#1e293b', color: '#fff' });
-        setTimeout(() => {
-            document.getElementById('auth-overlay').style.display = 'none';
-            document.querySelectorAll('.user-info h6').forEach(el => el.innerText = userFound.username);
-            document.getElementById('user-balance-display').innerText = "Số dư: " + userFound.balance.toLocaleString() + " VNĐ";
-        }, 1000);
+        Swal.fire({ 
+    title: 'Thành công!', 
+    text: 'Chào mừng bạn đã trở lại!', 
+    icon: 'success', 
+    background: '#1e293b', 
+    color: '#fff' 
+}).then(() => {
+    document.getElementById('auth-overlay').style.display = 'none';
+    document.querySelectorAll('.user-info h6').forEach(el => el.innerText = userFound.username);
+    document.getElementById('user-balance-display').innerText = "Số dư: " + userFound.balance.toLocaleString() + " VNĐ";
+});
     } else {
         Swal.fire({ icon: 'error', title: 'Sai rồi', text: 'Tài khoản hoặc mật khẩu không đúng!', background: '#1e293b', color: '#fff' });
     }
