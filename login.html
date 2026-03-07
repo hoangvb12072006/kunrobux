@@ -114,6 +114,7 @@
         const btnAction = document.getElementById('btn-action');
         const tabLogin = document.getElementById('tab-login');
         const tabRegister = document.getElementById('tab-register');
+        const confirmPassBlock = document.getElementById('confirm-pass-block'); // Bổ sung biến này
 
         // Đổi màu Tab và đổi chữ ở Nút khi bấm
         function switchTab(loginMode) {
@@ -122,10 +123,12 @@
                 tabLogin.className = "flex-1 py-2 tab-active rounded-lg font-bold transition flex justify-center items-center gap-2";
                 tabRegister.className = "flex-1 py-2 tab-inactive hover:text-white rounded-lg font-bold transition flex justify-center items-center gap-2";
                 btnAction.innerText = "Đăng nhập";
+                confirmPassBlock.style.display = "none"; // Ẩn ô nhập lại MK
             } else {
                 tabRegister.className = "flex-1 py-2 tab-active rounded-lg font-bold transition flex justify-center items-center gap-2";
                 tabLogin.className = "flex-1 py-2 tab-inactive hover:text-white rounded-lg font-bold transition flex justify-center items-center gap-2";
                 btnAction.innerText = "Đăng ký";
+                confirmPassBlock.style.display = "block"; // Hiện ô nhập lại MK
             }
         }
 
