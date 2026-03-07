@@ -10,9 +10,24 @@
 </head>
 <body class="bg-[#0b0e14] text-white flex items-center justify-center h-screen relative font-['Signika']">
     <style>
-        .neon-box { box-shadow: 0 0 25px rgba(27, 190, 251, 0.2); border: 1px solid rgba(27, 190, 251, 0.3); }
+        /* Hiệu ứng viền Neon nhấp nháy êm ái */
+        @keyframes pulse-neon {
+            0%, 100% { box-shadow: 0 0 20px rgba(27, 190, 251, 0.2); border-color: rgba(27, 190, 251, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(27, 190, 251, 0.5); border-color: rgba(27, 190, 251, 0.6); }
+        }
+        .neon-box { 
+            animation: pulse-neon 2.5s infinite alternate; /* Gọi hiệu ứng thở */
+            border: 1px solid rgba(27, 190, 251, 0.3); 
+        }
         .tab-active { background-color: #1BBEFB; color: white; }
         .tab-inactive { background-color: transparent; color: #6B7280; }
+        
+        /* Hiệu ứng nảy và rực sáng cho nút bấm */
+        .btn-hover-fx { transition: all 0.3s ease; }
+        .btn-hover-fx:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(27,190,251,0.5);
+        }
     </style>
 
     <div class="neon-box bg-[#151a23] p-8 rounded-2xl w-[400px]">
@@ -77,7 +92,7 @@
         import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyBmggvvk19HmgnFxy-rAe_SvvyOwnKXprc",
+            apiKey: "COPY_LẠI_ĐÚNG_MÃ_API_KEY_TRÊN_FIREBASE_DÁN_VÀO_ĐÂY", // Bác check thật kỹ dòng này!
             authDomain: "kunrobux-c8aa8.firebaseapp.com",
             databaseURL: "https://kunrobux-c8aa8-default-rtdb.firebaseio.com",
             projectId: "kunrobux-c8aa8",
