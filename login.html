@@ -81,18 +81,27 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        let isLogin = true; // Biến kiểm tra đang ở form nào
+       let isLogin = true;
         const btnAction = document.getElementById('btn-action');
-        const toggleMode = document.getElementById('toggle-mode');
-        const title = document.getElementById('form-title');
+        const tabLogin = document.getElementById('tab-login');
+        const tabRegister = document.getElementById('tab-register');
 
-        // Chuyển đổi qua lại giữa Đăng nhập và Đăng ký
-        toggleMode.addEventListener('click', () => {
-            isLogin = !isLogin;
-            title.innerText = isLogin ? "Đăng Nhập" : "Đăng Ký";
-            btnAction.innerText = isLogin ? "Đăng Nhập" : "Đăng Ký";
-            toggleMode.innerText = isLogin ? "Chưa có tài khoản? Đăng ký ngay" : "Đã có tài khoản? Đăng nhập";
-        });
+        // Đổi màu Tab và đổi chữ ở Nút khi bấm
+        function switchTab(loginMode) {
+            isLogin = loginMode;
+            if (loginMode) {
+                tabLogin.className = "flex-1 py-2 tab-active rounded-lg font-bold transition flex justify-center items-center gap-2";
+                tabRegister.className = "flex-1 py-2 tab-inactive hover:text-white rounded-lg font-bold transition flex justify-center items-center gap-2";
+                btnAction.innerText = "Đăng nhập";
+            } else {
+                tabRegister.className = "flex-1 py-2 tab-active rounded-lg font-bold transition flex justify-center items-center gap-2";
+                tabLogin.className = "flex-1 py-2 tab-inactive hover:text-white rounded-lg font-bold transition flex justify-center items-center gap-2";
+                btnAction.innerText = "Đăng ký";
+            }
+        }
+
+        tabLogin.addEventListener('click', () => switchTab(true));
+        tabRegister.addEventListener('click', () => switchTab(false));
 
         // Xử lý khi bấm nút
         btnAction.addEventListener('click', async () => {
