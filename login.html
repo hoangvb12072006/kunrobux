@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Nhập / Đăng Ký - KUNROBUX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="bg-white p-8 rounded-xl shadow-lg w-96">
+        <div class="text-center mb-6">
+            <h2 class="text-2xl font-extrabold text-[#1BBEFB]" id="form-title">Đăng Nhập</h2>
+        </div>
+        
+        <div class="flex flex-col gap-4">
+            <input type="email" id="email" placeholder="Email của bạn" class="w-full p-3 border border-gray-300 rounded-lg outline-none focus:border-[#1BBEFB]">
+            <input type="password" id="password" placeholder="Mật khẩu" class="w-full p-3 border border-gray-300 rounded-lg outline-none focus:border-[#1BBEFB]">
+            
+            <button id="btn-action" class="w-full bg-[#1BBEFB] text-white font-bold py-3 rounded-lg hover:opacity-90 transition">Đăng Nhập</button>
+        </div>
+        
+        <p class="mt-6 text-center text-sm font-semibold text-gray-500 cursor-pointer hover:text-[#1BBEFB]" id="toggle-mode">
+            Chưa có tài khoản? Đăng ký ngay
+        </p>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBmggvvk19HmgnFxy-rAe_SvvyOwnKXprc",
+            authDomain: "kunrobux-c8aa8.firebaseapp.com",
+            databaseURL: "https://kunrobux-c8aa8-default-rtdb.firebaseio.com",
+            projectId: "kunrobux-c8aa8",
+            storageBucket: "kunrobux-c8aa8.firebasestorage.app",
+            messagingSenderId: "1094974396607",
+            appId: "1:1094974396607:web:61cf45e19d63e31aca4e0a",
+            measurementId: "G-2M9RLL689T"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let isLogin = true; // Biến kiểm tra đang ở form nào
+        const btnAction = document.getElementById('btn-action');
+        const toggleMode = document.getElementById('toggle-mode');
+        const title = document.getElementById('form-title');
+
+        // Chuyển đổi qua lại giữa Đăng nhập và Đăng ký
+        toggleMode.addEventListener('click', () => {
+            isLogin = !isLogin;
+            title.innerText = isLogin ? "Đăng Nhập" : "Đăng Ký";
+            btnAction.innerText = isLogin ? "Đăng Nhập" : "Đăng Ký";
+            toggleMode.innerText = isLogin ? "Chưa có tài khoản? Đăng ký ngay" : "Đã có tài khoản? Đăng nhập";
+        });
+
+        // Xử lý khi bấm nút
+        btnAction.addEventListener('click', async () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if(!email || !password) return alert("Vui lòng nhập đủ Email và Mật khẩu!");
+
+            try {
+                if (isLogin) {
+                    // Chức năng Đăng nhập
+                    await signInWithEmailAndPassword(auth, email, password);
+                    window.location.href = "index.html"; // Trở về trang chủ
+                } else {
+                    // Chức năng Đăng ký & Lưu Database
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    
+                    // Ghi thông tin vào Firestore
+                    await setDoc(doc(db, "users", userCredential.user.uid), {
+                        email: email, 
+                        password: password, 
+                        balance: 0, 
+                        role: "member", 
+                        createdAt: new Date().toLocaleString('vi-VN')
+                    });
+                    
+                    alert("Đăng ký thành công!");
+                    window.location.href = "index.html";
+                }
+            } catch (error) {
+                alert("Lỗi: " + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
