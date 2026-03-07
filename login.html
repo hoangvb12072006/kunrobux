@@ -142,18 +142,29 @@
             <li><a href="#"><i class='bx bx-credit-card'></i> Biến động số dư</a></li>
         </ul>
 
-        <div class="sidebar-user">
-            <div class="balance-box">
-                <span style="color: var(--dark-grey); font-size: 13px; font-weight: 600;">Số dư:</span>
-                <span style="color: #00BCD4; font-weight: 700;">₫535</span>
+       <div class="sidebar-user">
+            <div id="auth-guest" style="display: flex; flex-direction: column; gap: 10px;">
+                <a href="login.html" style="background: var(--blue); color: white; text-align: center; padding: 10px; border-radius: 8px; font-weight: 700; text-decoration: none; box-shadow: 0 4px 10px rgba(27, 190, 251, 0.3);">
+                    <i class='bx bx-log-in-circle'></i> Đăng Nhập
+                </a>
+                <a href="login.html" style="background: var(--grey); color: var(--dark); text-align: center; padding: 10px; border-radius: 8px; font-weight: 700; text-decoration: none; border: 1px solid var(--border-light);">
+                    Đăng Ký Tài Khoản
+                </a>
             </div>
-            <div class="user-profile">
-                <img src="https://placehold.co/40x40/222222/FFFFFF?text=H" alt="Avatar">
-                <div style="flex: 1; overflow: hidden;">
-                    <div style="font-size: 10px; color: #2ED47A; font-weight: 800;">CUSTOMER <i class='bx bx-check-circle'></i></div>
-                    <div style="font-size: 14px; font-weight: 700; white-space: nowrap;">Hoangvb1207</div>
+
+            <div id="auth-user" style="display: none;">
+                <div class="balance-box">
+                    <span style="color: var(--dark-grey); font-size: 13px; font-weight: 600;">Số dư:</span>
+                    <span id="user-balance" style="color: #00BCD4; font-weight: 700;">₫0</span>
                 </div>
-                <i class='bx bx-log-out text-xl text-gray-500 hover:text-red-500 cursor-pointer'></i>
+                <div class="user-profile">
+                    <img src="https://placehold.co/40x40/222222/FFFFFF?text=U" alt="Avatar">
+                    <div style="flex: 1; overflow: hidden;">
+                        <div style="font-size: 10px; color: #2ED47A; font-weight: 800;">MEMBER <i class='bx bx-check-circle'></i></div>
+                        <div id="user-name" style="font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Đang tải...</div>
+                    </div>
+                    <i id="btn-logout" class='bx bx-log-out text-xl text-gray-500 hover:text-red-500 cursor-pointer' title="Đăng xuất"></i>
+                </div>
             </div>
         </div>
     </section>
