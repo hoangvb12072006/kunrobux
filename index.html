@@ -1,195 +1,402 @@
 <!DOCTYPE html>
-<html lang="vi" dir="ltr" data-theme-mode="dark">
-
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=no'>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>KUNROBUX - HỆ THỐNG ROBUX TỰ ĐỘNG</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KUNROBUX.VN | HỆ THỐNG GIAO DỊCH ROBUX TỰ ĐỘNG CAO CẤP</title>
     
-    <meta name="description" content="KUNROBUX - Hệ thống bán Robux tự động uy tín nhất của Hoàng Kun.">
-    <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/6532/6532426.png" type="image/x-icon">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link href="https://fonts.googleapis.com/css2?family=Signika:wght@400;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Signika:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-database-compat.js"></script>
 
     <style>
-    /* ... (Giữ các biến root cũ) ... */
+        :root {
+            --primary: #00d2ff;
+            --secondary: #3a7bd5;
+            --dark-bg: #060b18;
+            --card-bg: rgba(16, 24, 45, 0.8);
+            --text-main: #e1e1e1;
+            --accent: #ff4757;
+            --gold: #ff9f43;
+        }
 
-    /* FIX CỰC MẠNH: Đảm bảo lớp nền không bao giờ chặn chuột */
-    #auth-overlay {
-        position: fixed;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: radial-gradient(circle at center, #111a2e 0%, #050811 100%);
-        z-index: 10000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        pointer-events: auto; /* Cho phép tương tác với vùng này */
-    }
+        /* CUSTOM SCROLLBAR */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--dark-bg); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
 
-    #particles-js {
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1; /* Nằm dưới card */
-        pointer-events: none !important; /* KHÔNG ĐƯỢC CHẶN CHUỘT */
-    }
+        body {
+            font-family: 'Signika', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-main);
+            margin: 0;
+            overflow-x: hidden;
+        }
 
-    .auth-card {
-        position: relative;
-        z-index: 99999 !important; /* LUÔN TRÊN CÙNG */
-        background: rgba(22, 34, 58, 0.95); /* Tăng độ đậm để dễ nhìn */
-        backdrop-filter: blur(20px);
-        border-radius: 28px;
-        width: 90%;
-        max-width: 450px;
-        padding: 40px;
-        border: 2px solid var(--primary-color); /* Làm viền rõ hơn */
-        pointer-events: all !important; /* BẮT BUỘC NHẬN CHUỘT */
-    }
+        /* -----------------------------------------------------------
+           1. AUTHENTICATION OVERLAY (PHẦN ĐẦU TIÊN KHI VÀO WEB)
+        ----------------------------------------------------------- */
+        #auth-wrapper {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 10000;
+            background: radial-gradient(circle at center, #111a2e 0%, #050811 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.8s cubic-bezier(0.7, 0, 0.3, 1);
+        }
 
-    /* Các input phải có cursor text */
-    input {
-        cursor: text !important;
-        position: relative;
-        z-index: 100000;
-    }
+        #particles-js {
+            position: absolute;
+            width: 100%; height: 100%;
+            pointer-events: none;
+        }
 
-    button {
-        cursor: pointer !important;
-        position: relative;
-        z-index: 100000;
-    }
-</style>
+        .auth-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+        }
 
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 210, 255, 0.2);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        .auth-logo {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 2.5rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .input-box {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .input-box i {
+            position: absolute;
+            left: 15px; top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .input-box input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.2);
+            outline: none;
+        }
+
+        .btn-grad {
+            background-image: linear-gradient(to right, #00d2ff 0%, #3a7bd5  51%, #00d2ff  100%);
+            padding: 15px 45px;
+            text-align: center;
+            text-transform: uppercase;
+            transition: 0.5s;
+            background-size: 200% auto;
+            color: white;            
+            box-shadow: 0 0 20px #222;
+            border-radius: 15px;
+            width: 100%;
+            border: none;
+            font-weight: bold;
+        }
+
+        .btn-grad:hover {
+            background-position: right center;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        /* -----------------------------------------------------------
+           2. SIDEBAR SYSTEM
+        ----------------------------------------------------------- */
+        .sidebar {
+            position: fixed;
+            left: 0; top: 0; height: 100%;
+            width: 260px;
+            background: #0a101e;
+            border-right: 1px solid rgba(255,255,255,0.05);
+            z-index: 100;
+            padding: 20px;
+            transition: 0.4s;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 18px;
+            color: #8a94ad;
+            text-decoration: none;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            transition: 0.3s;
+        }
+
+        .menu-item i { font-size: 1.3rem; margin-right: 15px; }
+
+        .menu-item:hover, .menu-item.active {
+            background: rgba(0, 210, 255, 0.1);
+            color: var(--primary);
+        }
+
+        .main-panel {
+            margin-left: 260px;
+            padding: 30px;
+            min-height: 100vh;
+        }
+
+        /* -----------------------------------------------------------
+           3. SHOP COMPONENTS (ROBUX, CARDS, MINI GAMES)
+        ----------------------------------------------------------- */
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(0,210,255,0.05) 0%, transparent 70%);
+        }
+
+        .robux-item {
+            background: rgba(255,255,255,0.02);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .robux-item:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            background: rgba(0,210,255,0.05);
+        }
+
+        .price-tag {
+            color: var(--gold);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* -----------------------------------------------------------
+           4. NOTIFICATION TOAST
+        ----------------------------------------------------------- */
+        .live-notif {
+            position: fixed;
+            bottom: 20px; right: 20px;
+            background: var(--card-bg);
+            border-left: 4px solid var(--primary);
+            padding: 15px 25px;
+            border-radius: 10px;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: slideInUp 0.5s forwards;
+        }
+
+    </style>
 </head>
-
 <body>
 
-   <div id="auth-overlay">
-    <div id="particles-js"></div> <div class="auth-card">
-        <div class="text-center mb-4">
-             <h2 class="fw-bold">KUNROBUX STORE</h2>
-        </div>
-        <button class="btn-auth" onclick="handleLogin()">ĐĂNG NHẬP NGAY</button>
-    </div>
-</div>
+    <div id="auth-wrapper">
+        <div id="particles-js"></div>
+        <div class="auth-container">
+            <div class="glass-card animate__animated animate__zoomIn">
+                <div class="text-center">
+                    <div class="auth-logo">KUNROBUX</div>
+                    <p class="text-muted">Hệ thống phân phối Robux chính hãng</p>
+                </div>
 
-            <div class="auth-tabs">
-                <button class="auth-tab active" id="tab-login-btn" onclick="switchTab('login')"><i class='bx bxs-lock-alt'></i> Đăng nhập</button>
-                <button class="auth-tab" id="tab-reg-btn" onclick="switchTab('register')"><i class='bx bxs-user-plus'></i> Đăng ký</button>
-            </div>
+                <div class="auth-tabs d-flex mb-4 mt-4">
+                    <button class="btn w-100 text-white border-bottom border-primary" id="tabLogin" onclick="toggleAuth('login')">ĐĂNG NHẬP</button>
+                    <button class="btn w-100 text-muted" id="tabReg" onclick="toggleAuth('reg')">ĐĂNG KÝ</button>
+                </div>
 
-            <div id="login-form" class="auth-step">
-                <div class="input-group-custom">
-                    <label>Tài khoản</label>
-                    <input type="text" id="login-user" placeholder="Nhập username...">
+                <div id="form-login">
+                    <div class="input-box">
+                        <i class='bx bxs-user'></i>
+                        <input type="text" id="login-username" placeholder="Tài khoản hoặc Email">
+                    </div>
+                    <div class="input-box">
+                        <i class='bx bxs-lock-alt'></i>
+                        <input type="password" id="login-password" placeholder="Mật khẩu bảo mật">
+                    </div>
+                    <button class="btn-grad" onclick="processLogin()">BẮT ĐẦU NGAY</button>
                 </div>
-                <div class="input-group-custom">
-                    <label>Mật khẩu</label>
-                    <input type="password" id="login-pass" placeholder="••••••••">
-                </div>
-                <button class="btn-auth" onclick="handleLogin()">TRUY CẬP HỆ THỐNG</button>
-            </div>
 
-            <div id="register-form" class="auth-step d-none">
-                <div class="input-group-custom">
-                    <label>Tài khoản mới</label>
-                    <input type="text" id="reg-user" placeholder="Ít nhất 5 ký tự...">
+                <div id="form-reg" class="d-none">
+                    <div class="input-box">
+                        <i class='bx bxs-user-plus'></i>
+                        <input type="text" id="reg-username" placeholder="Tên tài khoản mong muốn">
+                    </div>
+                    <div class="input-box">
+                        <i class='bx bxs-lock-open'></i>
+                        <input type="password" id="reg-password" placeholder="Mật khẩu từ 6 ký tự">
+                    </div>
+                    <div class="input-box">
+                        <i class='bx bxs-check-shield'></i>
+                        <input type="password" id="reg-confirm" placeholder="Xác nhận lại mật khẩu">
+                    </div>
+                    <button class="btn-grad" style="background-image: linear-gradient(to right, #11998e 0%, #38ef7d 100%);" onclick="processRegister()">TẠO TÀI KHOẢN</button>
                 </div>
-                <div class="input-group-custom">
-                    <label>Mật khẩu</label>
-                    <input type="password" id="reg-pass" placeholder="Mật khẩu bảo mật...">
-                </div>
-                <div class="input-group-custom">
-                    <label>Xác nhận lại</label>
-                    <input type="password" id="reg-confirm" placeholder="Nhập lại mật khẩu...">
-                </div>
-                <button class="btn-auth" onclick="handleRegister()" style="background: linear-gradient(135deg, #2ecc71, #27ae60);">ĐĂNG KÝ TÀI KHOẢN</button>
+                
+                <p class="text-center mt-4 small text-muted">Bằng việc đăng nhập, bạn đồng ý với Điều khoản sử dụng của Hoàng Kun.</p>
             </div>
-        </div>
-    </div>
-
-    <div class="sidebar" id="sidebar">
-        <a href="#" class="brand">
-            <img src="https://cdn-icons-png.flaticon.com/512/6532/6532426.png" alt="Logo">
-            <span>KUNROBUX</span>
-        </a>
-        <ul class="menu">
-            <div class="menu-header">Hệ thống</div>
-            <li><a href="#" class="menu-link active"><i class='bx bxs-grid-alt'></i> Dashboard</a></li>
-            <li><a href="#" class="menu-link" onclick="updating()"><i class='bx bxs-credit-card-front'></i> Nạp thẻ tự động</a></li>
-            
-            <div class="menu-header">Dịch vụ Robux</div>
-            <li><a href="#" class="menu-link" onclick="updating()"><i class='bx bxs-bolt-circle'></i> Robux 120H (Giá rẻ)</a></li>
-            <li><a href="#" class="menu-link" onclick="updating()"><i class='bx bxs-shield-quarter'></i> Cày thuê Blox Fruit</a></li>
-            
-            <div class="menu-header">Khác</div>
-            <li><a href="#" class="menu-link" onclick="updating()"><i class='bx bxs-party'></i> Vòng quay may mắn</a></li>
-            <li><a href="#" class="menu-link" onclick="updating()"><i class='bx bxs-help-circle'></i> Hỗ trợ kỹ thuật</a></li>
-        </ul>
-        <div class="user-panel">
-            <img id="user-pfp" src="https://ui-avatars.com/api/?name=K&background=00BAFF&color=fff" class="user-avatar">
-            <div class="user-info">
-                <h6 id="display-name" class="mb-0 fw-bold">Khách</h6>
-                <span id="display-balance" class="text-primary small fw-bold">0 VNĐ</span>
-            </div>
-            <i class='bx bx-power-off ms-auto fs-4' style="cursor: pointer; color: #ff4757;" onclick="location.reload()"></i>
         </div>
     </div>
 
-    <div class="main-content">
-        <div class="d-flex justify-content-between align-items-center mb-5">
-            <div>
-                <h2 class="fw-bold m-0"><i class='bx bx-menu-alt-left d-lg-none me-2' onclick="toggleSidebar()"></i> Dashboard</h2>
-                <p class="text-muted small mb-0">Chào mừng bạn trở lại với hệ thống của <span class="text-primary">Hoàng Kun</span></p>
-            </div>
-            <div class="badge bg-success p-2 px-3 rounded-pill" style="box-shadow: 0 0 10px rgba(46, 204, 113, 0.3);">Hệ thống Online</div>
+    <div class="sidebar">
+        <div class="text-center mb-5">
+            <h3 class="fw-bold text-primary">KUNROBUX</h3>
+            <span class="badge bg-success small">SERVER ONLINE</span>
         </div>
 
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="stats-card">
-                    <p class="text-muted small fw-bold text-uppercase mb-2">Số dư tài khoản</p>
-                    <h2 id="card-balance" class="fw-bold mb-0">0đ</h2>
-                    <div class="mt-4">
-                        <button class="btn btn-primary w-100 rounded-pill fw-bold" onclick="updating()">Nạp ngay</button>
+        <nav>
+            <a href="#" class="menu-item active"><i class='bx bxs-dashboard'></i> Trang chủ</a>
+            <a href="#" class="menu-item"><i class='bx bxs-cart-add'></i> Mua Robux (120H)</a>
+            <a href="#" class="menu-item"><i class='bx bxs-credit-card'></i> Nạp thẻ cào</a>
+            <a href="#" class="menu-item"><i class='bx bxs-joystick'></i> Vòng quay may mắn</a>
+            <a href="#" class="menu-item"><i class='bx bxs-history'></i> Lịch sử giao dịch</a>
+            <a href="#" class="menu-item text-danger" onclick="location.reload()"><i class='bx bxs-log-out'></i> Đăng xuất</a>
+        </nav>
+
+        <div class="mt-auto pt-5">
+            <div class="stat-card" style="padding: 15px;">
+                <div class="d-flex align-items-center">
+                    <img id="user-avatar" src="https://ui-avatars.com/api/?name=Guest" class="rounded-circle me-3" width="45">
+                    <div>
+                        <div id="user-name" class="fw-bold small">Khách</div>
+                        <div id="user-money" class="text-primary small fw-bold">0 VNĐ</div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="stats-card">
-                    <p class="text-muted small fw-bold text-uppercase mb-2">Tỷ giá hôm nay</p>
-                    <h2 class="fw-bold text-info mb-0">10k = 86 R$</h2>
-                    <p class="small text-muted mt-2"><i class='bx bxs-check-circle'></i> Robux sạch 100%</p>
+        </div>
+    </div>
+
+    <div class="main-panel">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4>Chào mừng trở lại, <span class="text-primary" id="welcome-name">Hoàng Kun</span>!</h4>
+            <div class="d-flex gap-3">
+                <button class="btn btn-outline-primary btn-sm"><i class='bx bxs-bell'></i></button>
+                <button class="btn btn-primary btn-sm px-4 fw-bold">NẠP TIỀN</button>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="stat-card animate__animated animate__fadeInUp">
+                    <p class="text-muted small">SỐ DƯ HIỆN TẠI</p>
+                    <h3 class="fw-bold m-0 text-primary">0đ</h3>
+                    <i class='bx bxs-wallet-alt position-absolute' style="right: 20px; bottom: 20px; font-size: 3rem; opacity: 0.1;"></i>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="stats-card">
-                    <p class="text-muted small fw-bold text-uppercase mb-2">Lịch sử giao dịch</p>
-                    <h2 class="fw-bold mb-0">0</h2>
-                    <p class="small text-warning mt-2">Chưa có giao dịch gần đây</p>
+            <div class="col-md-3">
+                <div class="stat-card animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
+                    <p class="text-muted small">ROBUX ĐÃ MUA</p>
+                    <h3 class="fw-bold m-0 text-success">0 R$</h3>
+                    <i class='bx bxs-coin-stack position-absolute' style="right: 20px; bottom: 20px; font-size: 3rem; opacity: 0.1;"></i>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
+                    <p class="text-muted small">TỔNG NẠP</p>
+                    <h3 class="fw-bold m-0 text-warning">0đ</h3>
+                    <i class='bx bxs-medal position-absolute' style="right: 20px; bottom: 20px; font-size: 3rem; opacity: 0.1;"></i>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card animate__animated animate__fadeInUp" style="animation-delay: 0.3s;">
+                    <p class="text-muted small">CẤP ĐỘ</p>
+                    <h3 class="fw-bold m-0">MỚI CHƠI</h3>
+                    <i class='bx bxs-star position-absolute' style="right: 20px; bottom: 20px; font-size: 3rem; opacity: 0.1;"></i>
                 </div>
             </div>
         </div>
 
-        <div class="stats-card mt-5">
-            <h5 class="fw-bold mb-4 d-flex align-items-center"><i class='bx bxs-chart me-2 text-primary'></i> Thống kê biến động thị trường</h5>
-            <div id="main-chart"></div>
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="stat-card h-100">
+                    <h5 class="fw-bold mb-4"><i class='bx bxs-zap text-warning'></i> MUA ROBUX GIÁ RẺ (X8.6)</h5>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="robux-item" onclick="selectRobux(10000)">
+                                <img src="https://cdn-icons-png.flaticon.com/512/6532/6532426.png" width="50" class="mb-3">
+                                <div class="fw-bold">Gói 10k</div>
+                                <div class="price-tag">86 R$</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="robux-item" onclick="selectRobux(50000)">
+                                <img src="https://cdn-icons-png.flaticon.com/512/6532/6532426.png" width="50" class="mb-3">
+                                <div class="fw-bold">Gói 50k</div>
+                                <div class="price-tag">430 R$</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="robux-item" onclick="selectRobux(100000)">
+                                <img src="https://cdn-icons-png.flaticon.com/512/6532/6532426.png" width="50" class="mb-3">
+                                <div class="fw-bold">Gói 100k</div>
+                                <div class="price-tag">860 R$</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="stat-card">
+                    <h5 class="fw-bold mb-4"><i class='bx bxs-megaphone text-danger'></i> THÔNG BÁO</h5>
+                    <marquee direction="up" scrollamount="2" style="height: 150px;">
+                        <p class="text-info small">● Khuyến mãi 20% khi nạp qua ATM/MOMO</p>
+                        <p class="text-white small">● Robux 120H đang có sẵn số lượng lớn.</p>
+                        <p class="text-warning small">● Chú ý: Không chia sẻ mật khẩu cho bất kỳ ai!</p>
+                        <p class="text-white small">● Chúc các bạn một ngày tốt lành tại KunRobux.</p>
+                    </marquee>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // --- 1. FIREBASE CONFIG ---
+        // --- CẤU HÌNH FIREBASE ---
         const firebaseConfig = {
             apiKey: "AIzaSyD2D3h32_PyvBsahgTPCSWypk6zQ3IWB3g",
             authDomain: "kunrobux-29314.firebaseapp.com",
@@ -202,127 +409,84 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // --- 2. UI FUNCTIONS ---
-        function switchTab(type) {
-            const loginForm = document.getElementById('login-form');
-            const regForm = document.getElementById('register-form');
-            const loginBtn = document.getElementById('tab-login-btn');
-            const regBtn = document.getElementById('tab-reg-btn');
+        // --- XỬ LÝ GIAO DIỆN ---
+        function toggleAuth(type) {
+            const login = document.getElementById('form-login');
+            const reg = document.getElementById('form-reg');
+            const tabLogin = document.getElementById('tabLogin');
+            const tabReg = document.getElementById('tabReg');
 
             if(type === 'login') {
-                loginForm.classList.remove('d-none');
-                regForm.classList.add('d-none');
-                loginBtn.classList.add('active');
-                regBtn.classList.remove('active');
+                login.classList.remove('d-none');
+                reg.classList.add('d-none');
+                tabLogin.classList.add('border-primary');
+                tabReg.classList.remove('border-primary');
             } else {
-                loginForm.classList.add('d-none');
-                regForm.classList.remove('d-none');
-                loginBtn.classList.remove('active');
-                regBtn.classList.add('active');
+                login.classList.add('d-none');
+                reg.classList.remove('d-none');
+                tabReg.classList.add('border-primary');
+                tabLogin.classList.remove('border-primary');
             }
         }
 
-        // --- 3. AUTH LOGIC ---
-        function handleRegister() {
-            const user = document.getElementById('reg-user').value.trim();
-            const pass = document.getElementById('reg-pass').value.trim();
-            const confirm = document.getElementById('reg-confirm').value.trim();
+        // --- LOGIC ĐĂNG NHẬP ---
+        function processLogin() {
+            const u = document.getElementById('login-username').value;
+            const p = document.getElementById('login-password').value;
 
-            if(!user || !pass) return Swal.fire('Thiếu thông tin', 'Vui lòng điền đầy đủ các trường!', 'warning');
-            if(user.length < 5) return Swal.fire('Tài khoản quá ngắn', 'Tên tài khoản phải từ 5 ký tự!', 'error');
-            if(pass.length < 6) return Swal.fire('Mật khẩu yếu', 'Mật khẩu phải từ 6 ký tự!', 'error');
-            if(pass !== confirm) return Swal.fire('Không khớp', 'Mật khẩu xác nhận không đúng!', 'warning');
+            if(!u || !p) return Swal.fire('Lỗi', 'Vui lòng nhập đủ thông tin!', 'error');
 
-            Swal.showLoading();
-            db.ref('users/' + user).once('value', snapshot => {
-                if(snapshot.exists()) {
-                    Swal.fire('Lỗi', 'Tên tài khoản này đã được sử dụng!', 'error');
-                } else {
-                    db.ref('users/' + user).set({
-                        username: user,
-                        password: pass,
-                        balance: 0,
-                        joinDate: new Date().toLocaleString()
-                    }).then(() => {
-                        Swal.fire({
-                            title: 'Thành công!',
-                            text: 'Tài khoản của bạn đã được khởi tạo!',
-                            icon: 'success'
-                        }).then(() => switchTab('login'));
-                    });
-                }
+            Swal.fire({
+                title: 'Đang kết nối...',
+                html: 'Vui lòng chờ trong giây lát',
+                allowOutsideClick: false,
+                didOpen: () => Swal.showLoading()
             });
-        }
 
-        function handleLogin() {
-            const user = document.getElementById('login-user').value.trim();
-            const pass = document.getElementById('login-pass').value.trim();
-
-            if(!user || !pass) return Swal.fire('Chú ý', 'Nhập đầy đủ tài khoản & mật khẩu!', 'warning');
-
-            Swal.fire({ title: 'Đang xác thực...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-
-            db.ref('users/' + user).once('value', snapshot => {
+            db.ref('users/' + u).once('value', snapshot => {
                 const data = snapshot.val();
-                if(data && data.password === pass) {
-                    Swal.fire({
-                        title: 'Thành công!',
-                        text: 'Chào mừng ' + user + ' đã quay trở lại!',
-                        icon: 'success',
-                        timer: 1500,
-                        showConfirmButton: false
-                    }).then(() => {
-                        // Ẩn Overlay
-                        const overlay = document.getElementById('auth-overlay');
-                        overlay.style.opacity = '0';
-                        overlay.style.transform = 'translateY(-20px)';
-                        setTimeout(() => overlay.classList.add('d-none'), 600);
-                        
-                        // Update Data UI
-                        document.getElementById('display-name').innerText = user;
-                        document.getElementById('display-balance').innerText = data.balance.toLocaleString() + " VNĐ";
-                        document.getElementById('card-balance').innerText = data.balance.toLocaleString() + "đ";
-                        document.getElementById('user-pfp').src = `https://ui-avatars.com/api/?name=${user}&background=00BAFF&color=fff`;
-                    });
+                if(data && data.password === p) {
+                    Swal.fire('Thành công', 'Chào mừng bạn trở lại!', 'success');
+                    document.getElementById('auth-wrapper').style.transform = 'translateY(-100%)';
+                    
+                    // Cập nhật UI
+                    document.getElementById('user-name').innerText = u;
+                    document.getElementById('welcome-name').innerText = u;
+                    document.getElementById('user-money').innerText = data.balance.toLocaleString() + ' VNĐ';
                 } else {
-                    Swal.fire('Thất bại', 'Sai thông tin tài khoản hoặc mật khẩu!', 'error');
+                    Swal.fire('Thất bại', 'Sai tài khoản hoặc mật khẩu!', 'error');
                 }
             });
         }
 
-        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
-        function updating() { Swal.fire('Thông báo', 'Tính năng đang được Hoàng Kun phát triển, vui lòng quay lại sau!', 'info'); }
+        // --- THÔNG BÁO GIẢ (Tăng độ uy tín) ---
+        const names = ["hoang01", "kun_pro", "robux_master", "tuan_anh", "vua_ro_bux", "dark_lord"];
+        setInterval(() => {
+            const name = names[Math.floor(Math.random() * names.length)];
+            const price = (Math.floor(Math.random() * 10) + 1) * 10000;
+            const toast = document.createElement('div');
+            toast.className = 'live-notif';
+            toast.innerHTML = `<i class='bx bxs-check-circle text-success me-2' ></i> <b>${name}</b> vừa nạp thành công ${price.toLocaleString()}đ`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
+        }, 8000);
 
-        // --- 4. INITIALIZE PLUGINS ---
+        // --- KHỞI TẠO HIỆU ỨNG HẠT ---
         particlesJS("particles-js", {
             "particles": {
-                "number": { "value": 100, "density": { "enable": true, "value_area": 800 } },
-                "color": { "value": "#00BAFF" },
+                "number": { "value": 120, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#00d2ff" },
                 "shape": { "type": "circle" },
-                "opacity": { "value": 0.4, "random": true },
+                "opacity": { "value": 0.5, "random": true },
                 "size": { "value": 3, "random": true },
-                "line_linked": { "enable": true, "distance": 150, "color": "#00BAFF", "opacity": 0.2, "width": 1 },
-                "move": { "enable": true, "speed": 1.5, "direction": "none", "random": true, "straight": false, "out_mode": "out" }
+                "line_linked": { "enable": true, "distance": 150, "color": "#00d2ff", "opacity": 0.2, "width": 1 },
+                "move": { "enable": true, "speed": 1.5 }
             },
             "interactivity": {
                 "detect_on": "canvas",
-                "events": { "onhover": { "enable": false }, "onclick": { "enable": false } }
-            },
-            "retina_detect": true
+                "events": { "onhover": { "enable": true, "mode": "grab" } }
+            }
         });
-
-        const chartOptions = {
-            series: [{ name: 'Lượt mua', data: [45, 52, 38, 65, 48, 120, 80] }],
-            chart: { height: 350, type: 'area', toolbar: {show: false}, fontFamily: 'Signika' },
-            colors: ['#00BAFF'],
-            dataLabels: { enabled: false },
-            stroke: { curve: 'smooth', width: 3 },
-            fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.5, opacityTo: 0 } },
-            theme: { mode: 'dark' },
-            xaxis: { categories: ["T2", "T3", "T4", "T5", "T6", "T7", "CN"] },
-            grid: { borderColor: 'rgba(255,255,255,0.05)' }
-        };
-        new ApexCharts(document.querySelector("#main-chart"), chartOptions).render();
     </script>
 </body>
 </html>
