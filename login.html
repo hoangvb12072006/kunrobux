@@ -132,14 +132,21 @@
         tabLogin.addEventListener('click', () => switchTab(true));
         tabRegister.addEventListener('click', () => switchTab(false));
 
-        // Xử lý khi bấm nút
+       // Xử lý khi bấm nút
         btnAction.addEventListener('click', async () => {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value; // <-- MỚI THÊM
             
             if(!email || !password) return alert("Vui lòng nhập đủ Email và Mật khẩu!");
 
+            // <-- MỚI THÊM: Kiểm tra mật khẩu khớp nhau khi Đăng ký
+            if (!isLogin && password !== confirmPassword) {
+                return alert("Mật khẩu nhập lại không khớp!");
+            }
+
             try {
+               
                 if (isLogin) {
                     // Chức năng Đăng nhập
                     await signInWithEmailAndPassword(auth, email, password);
