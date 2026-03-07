@@ -64,6 +64,7 @@
                     <i class='bx bx-lock-alt text-gray-500 mr-3 text-lg'></i>
                     <input type="password" id="password" placeholder="Nhập mật khẩu..." class="bg-transparent outline-none w-full text-sm text-white placeholder-gray-600">
                     <i class='bx bx-hide text-gray-500 cursor-pointer hover:text-white text-lg'></i>
+                    <i id="toggle-password" class='bx bx-hide text-gray-500 cursor-pointer hover:text-white text-lg'></i>
                 </div>
             </div>
 
@@ -114,6 +115,19 @@
         const tabLogin = document.getElementById('tab-login');
         const tabRegister = document.getElementById('tab-register');
         const confirmPassBlock = document.getElementById('confirm-pass-block'); 
+
+        const togglePassword = document.getElementById('toggle-password');
+        const passwordInput = document.getElementById('password');
+
+        // Lệnh nhắm/mở mắt cho mật khẩu
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            // Đổi hình icon qua lại giữa ẩn và hiện
+            togglePassword.classList.toggle('bx-hide');
+            togglePassword.classList.toggle('bx-show');
+        });
 
         // Đổi màu Tab và đổi chữ ở Nút khi bấm
         function switchTab(loginMode) {
