@@ -91,16 +91,19 @@
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBmggevk19HmgnFxy-rAe_SvvyOwnKXprc", // Bác check thật kỹ dòng này!
-            authDomain: "kunrobux-c8aa8.firebaseapp.com",
-            databaseURL: "https://kunrobux-c8aa8-default-rtdb.firebaseio.com",
-            projectId: "kunrobux-c8aa8",
-            storageBucket: "kunrobux-c8aa8.firebasestorage.app",
-            messagingSenderId: "1094974396607",
-            appId: "1:1094974396607:web:61cf45e19d63e31aca4e0a",
-            measurementId: "G-2M9RLL689T"
-        };
+       const firebaseConfig = {
+
+  apiKey: "AIzaSyBmggevk19HmgnFxy-rAe_SvvyOwnKXprc",
+  authDomain: "kunrobux-c8aa8.firebaseapp.com",
+  databaseURL: "https://kunrobux-c8aa8-default-rtdb.firebaseio.com",
+  projectId: "kunrobux-c8aa8",
+  storageBucket: "kunrobux-c8aa8.firebasestorage.app",
+  messagingSenderId: "1094974396607",
+  appId: "1:1094974396607:web:61cf45e19d63e31aca4e0a",
+  measurementId: "G-2M9RLL689T"
+
+};
+
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
