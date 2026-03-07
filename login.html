@@ -329,5 +329,68 @@
             }
         });
     </script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Cấu hình Firebase của bạn
+        const firebaseConfig = {
+            apiKey: "AIzaSyBmggvvk19HmgnFxy-rAe_SvvyOwnKXprc",
+            authDomain: "kunrobux-c8aa8.firebaseapp.com",
+            projectId: "kunrobux-c8aa8",
+            storageBucket: "kunrobux-c8aa8.firebasestorage.app",
+            messagingSenderId: "1094974396607",
+            appId: "1:1094974396607:web:61cf45e19d63e31aca4e0a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Lấy các thành phần giao diện
+        const authGuest = document.getElementById('auth-guest');
+        const authUser = document.getElementById('auth-user');
+        const userNameDisplay = document.getElementById('user-name');
+        const userBalanceDisplay = document.getElementById('user-balance');
+        const btnLogout = document.getElementById('btn-logout');
+
+        // Lắng nghe trạng thái người dùng
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // NẾU CÓ NGƯỜI ĐĂNG NHẬP: Ẩn nút Đăng nhập, Hiện thông tin
+                authGuest.style.display = 'none';
+                authUser.style.display = 'block';
+                
+                // Cắt lấy phần tên trước chữ @gmail.com để làm tên hiển thị
+                userNameDisplay.innerText = user.email.split('@')[0];
+
+                // Lấy số dư từ Database
+                try {
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    if (userDoc.exists()) {
+                        userBalanceDisplay.innerText = '₫' + (userDoc.data().balance || 0).toLocaleString('vi-VN');
+                    } else {
+                        userBalanceDisplay.innerText = '₫0';
+                    }
+                } catch (error) {
+                    console.log("Lỗi lấy số dư:", error);
+                }
+            } else {
+                // NẾU CHƯA ĐĂNG NHẬP: Hiện nút Đăng Nhập / Đăng Ký
+                authGuest.style.display = 'flex';
+                authUser.style.display = 'none';
+            }
+        });
+
+        // Xử lý nút Đăng xuất
+        btnLogout.addEventListener('click', () => {
+            if(confirm("Bạn có chắc chắn muốn đăng xuất?")) {
+                signOut(auth).then(() => {
+                    window.location.reload();
+                });
+            }
+        });
+    </script>
 </body>
 </html>
