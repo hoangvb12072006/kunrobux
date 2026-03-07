@@ -6,22 +6,59 @@
     <title>Đăng Nhập / Đăng Ký - KUNROBUX</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 flex items-center justify-center h-screen">
-    <div class="bg-white p-8 rounded-xl shadow-lg w-96">
+<body class="bg-[#0b0e14] text-white flex items-center justify-center h-screen relative font-['Signika']">
+    <style>
+        .neon-box { box-shadow: 0 0 25px rgba(27, 190, 251, 0.2); border: 1px solid rgba(27, 190, 251, 0.3); }
+        .tab-active { background-color: #1BBEFB; color: white; }
+        .tab-inactive { background-color: transparent; color: #6B7280; }
+    </style>
+
+    <div class="neon-box bg-[#151a23] p-8 rounded-2xl w-[400px]">
         <div class="text-center mb-6">
-            <h2 class="text-2xl font-extrabold text-[#1BBEFB]" id="form-title">Đăng Nhập</h2>
+            <h2 class="text-2xl font-extrabold text-[#1BBEFB] flex items-center justify-center gap-2">
+                <i class='bx bx-cube-alt text-3xl'></i> AUTOROBUX
+            </h2>
         </div>
-        
+
+        <div class="flex bg-[#0b0e14] rounded-xl p-1 mb-6 border border-gray-800">
+            <button id="tab-login" class="flex-1 py-2 tab-active rounded-lg font-bold transition flex justify-center items-center gap-2">
+                <i class='bx bx-log-in'></i> Đăng nhập
+            </button>
+            <button id="tab-register" class="flex-1 py-2 tab-inactive hover:text-white rounded-lg font-bold transition flex justify-center items-center gap-2">
+                <i class='bx bx-user-plus'></i> Đăng ký
+            </button>
+        </div>
+
         <div class="flex flex-col gap-4">
-            <input type="email" id="email" placeholder="Email của bạn" class="w-full p-3 border border-gray-300 rounded-lg outline-none focus:border-[#1BBEFB]">
-            <input type="password" id="password" placeholder="Mật khẩu" class="w-full p-3 border border-gray-300 rounded-lg outline-none focus:border-[#1BBEFB]">
-            
-            <button id="btn-action" class="w-full bg-[#1BBEFB] text-white font-bold py-3 rounded-lg hover:opacity-90 transition">Đăng Nhập</button>
+            <div>
+                <label class="text-[11px] text-gray-400 font-bold uppercase mb-2 block">Tên đăng nhập / Email</label>
+                <div class="bg-[#0b0e14] rounded-lg flex items-center p-3 border border-gray-800 focus-within:border-[#1BBEFB] transition">
+                    <i class='bx bx-user text-gray-500 mr-3 text-lg'></i>
+                    <input type="email" id="email" placeholder="Tên đăng nhập" class="bg-transparent outline-none w-full text-sm text-white placeholder-gray-600">
+                </div>
+            </div>
+
+            <div>
+                <div class="flex justify-between items-center mb-2">
+                    <label class="text-[11px] text-gray-400 font-bold uppercase block">Mật khẩu</label>
+                    <a href="#" class="text-[11px] text-[#1BBEFB] hover:underline">Quên mật khẩu?</a>
+                </div>
+                <div class="bg-[#0b0e14] rounded-lg flex items-center p-3 border border-gray-800 focus-within:border-[#1BBEFB] transition">
+                    <i class='bx bx-lock-alt text-gray-500 mr-3 text-lg'></i>
+                    <input type="password" id="password" placeholder="Mật khẩu" class="bg-transparent outline-none w-full text-sm text-white placeholder-gray-600">
+                    <i class='bx bx-hide text-gray-500 cursor-pointer hover:text-white text-lg'></i>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2 mt-2">
+                <input type="checkbox" id="remember" class="accent-[#1BBEFB] w-4 h-4 rounded cursor-pointer">
+                <label for="remember" class="text-xs text-gray-400 cursor-pointer font-semibold">Nhớ mật khẩu</label>
+            </div>
+
+            <button id="btn-action" class="w-full bg-[#1BBEFB] text-white font-bold py-3.5 rounded-lg hover:opacity-90 transition mt-2 shadow-[0_0_15px_rgba(27,190,251,0.3)]">
+                Đăng nhập
+            </button>
         </div>
-        
-        <p class="mt-6 text-center text-sm font-semibold text-gray-500 cursor-pointer hover:text-[#1BBEFB]" id="toggle-mode">
-            Chưa có tài khoản? Đăng ký ngay
-        </p>
     </div>
 
     <script type="module">
