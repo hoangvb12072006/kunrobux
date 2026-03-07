@@ -41,13 +41,14 @@
             margin: 0;
         }
 
-        /* --- HIỆU ỨNG NỀN PARTICLES --- */
-        #particles-js {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
+       /* Tìm đoạn này và sửa lại như sau */
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none; /* Thêm dòng này để bấm được nút bên dưới */
+}
 
         /* --- AUTH OVERLAY --- */
         #auth-overlay {
