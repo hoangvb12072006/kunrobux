@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng Nhập / Đăng Ký - KUNROBUX</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Signika:wght@500;600;700;800&display=swap">
 </head>
 <body class="bg-[#0b0e14] text-white flex items-center justify-center h-screen relative font-['Signika']">
     <style>
@@ -34,7 +36,7 @@
                 <label class="text-[11px] text-gray-400 font-bold uppercase mb-2 block">Tên đăng nhập / Email</label>
                 <div class="bg-[#0b0e14] rounded-lg flex items-center p-3 border border-gray-800 focus-within:border-[#1BBEFB] transition">
                     <i class='bx bx-user text-gray-500 mr-3 text-lg'></i>
-                    <input type="email" id="email" placeholder="Tên đăng nhập" class="bg-transparent outline-none w-full text-sm text-white placeholder-gray-600">
+                    <input type="email" id="email" placeholder="Nhập email của bạn..." class="bg-transparent outline-none w-full text-sm text-white placeholder-gray-600">
                 </div>
             </div>
 
@@ -45,8 +47,16 @@
                 </div>
                 <div class="bg-[#0b0e14] rounded-lg flex items-center p-3 border border-gray-800 focus-within:border-[#1BBEFB] transition">
                     <i class='bx bx-lock-alt text-gray-500 mr-3 text-lg'></i>
-                    <input type="password" id="password" placeholder="Mật khẩu" class="bg-transparent outline-none w-full text-sm text-white placeholder-gray-600">
+                    <input type="password" id="password" placeholder="Nhập mật khẩu..." class="bg-transparent outline-none w-full text-sm text-white placeholder-gray-600">
                     <i class='bx bx-hide text-gray-500 cursor-pointer hover:text-white text-lg'></i>
+                </div>
+            </div>
+
+            <div id="confirm-pass-block" style="display: none;">
+                <label class="text-[11px] text-gray-400 font-bold uppercase mb-2 block">Nhập lại mật khẩu</label>
+                <div class="bg-[#0b0e14] rounded-lg flex items-center p-3 border border-gray-800 focus-within:border-[#1BBEFB] transition">
+                    <i class='bx bx-check-shield text-gray-500 mr-3 text-lg'></i>
+                    <input type="password" id="confirm-password" placeholder="Xác nhận lại mật khẩu..." class="bg-transparent outline-none w-full text-sm text-white placeholder-gray-600">
                 </div>
             </div>
 
@@ -55,41 +65,12 @@
                 <label for="remember" class="text-xs text-gray-400 cursor-pointer font-semibold">Nhớ mật khẩu</label>
             </div>
 
-            <div id="confirm-pass-block" style="display: none;">
-                <label class="text-[11px] text-gray-400 font-bold uppercase mb-2 block">Nhập lại mật khẩu</label>
-                <div class="bg-[#0b0e14] rounded-lg flex items-center p-3 border border-gray-800 focus-within:border-[#1BBEFB] transition">
-                    <i class='bx bx-check-shield text-gray-500 mr-3 text-lg'></i>
-                    <input type="password" id="confirm-password" placeholder="Xác nhận lại mật khẩu" class="bg-transparent outline-none w-full text-sm text-white placeholder-gray-600">
-                </div>
-            </div>
-    
- <script type="module">`, tìm đến hàm `switchTab(loginMode)` và thêm dòng lệnh điều khiển hiển thị (những dòng có chữ MỚI THÊM):
-
-```javascript
-        const confirmPassBlock = document.getElementById('confirm-pass-block'); // <-- MỚI THÊM
-
-        // Đổi màu Tab và đổi chữ ở Nút khi bấm
-        function switchTab(loginMode) {
-            isLogin = loginMode;
-            if (loginMode) {
-                tabLogin.className = "flex-1 py-2 tab-active rounded-lg font-bold transition flex justify-center items-center gap-2";
-                tabRegister.className = "flex-1 py-2 tab-inactive hover:text-white rounded-lg font-bold transition flex justify-center items-center gap-2";
-                btnAction.innerText = "Đăng nhập";
-                confirmPassBlock.style.display = "none"; // <-- MỚI THÊM: Ẩn đi khi Đăng nhập
-            } else {
-                tabRegister.className = "flex-1 py-2 tab-active rounded-lg font-bold transition flex justify-center items-center gap-2";
-                tabLogin.className = "flex-1 py-2 tab-inactive hover:text-white rounded-lg font-bold transition flex justify-center items-center gap-2";
-                btnAction.innerText = "Đăng ký";
-                confirmPassBlock.style.display = "block"; // <-- MỚI THÊM: Hiện ra khi Đăng ký
-            }
-        }
-
             <button id="btn-action" class="w-full bg-[#1BBEFB] text-white font-bold py-3.5 rounded-lg hover:opacity-90 transition mt-2 shadow-[0_0_15px_rgba(27,190,251,0.3)]">
                 Đăng nhập
             </button>
         </div>
     </div>
-
+    
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
@@ -110,11 +91,11 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-       let isLogin = true;
+        let isLogin = true;
         const btnAction = document.getElementById('btn-action');
         const tabLogin = document.getElementById('tab-login');
         const tabRegister = document.getElementById('tab-register');
-        const confirmPassBlock = document.getElementById('confirm-pass-block'); // Bổ sung biến này
+        const confirmPassBlock = document.getElementById('confirm-pass-block'); 
 
         // Đổi màu Tab và đổi chữ ở Nút khi bấm
         function switchTab(loginMode) {
@@ -135,21 +116,20 @@
         tabLogin.addEventListener('click', () => switchTab(true));
         tabRegister.addEventListener('click', () => switchTab(false));
 
-       // Xử lý khi bấm nút
+        // Xử lý khi bấm nút
         btnAction.addEventListener('click', async () => {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirm-password').value; // <-- MỚI THÊM
+            const confirmPassword = document.getElementById('confirm-password').value; 
             
             if(!email || !password) return alert("Vui lòng nhập đủ Email và Mật khẩu!");
 
-            // <-- MỚI THÊM: Kiểm tra mật khẩu khớp nhau khi Đăng ký
+            // Kiểm tra mật khẩu khớp nhau khi Đăng ký
             if (!isLogin && password !== confirmPassword) {
                 return alert("Mật khẩu nhập lại không khớp!");
             }
 
             try {
-               
                 if (isLogin) {
                     // Chức năng Đăng nhập
                     await signInWithEmailAndPassword(auth, email, password);
