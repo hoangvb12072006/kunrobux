@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=no'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>KUNROBUX - KUNROBUX STORE</title>
-    <meta name="description" content="KUNROBUX - Hệ thống bán Robux tự động uy tín nhất.">
+    <title>KUNROBUX - HỆ THỐNG ROBUX TỰ ĐỘNG</title>
     
+    <meta name="description" content="KUNROBUX - Hệ thống bán Robux tự động uy tín nhất của Hoàng Kun.">
     <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/6532/6532426.png" type="image/x-icon">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -15,252 +15,140 @@
     <link href="https://fonts.googleapis.com/css2?family=Signika:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
-   <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-database-compat.js"></script>
-
-<script>
-const firebaseConfig = {
-    apiKey: "AIzaSyD2D3h32_PyvBsahgTPCSWypk6zQ3IWB3g",
-    authDomain: "kunrobux-29314.firebaseapp.com",
-    databaseURL: "https://kunrobux-29314-default-rtdb.firebaseio.com",
-    projectId: "kunrobux-29314",
-    storageBucket: "kunrobux-29314.firebasestorage.app",
-    messagingSenderId: "691309584196",
-    appId: "1:691309584196:web:134f12d149d4fe078d0111",
-    measurementId: "G-WE1H3WQPSN"
-};
-
-// Khởi tạo đúng kiểu Compat
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
-</script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-database-compat.js"></script>
 
     <style>
-
-       :root {
-    --primary-color: #00BAFF;
-    --bg-body: #0f172a;
-    --bg-sidebar: #1e293b;
-    --bg-card: #1e293b;
-    --text-main: #f8fafc;
-    --text-muted: #94a3b8;
-    --border-color: #334155;
-}
-
-#auth-overlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(10, 15, 30, 0.95);
-    z-index: 10000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(10px);
-}
-
-.auth-card.neon-box {
-    background: #111a2e;
-    border-radius: 15px;
-    width: 90%;
-    max-width: 400px;
-    padding: 30px;
-    border: 1px solid rgba(0, 186, 255, 0.3);
-    box-shadow: 0 0 20px rgba(0, 186, 255, 0.1);
-    transition: 0.3s;
-}
-
-.auth-card.neon-box:hover {
-    border-color: rgba(0, 186, 255, 0.8);
-    box-shadow: 0 0 30px rgba(0, 186, 255, 0.3);
-}
-
-.auth-logo { text-align: center; margin-bottom: 20px; }
-.auth-logo h4 { color: #fff; letter-spacing: 1px; margin-top: 10px; }
-
-.auth-tabs {
-    display: flex;
-    background: rgba(0,0,0,0.2);
-    border-radius: 8px;
-    margin-bottom: 25px;
-    padding: 5px;
-}
-
-.auth-tab {
-    flex: 1; border: none; background: transparent; color: #94a3b8;
-    padding: 10px; font-weight: 600; border-radius: 6px; transition: 0.3s;
-}
-
-.auth-tab.active {
-    background: rgba(0, 186, 255, 0.2);
-    color: #00BAFF;
-}
-
-.input-group-custom { margin-bottom: 15px; text-align: left; }
-.input-group-custom label { font-size: 13px; color: #94a3b8; display: block; margin-bottom: 5px; }
-.input-group-custom input {
-    width: 100%; background: rgba(0,0,0,0.3); border: 1px solid #334155;
-    color: #fff; padding: 12px; border-radius: 8px; outline: none;
-}
-.input-group-custom input:focus { border-color: #00BAFF; }
-
-.btn-auth {
-    width: 100%; background: linear-gradient(135deg, #00BAFF, #0066CC);
-    border: none; color: #fff; padding: 12px; border-radius: 8px;
-    font-weight: 700; margin-top: 10px; transition: 0.3s;
-}
-
-.btn-auth:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 186, 255, 0.4); }
-.btn-register { background: linear-gradient(135deg, #2ecc71, #27ae60); }
-
-.auth-form-content { display: none; }
-.auth-form-content.active { display: block; animation: fadeIn 0.4s ease; }
-
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        :root {
+            --primary-color: #00BAFF;
+            --secondary-color: #0066CC;
+            --bg-body: #0a0f1d;
+            --bg-sidebar: #111a2e;
+            --bg-card: #16223a;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.05);
+            --neon-shadow: 0 0 15px rgba(0, 186, 255, 0.4);
+        }
 
         body {
             font-family: 'Signika', sans-serif;
             background-color: var(--bg-body);
             color: var(--text-main);
             overflow-x: hidden;
+            margin: 0;
         }
+
+        /* --- HIỆU ỨNG NỀN PARTICLES --- */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* --- AUTH OVERLAY --- */
+        #auth-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #111a2e 0%, #050811 100%);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.5s ease-in-out;
+        }
+
+        .auth-card {
+            position: relative;
+            z-index: 2;
+            background: rgba(22, 34, 58, 0.8);
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            width: 90%;
+            max-width: 420px;
+            padding: 40px;
+            border: 1px solid rgba(0, 186, 255, 0.2);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), var(--neon-shadow);
+        }
+
+        .auth-tabs {
+            display: flex;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            margin-bottom: 30px;
+            padding: 5px;
+        }
+
+        .auth-tab {
+            flex: 1; border: none; background: transparent; color: var(--text-muted);
+            padding: 12px; font-weight: 700; border-radius: 10px; transition: 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+
+        .auth-tab.active {
+            background: var(--primary-color);
+            color: #fff;
+            box-shadow: var(--neon-shadow);
+        }
+
+        .input-group-custom { margin-bottom: 20px; }
+        .input-group-custom label { font-size: 14px; color: var(--text-muted); margin-bottom: 8px; display: block; }
+        .input-group-custom input {
+            width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color);
+            color: #fff; padding: 14px 18px; border-radius: 12px; outline: none; transition: 0.3s;
+        }
+        .input-group-custom input:focus { border-color: var(--primary-color); box-shadow: 0 0 10px rgba(0, 186, 255, 0.2); }
+
+        .btn-auth {
+            width: 100%; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none; color: #fff; padding: 15px; border-radius: 12px;
+            font-weight: 700; letter-spacing: 1px; transition: 0.3s; margin-top: 10px;
+        }
+
+        .btn-auth:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0, 186, 255, 0.4); }
 
         /* --- SIDEBAR --- */
         .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            width: 260px;
-            background: var(--bg-sidebar);
-            border-right: 1px solid var(--border-color);
-            z-index: 1000;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
+            position: fixed; left: 0; top: 0; height: 100vh; width: 280px;
+            background: var(--bg-sidebar); border-right: 1px solid var(--border-color);
+            z-index: 999; transition: 0.3s; display: flex; flex-direction: column;
         }
 
-        .brand {
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            color: var(--text-main);
-            border-bottom: 1px solid var(--border-color);
-        }
+        .brand { padding: 30px; display: flex; align-items: center; gap: 15px; text-decoration: none; }
+        .brand img { width: 45px; filter: drop-shadow(0 0 5px var(--primary-color)); }
+        .brand span { font-size: 22px; font-weight: 800; color: #fff; }
 
-        .brand img { width: 35px; height: 35px; }
-        .brand span { font-size: 20px; font-weight: 700; color: var(--primary-color); }
-
-        .menu {
-            list-style: none;
-            padding: 15px;
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        .menu-header {
-            font-size: 11px;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin: 15px 0 5px 10px;
-            font-weight: 700;
-        }
-
-        .menu-item {
-            margin-bottom: 5px;
-        }
-
+        .menu { list-style: none; padding: 0 15px; flex: 1; overflow-y: auto; }
+        .menu-header { color: var(--text-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 20px 15px 10px; letter-spacing: 1.5px; }
         .menu-link {
-            display: flex;
-            align-items: center;
-            padding: 12px 15px;
-            color: var(--text-muted);
-            text-decoration: none;
-            border-radius: 8px;
-            transition: 0.3s;
-            font-weight: 600;
+            display: flex; align-items: center; padding: 14px 20px; color: var(--text-muted);
+            text-decoration: none; border-radius: 14px; transition: 0.3s; font-weight: 600; margin-bottom: 5px;
         }
+        .menu-link i { font-size: 22px; margin-right: 15px; }
+        .menu-link:hover, .menu-link.active { background: rgba(0, 186, 255, 0.1); color: var(--primary-color); }
 
-        .menu-link i { font-size: 20px; margin-right: 10px; min-width: 25px; }
-
-        .menu-link:hover, .menu-link.active {
-            background: rgba(0, 186, 255, 0.1);
-            color: var(--primary-color);
-        }
-
-        /* User Info góc dưới Sidebar */
-        .user-panel {
-            padding: 15px;
-            background: rgba(0,0,0,0.2);
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .user-panel img { width: 40px; height: 40px; border-radius: 50%; }
-        .user-info h6 { margin: 0; font-size: 14px; color: white; }
-        .user-info span { font-size: 12px; color: #2ecc71; }
-
-        /* --- MAIN CONTENT --- */
-        .main-content {
-            margin-left: 260px;
-            padding: 20px;
-            transition: all 0.3s ease;
-        }
-
-        /* Topbar */
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            background: var(--bg-card);
-            padding: 15px 20px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-        }
-        .toggle-btn { font-size: 24px; cursor: pointer; display: none; }
-
-        /* Cards */
+        /* --- MAIN --- */
+        .main-content { margin-left: 280px; padding: 30px; transition: 0.3s; }
         .stats-card {
-            background: var(--bg-card);
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid var(--border-color);
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 20px;
-            transition: transform 0.2s;
+            background: var(--bg-card); border-radius: 20px; padding: 25px;
+            border: 1px solid var(--border-color); transition: 0.3s; height: 100%;
         }
-        .stats-card:hover { transform: translateY(-5px); border-color: var(--primary-color); }
+        .stats-card:hover { border-color: var(--primary-color); transform: translateY(-5px); }
         
-        .stats-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .stats-title { font-size: 13px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
-        .stats-icon { font-size: 24px; color: var(--primary-color); opacity: 0.8; }
-        .stats-value { font-size: 24px; font-weight: 700; color: white; margin: 0; }
-        .stats-desc { font-size: 12px; color: var(--text-muted); margin-top: 5px; display: flex; align-items: center; gap: 5px; }
-
-        /* Table */
-        .custom-table {
-            width: 100%;
-            border-collapse: collapse;
-            color: var(--text-muted);
+        .user-panel {
+            padding: 20px; background: rgba(0,0,0,0.2); border-top: 1px solid var(--border-color);
+            display: flex; align-items: center; gap: 15px;
         }
-        .custom-table th { text-align: left; padding: 15px; border-bottom: 1px solid var(--border-color); color: white; font-size: 13px; text-transform: uppercase; }
-        .custom-table td { padding: 15px; border-bottom: 1px solid var(--border-color); font-size: 14px; }
-        .custom-table tr:hover td { color: white; background: rgba(255,255,255,0.02); }
-        
-        .badge-soft-success { background: rgba(46, 204, 113, 0.15); color: #2ecc71; padding: 5px 10px; border-radius: 5px; font-size: 11px; font-weight: 700; }
-        .badge-soft-warning { background: rgba(241, 196, 15, 0.15); color: #f1c40f; padding: 5px 10px; border-radius: 5px; font-size: 11px; font-weight: 700; }
+        .user-avatar { width: 45px; height: 45px; border-radius: 12px; border: 2px solid var(--primary-color); }
 
-        /* Responsive */
-        @media (max-width: 768px) {
+        /* Mobile */
+        @media (max-width: 992px) {
             .sidebar { transform: translateX(-100%); }
             .sidebar.active { transform: translateX(0); }
             .main-content { margin-left: 0; }
-            .toggle-btn { display: block; }
         }
     </style>
 </head>
@@ -268,447 +156,222 @@ const database = firebase.database();
 <body>
 
     <div id="auth-overlay">
-        <div class="auth-card neon-box">
-            <div class="auth-logo text-center">
-    <img src="https://cdn-icons-png.flaticon.com/512/6532/6532426.png" 
-         alt="Logo" 
-         style="width: 60px; height: auto; margin-bottom: 10px; filter: drop-shadow(0 0 8px rgba(0,186,255,0.5));">
-    <h4 class="fw-bold text-primary">KUNROBUX STORE</h4>
-</div>
+        <div id="particles-js"></div>
+        <div class="auth-card">
+            <div class="text-center mb-4">
+                <img src="https://cdn-icons-png.flaticon.com/512/6532/6532426.png" width="70" class="mb-3">
+                <h3 class="fw-bold">KUNROBUX STORE</h3>
+                <p class="text-muted small">Uy tín tạo nên thương hiệu Hoàng Kun</p>
+            </div>
 
             <div class="auth-tabs">
-                <button class="auth-tab active" onclick="switchTab('login')">
-                    <i class='bx bx-log-in-circle'></i> Đăng nhập
-                </button>
-                <button class="auth-tab" onclick="switchTab('register')">
-                    <i class='bx bx-user-plus'></i> Đăng ký
-                </button>
+                <button class="auth-tab active" onclick="switchTab('login')"><i class='bx bxs-user'></i> Đăng nhập</button>
+                <button class="auth-tab" onclick="switchTab('register')"><i class='bx bxs-user-plus'></i> Đăng ký</button>
             </div>
 
-            <div id="login-form-content" class="auth-form-content active">
+            <div id="login-form" class="auth-step">
                 <div class="input-group-custom">
-                    <label><i class='bx bxs-user'></i> Tên đăng nhập</label>
-                    <input type="text" id="login-user" placeholder="Nhập tên tài khoản...">
+                    <label>Tài khoản</label>
+                    <input type="text" id="login-user" placeholder="Tên đăng nhập của bạn...">
                 </div>
                 <div class="input-group-custom">
-                    <label><i class='bx bxs-lock-alt'></i> Mật khẩu</label>
-                    <div class="password-wrapper">
-                        <input type="password" id="login-pass" placeholder="Nhập mật khẩu...">
-                    </div>
-                    <a href="#" class="forgot-pass" onclick="updating()">Quên mật khẩu?</a>
+                    <label>Mật khẩu</label>
+                    <input type="password" id="login-pass" placeholder="••••••••">
                 </div>
-                <button class="btn-auth" onclick="handleLogin()">
-                    <i class='bx bx-check-double'></i> ĐĂNG NHẬP NGAY
-                </button>
+                <button class="btn-auth" onclick="handleLogin()">XÁC NHẬN ĐĂNG NHẬP</button>
             </div>
 
-           <div id="register-form-content" class="auth-form-content">
-    <div class="input-group-custom">
-        <label><i class='bx bxs-user-detail'></i> Tên tài khoản</label>
-        <input type="text" id="reg-user" placeholder="Ví dụ: hoangkun123...">
-    </div>
-    <div class="input-group-custom">
-        <label><i class='bx bxs-lock'></i> Mật khẩu</label>
-        <input type="password" id="reg-pass" placeholder="Tối thiểu 6 ký tự...">
-    </div>
-    <div class="input-group-custom">
-        <label><i class='bx bxs-lock-open'></i> Nhập lại mật khẩu</label>
-        <input type="password" id="reg-pass-confirm" placeholder="Nhập lại mật khẩu...">
-    </div>
-    <button class="btn-auth btn-register" onclick="handleRegister()">
-        <i class='bx bx-user-plus'></i> TẠO TÀI KHOẢN
-    </button>
-</div>
+            <div id="register-form" class="auth-step d-none">
+                <div class="input-group-custom">
+                    <label>Tên tài khoản mới</label>
+                    <input type="text" id="reg-user" placeholder="Ít nhất 5 ký tự...">
+                </div>
+                <div class="input-group-custom">
+                    <label>Mật khẩu</label>
+                    <input type="password" id="reg-pass" placeholder="Mật khẩu bảo mật...">
+                </div>
+                <div class="input-group-custom">
+                    <label>Nhập lại mật khẩu</label>
+                    <input type="password" id="reg-confirm" placeholder="Xác nhận lại...">
+                </div>
+                <button class="btn-auth btn-success" onclick="handleRegister()" style="background: #2ecc71;">TẠO TÀI KHOẢN NGAY</button>
+            </div>
         </div>
     </div>
-    
+
     <div class="sidebar" id="sidebar">
         <a href="#" class="brand">
             <img src="https://cdn-icons-png.flaticon.com/512/6532/6532426.png" alt="Logo">
             <span>KUNROBUX</span>
         </a>
-
         <ul class="menu">
-            <div class="menu-header">Chính</div>
-            <li class="menu-item">
-                <a href="#" class="menu-link active">
-                    <i class='bx bxs-dashboard'></i> Trang chủ
-                </a>
-            </li>
-
-            <div class="menu-header">Dịch Vụ</div>
-            <li class="menu-item">
-                <a href="#" class="menu-link" onclick="updating()">
-                    <i class='bx bx-trending-up'></i> Mua Robux 120H
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="#" class="menu-link" onclick="updating()">
-                    <i class='bx bxs-package'></i> Ingame Gamepasses
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="#" class="menu-link" onclick="updating()">
-                    <i class='bx bx-gift'></i> Mua Giftcode
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="#" class="menu-link" onclick="updating()">
-                    <i class='bx bxs-user-account'></i> Acc Robux Giá Rẻ
-                </a>
-            </li>
-
-            <div class="menu-header">Tài Khoản</div>
-            <li class="menu-item">
-                <a href="#" class="menu-link" onclick="updating()">
-                    <i class='bx bx-wallet'></i> Nạp Tiền
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="#" class="menu-link" onclick="updating()">
-                    <i class='bx bx-history'></i> Lịch Sử Đơn Hàng
-                </a>
-            </li>
+            <div class="menu-header">Hệ thống</div>
+            <li><a href="#" class="menu-link active"><i class='bx bxs-grid-alt'></i> Dashboard</a></li>
+            <li><a href="#" class="menu-link" onclick="updating()"><i class='bx bxs-cart-add'></i> Nạp thẻ tự động</a></li>
+            
+            <div class="menu-header">Dịch vụ Robux</div>
+            <li><a href="#" class="menu-link" onclick="updating()"><i class='bx bxs-bolt-circle'></i> Robux 120H (Giá rẻ)</a></li>
+            <li><a href="#" class="menu-link" onclick="updating()"><i class='bx bxs-game'></i> Cày thuê Blox Fruit</a></li>
+            
+            <div class="menu-header">Khác</div>
+            <li><a href="#" class="menu-link" onclick="updating()"><i class='bx bxs-gift'></i> Vòng quay may mắn</a></li>
+            <li><a href="#" class="menu-link" onclick="updating()"><i class='bx bxs-info-circle'></i> Hỗ trợ khách hàng</a></li>
         </ul>
-
         <div class="user-panel">
-    <img src="https://ui-avatars.com/api/?name=User&background=00BAFF&color=fff" alt="User">
-    <div class="user-info">
-        <h6>Khách Hàng</h6>
-        <span id="user-balance-display">Số dư: 0 VNĐ</span>
-    </div>
-     <i class='bx bx-log-out' style="margin-left: auto; cursor: pointer; font-size: 20px; color: #94a3b8;" onclick="logout()"></i>
+            <img id="user-pfp" src="https://ui-avatars.com/api/?name=K&background=00BAFF&color=fff" class="user-avatar">
+            <div class="user-info">
+                <h6 id="display-name" class="mb-0">Đang tải...</h6>
+                <span id="display-balance" class="text-success small fw-bold">0 VNĐ</span>
+            </div>
+            <i class='bx bx-log-out ms-auto fs-4' style="cursor: pointer;" onclick="location.reload()"></i>
         </div>
     </div>
 
     <div class="main-content">
-        
-        <div class="topbar">
-            <div class="d-flex align-items-center gap-3">
-                <i class='bx bx-menu toggle-btn' onclick="toggleSidebar()"></i>
-                <h4 class="m-0 fw-bold">Dashboard</h4>
-            </div>
-            <div class="d-flex align-items-center gap-3">
-                <button class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-2">
-                    <img src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.3/flags/4x3/vn.svg" width="20"> Tiếng Việt
-                </button>
-            </div>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold m-0"><i class='bx bx-menu-alt-left d-lg-none me-2' onclick="toggleSidebar()"></i> Tổng quan tài khoản</h3>
+            <div class="badge bg-primary p-2 px-3 rounded-pill">Server: Hoạt động</div>
         </div>
 
-        <div class="alert alert-info d-flex align-items-center border-0 text-white" style="background: linear-gradient(90deg, #00BAFF, #0066CC);">
-            <i class='bx bxs-bell-ring fs-4 me-3'></i>
-            <div>
-                <strong>Thông báo từ Admin:</strong> Chào mừng bạn đến với <b>KUNROBUX.ID.VN</b>. Hệ thống nạp thẻ và bán Robux đang hoạt động ổn định!
-            </div>
-        </div>
-
-        <h6 class="text-uppercase text-muted fw-bold mb-3"><i class='bx bx-stats'></i> Thông tin thị trường</h6>
-        <div class="row">
-            <div class="col-xl-3 col-md-6">
+        <div class="row g-4">
+            <div class="col-md-4">
                 <div class="stats-card">
-                    <div class="stats-header">
-                        <span class="stats-title">Tỷ Giá Robux 120H</span>
-                        <i class='bx bx-line-chart stats-icon'></i>
-                    </div>
-                    <h3 class="stats-value">₫116.000</h3>
-                    <div class="stats-desc"><i class='bx bx-refresh'></i> 10K VNĐ = <span class="text-primary fw-bold">86 R$</span></div>
+                    <p class="text-muted small fw-bold text-uppercase">Số dư khả dụng</p>
+                    <h2 id="card-balance" class="fw-bold">0đ</h2>
+                    <button class="btn btn-sm btn-outline-primary w-100 mt-3" onclick="updating()">Nạp thêm tiền</button>
                 </div>
             </div>
-            <div class="col-xl-3 col-md-6">
+            <div class="col-md-4">
                 <div class="stats-card">
-                    <div class="stats-header">
-                        <span class="stats-title">Kho Robux 120H</span>
-                        <i class='bx bxs-bank stats-icon'></i>
-                    </div>
-                    <h3 class="stats-value">105,820 R$</h3>
-                    <div class="stats-desc text-success"><i class='bx bxs-check-circle'></i> Sẵn sàng giao dịch</div>
+                    <p class="text-muted small fw-bold text-uppercase">Tỷ giá Robux</p>
+                    <h2 class="fw-bold text-info">10k = 86 R$</h2>
+                    <p class="small text-muted mb-0">Hàng luôn có sẵn trong kho</p>
                 </div>
             </div>
-            <div class="col-xl-3 col-md-6">
+            <div class="col-md-4">
                 <div class="stats-card">
-                    <div class="stats-header">
-                        <span class="stats-title">Tỷ Giá Gamepass</span>
-                        <i class='bx bxs-coupon stats-icon'></i>
-                    </div>
-                    <h3 class="stats-value">₫10.000.000</h3>
-                    <div class="stats-desc"><i class='bx bx-info-circle'></i> Server VIP / Cày thuê</div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-md-6">
-                <div class="stats-card">
-                    <div class="stats-header">
-                        <span class="stats-title">Kho Gamepass</span>
-                        <i class='bx bxs-package stats-icon'></i>
-                    </div>
-                    <h3 class="stats-value">225 R$</h3>
-                    <div class="stats-desc text-warning"><i class='bx bxs-time'></i> Sắp hết hàng</div>
+                    <p class="text-muted small fw-bold text-uppercase">Đơn hàng đã mua</p>
+                    <h2 class="fw-bold">0</h2>
+                    <p class="small text-warning mb-0">Chưa có giao dịch nào</p>
                 </div>
             </div>
         </div>
 
-        <div class="row mt-3">
-            <div class="col-lg-8">
-                <div class="stats-card h-100">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h5 class="fw-bold m-0">Biểu Đồ Mua Robux (24H)</h5>
-                        <select class="form-select form-select-sm bg-dark text-white border-secondary" style="width: auto;">
-                            <option>Hôm nay</option>
-                            <option>Hôm qua</option>
-                        </select>
-                    </div>
-                    <div id="chart-revenue" style="min-height: 350px;"></div>
-                </div>
-            </div>
-
-            <div class="col-lg-4">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="stats-card mb-3">
-                            <div class="d-flex align-items-center gap-3">
-                                <div style="background: rgba(46, 204, 113, 0.2); padding: 15px; border-radius: 10px;">
-                                    <i class='bx bxs-check-shield fs-1 text-success'></i>
-                                </div>
-                                <div>
-                                    <div class="stats-title">Đơn Hoàn Thành</div>
-                                    <h3 class="stats-value">0</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="stats-card mb-3">
-                            <div class="d-flex align-items-center gap-3">
-                                <div style="background: rgba(241, 196, 15, 0.2); padding: 15px; border-radius: 10px;">
-                                    <i class='bx bxs-hourglass fs-1 text-warning'></i>
-                                </div>
-                                <div>
-                                    <div class="stats-title">Đơn Đang Chờ</div>
-                                    <h3 class="stats-value">0</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="stats-card">
-                            <div class="d-flex align-items-center gap-3">
-                                <div style="background: rgba(0, 186, 255, 0.2); padding: 15px; border-radius: 10px;">
-                                    <i class='bx bxs-wallet fs-1 text-primary'></i>
-                                </div>
-                                <div>
-                                    <div class="stats-title">Tổng Tiền Đã Nạp</div>
-                                    <h3 class="stats-value">₫0</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="stats-card mt-4">
+            <h5 class="fw-bold mb-4"><i class='bx bxs-bar-chart-alt-2 me-2'></i> Thống kê Robux toàn hệ thống</h5>
+            <div id="main-chart"></div>
         </div>
-
-        <div class="stats-card mt-4 p-0">
-            <div class="p-4 border-bottom border-secondary d-flex justify-content-between align-items-center">
-                <h5 class="fw-bold m-0"><i class='bx bx-list-ul'></i> Đơn Hàng Gần Đây</h5>
-                <button class="btn btn-sm btn-outline-primary">Xem tất cả</button>
-            </div>
-            <div class="table-responsive">
-                <table class="custom-table">
-                    <thead>
-                        <tr>
-                          <th>Khách hàng</th>
-                           <th>Dịch vụ</th>
-                          <th>Giá trị</th>
-                          <th>Trạng thái</th>
-                         <th>Thời gian</th>
-                    </tr>
-                 </thead>
-     <tbody>
-    <tr>
-        <td colspan="5" class="text-center py-4 text-muted">
-            <i class='bx bx-package fs-1 d-block mb-2' style="opacity: 0.2;"></i>
-            Bạn chưa có đơn hàng nào.
-        </td>
-    </tr>
-</tbody>
-                </table>
-            </div>
-        </div>
-
-        <footer class="text-center text-muted mt-5 mb-3">
-            <small>Copyright © 2026 KUNROBUX.ID.VN - All rights reserved.</small>
-        </footer>
-
     </div>
 
-<script>
-// 1. Chuyển đổi qua lại giữa Đăng nhập và Đăng ký
-function switchTab(tab) {
-    document.querySelectorAll('.auth-tab').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.auth-form-content').forEach(form => form.classList.remove('active'));
-    if(tab === 'login') {
-        document.querySelectorAll('.auth-tab')[0].classList.add('active');
-        document.getElementById('login-form-content').classList.add('active');
-    } else {
-        document.querySelectorAll('.auth-tab')[1].classList.add('active');
-        document.getElementById('register-form-content').classList.add('active');
-    }
-}
-
-// 2. Hàm Xử lý Đăng ký
-function handleRegister() {
-    const user = document.getElementById('reg-user').value.trim();
-    const pass = document.getElementById('reg-pass').value.trim();
-    const confirm = document.getElementById('reg-pass-confirm').value.trim();
-
-    if (!user || pass.length < 6) {
-        Swal.fire({ icon: 'error', title: 'Lỗi', text: 'Tên quá ngắn hoặc mật khẩu dưới 6 ký tự!', background: '#1e293b', color: '#fff' });
-        return;
-    }
-    if (pass !== confirm) {
-        Swal.fire({ icon: 'error', title: 'Lỗi', text: 'Mật khẩu nhập lại không khớp!', background: '#1e293b', color: '#fff' });
-        return;
-    }
-
-    let accounts = JSON.parse(localStorage.getItem('kunrobux_users')) || [];
-    if (accounts.find(a => a.username === user)) {
-        Swal.fire({ icon: 'error', title: 'Lỗi', text: 'Tài khoản này đã tồn tại!', background: '#1e293b', color: '#fff' });
-        return;
-    }
-
-    accounts.push({ username: user, password: pass, balance: 0 });
-    localStorage.setItem('kunrobux_users', JSON.stringify(accounts));
-   Swal.fire({ 
-    icon: 'success', 
-    title: 'Thành công', 
-    text: 'Đăng ký xong rồi, đăng nhập đi bạn!', 
-    background: '#1e293b', 
-    color: '#fff' 
-}).then(() => {
-    switchTab('login'); 
-});
-}
-
-// 3. Hàm Xử lý Đăng nhập
-function handleLogin() {
-    const user = document.getElementById('login-user').value.trim();
-    const pass = document.getElementById('login-pass').value.trim();
-
-    let accounts = JSON.parse(localStorage.getItem('kunrobux_users')) || [];
-    const userFound = accounts.find(a => a.username === user && a.password === pass);
-
-    if (userFound) {
-        Swal.fire({ 
-    title: 'Thành công!', 
-    text: 'Chào mừng bạn đã trở lại!', 
-    icon: 'success', 
-    background: '#1e293b', 
-    color: '#fff' 
-}).then(() => {
-    document.getElementById('auth-overlay').style.display = 'none';
-    document.querySelectorAll('.user-info h6').forEach(el => el.innerText = userFound.username);
-    document.getElementById('user-balance-display').innerText = "Số dư: " + userFound.balance.toLocaleString() + " VNĐ";
-});
-    } else {
-        Swal.fire({ icon: 'error', title: 'Sai rồi', text: 'Tài khoản hoặc mật khẩu không đúng!', background: '#1e293b', color: '#fff' });
-    }
-}
-
-function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
-function updating() { Swal.fire({ icon: 'info', title: 'Chờ tí', text: 'Chức năng này đang được làm!', background: '#1e293b', color: '#fff' }); }
-function logout() { location.reload(); }
-
-// 4. Khởi tạo Biểu đồ
-document.addEventListener("DOMContentLoaded", function() {
-    if (document.querySelector("#chart-revenue")) {
-        var options = {
-            series: [{ name: 'Robux', data: [10, 50, 30, 90, 40, 120, 70] }],
-            chart: { height: 350, type: 'area', toolbar: { show: false } },
-            colors: ['#00BAFF'],
-            stroke: { curve: 'smooth' },
-            xaxis: { categories: ["T2", "T3", "T4", "T5", "T6", "T7", "CN"] },
-            theme: { mode: 'dark' }
-        };
-        new ApexCharts(document.querySelector("#chart-revenue"), options).render();
-    }
-});
-</script>
-    
-    <script type="module">
-
-import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-window.fb = { doc, setDoc, getDoc };
-
-</script>
-
     <script>
-    // 1. Hàm XỬ LÝ ĐĂNG KÝ
-function handleRegister() {
-    const user = document.getElementById('reg-user').value.trim();
-    const pass = document.getElementById('reg-pass').value.trim();
-    const confirm = document.getElementById('reg-pass-confirm').value.trim();
+        // 1. Cấu hình Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyD2D3h32_PyvBsahgTPCSWypk6zQ3IWB3g",
+            authDomain: "kunrobux-29314.firebaseapp.com",
+            databaseURL: "https://kunrobux-29314-default-rtdb.firebaseio.com",
+            projectId: "kunrobux-29314",
+            storageBucket: "kunrobux-29314.firebasestorage.app",
+            messagingSenderId: "691309584196",
+            appId: "1:691309584196:web:134f12d149d4fe078d0111"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-    if (!user || pass.length < 6) {
-        return Swal.fire('Lỗi', 'Tên đăng nhập không được để trống và mật khẩu ít nhất 6 ký tự!', 'error');
-    }
-    if (pass !== confirm) {
-        return Swal.fire('Lỗi', 'Mật khẩu nhập lại không khớp!', 'error');
-    }
+        // 2. Xử lý Chuyển Tab
+        function switchTab(type) {
+            document.querySelectorAll('.auth-tab').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.auth-step').forEach(s => s.classList.add('d-none'));
+            if(type === 'login') {
+                document.querySelectorAll('.auth-tab')[0].classList.add('active');
+                document.getElementById('login-form').classList.remove('d-none');
+            } else {
+                document.querySelectorAll('.auth-tab')[1].classList.add('active');
+                document.getElementById('register-form').classList.remove('d-none');
+            }
+        }
 
-    // Kiểm tra tài khoản đã tồn tại chưa
-    database.ref('users/' + user).once('value', (snapshot) => {
-        if (snapshot.exists()) {
-            Swal.fire('Lỗi', 'Tài khoản này đã tồn tại trên hệ thống!', 'error');
-        } else {
-            // Ghi dữ liệu lên Realtime Database
-            database.ref('users/' + user).set({
-                username: user,
-                password: pass,
-                balance: 0,
-                createdAt: new Date().toISOString()
-            }).then(() => {
-                Swal.fire('Thành công', 'Tạo tài khoản xong! Đăng nhập ngay thôi.', 'success');
-                switchTab('login'); // Chuyển sang tab đăng nhập
+        // 3. Hàm ĐĂNG KÝ (Fix lỗi nhảy tab)
+        function handleRegister() {
+            const user = document.getElementById('reg-user').value.trim();
+            const pass = document.getElementById('reg-pass').value.trim();
+            const confirm = document.getElementById('reg-confirm').value.trim();
+
+            if(user.length < 5 || pass.length < 6) return Swal.fire('Lỗi', 'Tên > 5 ký tự, Mật khẩu > 6 ký tự', 'error');
+            if(pass !== confirm) return Swal.fire('Lỗi', 'Mật khẩu không khớp!', 'warning');
+
+            db.ref('users/' + user).once('value', snapshot => {
+                if(snapshot.exists()) {
+                    Swal.fire('Thất bại', 'Tài khoản đã tồn tại!', 'error');
+                } else {
+                    db.ref('users/' + user).set({
+                        username: user,
+                        password: pass,
+                        balance: 0,
+                        joinDate: new Date().toLocaleDateString()
+                    }).then(() => {
+                        // FIX: Đợi bấm OK mới nhảy tab
+                        Swal.fire('Thành công', 'Chào mừng bạn đến với KUNROBUX!', 'success').then(() => {
+                            switchTab('login');
+                        });
+                    });
+                }
             });
         }
-    });
-}
 
-// 2. Hàm XỬ LÝ ĐĂNG NHẬP
-function handleLogin() {
-    const user = document.getElementById('login-user').value.trim();
-    const pass = document.getElementById('login-pass').value.trim();
+        // 4. Hàm ĐĂNG NHẬP (Fix lỗi lộ nền trắng)
+        function handleLogin() {
+            const user = document.getElementById('login-user').value.trim();
+            const pass = document.getElementById('login-pass').value.trim();
 
-    if (!user || !pass) return Swal.fire('Chú ý', 'Vui lòng nhập đủ thông tin!', 'warning');
-
-    database.ref('users/' + user).once('value', (snapshot) => {
-        const userData = snapshot.val();
-        if (userData && userData.password === pass) {
-            Swal.fire('Thành công', 'Chào mừng ' + user + ' trở lại!', 'success');
-            
-            setTimeout(() => {
-                document.getElementById('auth-overlay').style.display = 'none'; // Ẩn bảng đăng nhập
-                document.querySelectorAll('.user-info h6').forEach(el => el.innerText = user);
-                document.getElementById('user-balance-display').innerText = "Số dư: " + userData.balance.toLocaleString() + " VNĐ";
-            }, 1000);
-        } else {
-            Swal.fire('Thất bại', 'Sai tên tài khoản hoặc mật khẩu!', 'error');
+            db.ref('users/' + user).once('value', snapshot => {
+                const data = snapshot.val();
+                if(data && data.password === pass) {
+                    // FIX: Đợi bấm OK mới ẩn màn hình đăng nhập
+                    Swal.fire('Thành công', 'Chào mừng chủ nhân ' + user + ' quay trở lại!', 'success').then(() => {
+                        document.getElementById('auth-overlay').style.opacity = '0';
+                        setTimeout(() => {
+                            document.getElementById('auth-overlay').classList.add('d-none');
+                        }, 500);
+                        
+                        // Cập nhật giao diện
+                        document.getElementById('display-name').innerText = user;
+                        document.getElementById('display-balance').innerText = data.balance.toLocaleString() + " VNĐ";
+                        document.getElementById('card-balance').innerText = data.balance.toLocaleString() + "đ";
+                        document.getElementById('user-pfp').src = `https://ui-avatars.com/api/?name=${user}&background=00BAFF&color=fff`;
+                    });
+                } else {
+                    Swal.fire('Lỗi', 'Sai tài khoản hoặc mật khẩu rồi!', 'error');
+                }
+            });
         }
-    });
-}
 
-// 3. Hàm chuyển Tab
-function switchTab(tab) {
-    document.querySelectorAll('.auth-tab').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.auth-form-content').forEach(form => form.classList.remove('active'));
-    if(tab === 'login') {
-        document.querySelectorAll('.auth-tab')[0].classList.add('active');
-        document.getElementById('login-form-content').classList.add('active');
-    } else {
-        document.querySelectorAll('.auth-tab')[1].classList.add('active');
-        document.getElementById('register-form-content').classList.add('active');
-    }
-}
+        // 5. Các hàm bổ trợ
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+        function updating() { Swal.fire('Thông báo', 'Chức năng này Hoàng Kun đang bảo trì, quay lại sau nhé!', 'info'); }
+
+        // 6. Init Particles & Chart
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 80 },
+                "color": { "value": "#00BAFF" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5 },
+                "size": { "value": 3 },
+                "line_linked": { "enable": true, "distance": 150, "color": "#00BAFF", "opacity": 0.2, "width": 1 },
+                "move": { "enable": true, "speed": 2 }
+            }
+        });
+
+        var options = {
+            series: [{ name: 'Sức mua', data: [31, 40, 28, 51, 42, 109, 100] }],
+            chart: { height: 350, type: 'area', toolbar: {show: false} },
+            colors: ['#00BAFF'],
+            dataLabels: { enabled: false },
+            stroke: { curve: 'smooth' },
+            theme: { mode: 'dark' },
+            xaxis: { categories: ["T2", "T3", "T4", "T5", "T6", "T7", "CN"] }
+        };
+        new ApexCharts(document.querySelector("#main-chart"), options).render();
     </script>
-    
 </body>
 </html>
