@@ -1,240 +1,322 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mua Robux 120H - AUTOROBUX</title>
+    <title>Dashboard - AUTOROBUX Lọc Sạch</title>
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Signika:wght@500;600;700;800&family=Roboto:wght@400;500;600;700&display=swap">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
-        body { background-color: #0d0d0d; color: #ececec; }
-        .sidebar { background-color: #121212; border-right: 1px solid #222; }
-        .card { background-color: #181818; border: 1px solid #282828; }
-        .input-dark { background-color: #222; border: 1px solid #333; color: white; }
-        .input-dark:focus { border-color: #3b82f6; outline: none; box-shadow: 0 0 8px rgba(59,130,246,0.3); }
+        :root {
+            --light: #FFFFFF;
+            --light-bg: #F4F6F8;
+            --grey: #F4F6F8;
+            --dark: #1F2937;
+            --dark-grey: #6B7280;
+            --primary-color: #1BBEFB;
+            --blue: #1BBEFB;
+            --green: #2ED47A;
+            --red: #FC3B56;
+            --border-light: #E5E7EB;
+        }
+
+        html.dark {
+            --light: #111111;
+            --light-bg: #000000;
+            --grey: #222222;
+            --dark: #F9F9F9;
+            --dark-grey: #AAB0CC;
+            --border-light: #222222;
+        }
+
+        body {
+            background: var(--light-bg);
+            color: var(--dark);
+            font-family: 'Signika', sans-serif;
+            transition: all 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--light-bg); }
+        ::-webkit-scrollbar-thumb { background: var(--grey); border-radius: 10px; }
+
+        /* Layout */
+        #sidebar {
+            position: fixed; width: 260px; height: 100vh; background: var(--light);
+            border-right: 1px solid var(--border-light); z-index: 100;
+            transition: 0.3s; display: flex; flex-direction: column;
+        }
+        #content {
+            margin-left: 260px; width: calc(100% - 260px); min-height: 100vh;
+            transition: 0.3s;
+        }
+
+        /* Sidebar Elements */
+        .brand { padding: 20px; display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 800; color: var(--dark); text-decoration: none; }
+        .brand img { width: 32px; height: 32px; filter: brightness(0); }
+        html.dark .brand img { filter: brightness(0) invert(1); }
+        
+        .side-menu { padding: 10px; flex: 1; overflow-y: auto; list-style: none; }
+        .side-menu li.category { font-size: 11px; font-weight: 700; color: var(--dark-grey); text-transform: uppercase; margin: 15px 10px 5px; opacity: 0.7;}
+        .side-menu a { display: flex; align-items: center; padding: 12px 15px; color: var(--dark-grey); text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 15px; transition: 0.2s; margin-bottom: 4px; }
+        .side-menu a i { font-size: 20px; margin-right: 10px; min-width: 25px; text-align: center; }
+        .side-menu a:hover, .side-menu a.active { background: var(--grey); color: var(--dark); }
+        
+        /* Gradient Active Menu */
+        .side-menu a.active-gradient {
+            background: linear-gradient(135deg, #6A67FE 0%, #4F80E2 100%);
+            color: white !important; box-shadow: 0 4px 10px rgba(0,0,0,0.2); position: relative;
+        }
+        .side-menu a.active-gradient::after {
+            content: ''; position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+            width: 8px; height: 8px; border-radius: 50%; background: white;
+        }
+
+        /* Top Nav */
+        nav { height: 64px; background: var(--light); padding: 0 24px; display: flex; align-items: center; gap: 20px; position: sticky; top: 0; z-index: 99; }
+        nav .toggle-sidebar { font-size: 24px; color: var(--dark-grey); cursor: pointer; }
+        nav .nav-title { font-size: 16px; font-weight: 600; flex: 1; }
+
+        /* Main Content Cards */
+        main { padding: 24px; }
+        .filter-bar { background: var(--light); padding: 15px 20px; border-radius: 10px; margin-bottom: 20px; display: flex; gap: 15px; }
+        .filter-bar select { background: var(--grey); color: var(--dark); border: 1px solid var(--border-light); padding: 8px 15px; border-radius: 6px; outline: none; }
+        
+        .dashboard-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px; }
+        .info-card { background: var(--light); padding: 20px; border-radius: 12px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .info-card h4 { font-size: 14px; color: var(--dark-grey); font-weight: 600; display: flex; justify-content: space-between; }
+        .info-card h4 i { font-size: 20px; color: var(--blue); }
+        .info-card p { font-size: 22px; font-weight: 700; color: var(--dark); margin: 0;}
+        .info-card small { font-size: 13px; color: var(--dark-grey); }
+
+        /* History Table Grid */
+        .history-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .history-card { background: var(--light); border-radius: 12px; padding: 20px; }
+        .history-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 15px; border-bottom: 1px solid var(--border-light); padding-bottom: 10px;}
+        .history-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dashed var(--border-light); }
+        .history-item:last-child { border-bottom: none; }
+        .history-item .name { font-weight: 600; font-size: 14px; }
+        .history-item .time { font-size: 12px; color: var(--dark-grey); display: block;}
+        .history-item .amount { font-weight: 700; color: var(--blue); background: rgba(27, 190, 251, 0.1); padding: 4px 8px; border-radius: 6px; font-size: 13px;}
+
+        /* Rank Badge */
+        .rank-icon { font-size: 24px; margin-right: 10px;}
+        .rank-gold { color: #FFD700; }
+        .rank-silver { color: #C0C0C0; }
+        .rank-bronze { color: #CD7F32; }
+
+        /* Bottom User Info */
+        .sidebar-user { padding: 15px; margin-top: auto; border-top: 1px solid var(--border-light); }
+        .balance-box { background: var(--grey); padding: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;}
+        .user-profile { display: flex; align-items: center; gap: 10px; padding: 10px; background: var(--grey); border-radius: 8px;}
+        .user-profile img { width: 35px; height: 35px; border-radius: 5px; }
     </style>
 </head>
-<body class="flex min-h-screen">
+<body>
 
-    <aside class="w-64 sidebar p-5 flex flex-col hidden md:flex">
-        <div class="text-xl font-bold text-white mb-10 flex items-center gap-2">
-            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">A</div>
-            AUTOROBUX
+    <section id="sidebar">
+        <a href="#" class="brand">
+            <img src="https://autorobux.vn/icon/logo.png" alt="Logo"> AUTOROBUX
+        </a>
+
+        <ul class="side-menu">
+            <li class="category">Main</li>
+            <li><a href="#" class="active-gradient"><i class='bx bxs-home'></i> Trang chủ</a></li>
+            
+            <li class="category">Chức năng chính</li>
+            <li><a href="#"><i class='bx bx-trending-up'></i> Robux 120H</a></li>
+            <li><a href="#"><i class='bx bx-purchase-tag-alt'></i> Ingame Gamepasses</a></li>
+            <li><a href="#"><i class='bx bxs-group'></i> Robux Group</a></li>
+            <li><a href="#"><i class='bx bx-code'></i> Gift Card</a></li>
+            <li><a href="#"><i class='bx bx-link'></i> Tài Khoản Robux</a></li>
+
+            <li class="category">Quản lý tài khoản</li>
+            <li><a href="#"><i class='bx bx-cart'></i> Lịch sử mua hàng</a></li>
+            <li><a href="#"><i class='bx bx-dollar'></i> Nạp tiền</a></li>
+            <li><a href="#"><i class='bx bx-credit-card'></i> Biến động số dư</a></li>
+        </ul>
+
+        <div class="sidebar-user">
+            <div class="balance-box">
+                <span style="color: var(--dark-grey); font-size: 13px; font-weight: 600;">Số dư:</span>
+                <span style="color: #00BCD4; font-weight: 700;">₫535</span>
+            </div>
+            <div class="user-profile">
+                <img src="https://placehold.co/40x40/222222/FFFFFF?text=H" alt="Avatar">
+                <div style="flex: 1; overflow: hidden;">
+                    <div style="font-size: 10px; color: #2ED47A; font-weight: 800;">CUSTOMER <i class='bx bx-check-circle'></i></div>
+                    <div style="font-size: 14px; font-weight: 700; white-space: nowrap;">Hoangvb1207</div>
+                </div>
+                <i class='bx bx-log-out text-xl text-gray-500 hover:text-red-500 cursor-pointer'></i>
+            </div>
         </div>
-        <nav class="flex-1 space-y-2">
-            <a href="index.html" class="flex items-center p-3 text-gray-400 hover:text-white rounded-md transition"><i class="fas fa-home w-6"></i> Trang chủ</a>
-            <a href="mua-robux.html" class="flex items-center p-3 bg-blue-600/20 text-blue-400 border-l-4 border-blue-500 rounded-md"><i class="fas fa-bolt w-6"></i> Mua Robux 120H</a>
-            <a href="nap-tien.html" class="flex items-center p-3 text-gray-400 hover:text-white rounded-md transition"><i class="fas fa-wallet w-6"></i> Nạp tiền</a>
+    </section>
+
+    <section id="content">
+        <nav>
+            <i class='bx bx-menu toggle-sidebar'></i>
+            <div class="nav-title">AUTOROBUX.VN / Trang Chủ</div>
+            
+            <div style="display: flex; gap: 15px; margin-left: auto; align-items: center;">
+                <div style="padding: 6px 12px; background: var(--grey); border-radius: 6px; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 5px;">
+                    <img src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.3/flags/4x3/vn.svg" width="20" style="border-radius: 2px;"> Tiếng Việt <i class='bx bx-chevron-down'></i>
+                </div>
+                <i class='bx bxs-sun text-2xl text-gray-500 cursor-pointer' id="theme-toggle" onclick="document.documentElement.classList.toggle('dark')"></i>
+            </div>
         </nav>
-        <div class="mt-auto p-3 card rounded-xl">
-            <p class="text-xs text-gray-400">Số dư hiện tại:</p>
-            <p class="text-lg font-bold text-green-400" id="displayBalance">Đang tải...</p>
-        </div>
-    </aside>
 
-    <main class="flex-1 p-6 md:p-8 overflow-y-auto">
-        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2"><i class="fas fa-shopping-cart text-blue-500"></i> Mua Robux 120H (Gamepass)</h2>
+        <main>
+            <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 20px;">Trang Chủ</h1>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="lg:col-span-2 space-y-6">
-                <div class="card p-6 rounded-xl">
-                    <div class="bg-blue-900/20 border border-blue-500/30 p-4 rounded-lg mb-6">
-                        <p class="text-sm text-blue-200"><i class="fas fa-info-circle mr-2"></i> Tỷ giá hiện tại: <strong>10.000 VNĐ = 75 Robux</strong> (Chưa tính thuế Roblox).</p>
-                    </div>
+            <div class="filter-bar">
+                <select><option>Tất cả dịch vụ</option><option>Robux 120H</option></select>
+                <select><option>Hôm nay</option><option>7 Ngày qua</option><option>Tất cả thời gian</option></select>
+            </div>
 
-                    <form id="buyForm" class="space-y-5">
-                        <div>
-                            <label class="block text-sm font-bold text-gray-400 mb-2">Số Robux muốn mua (R$)</label>
-                            <div class="relative">
-                                <i class="fas fa-gem absolute left-4 top-3.5 text-cyan-400"></i>
-                                <input type="number" id="robuxAmount" min="10" placeholder="Nhập số Robux..." class="input-dark w-full p-3 pl-10 rounded-lg" required>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-bold text-gray-400 mb-2">Đường dẫn Gamepass (Link)</label>
-                            <div class="relative">
-                                <i class="fas fa-link absolute left-4 top-3.5 text-gray-500"></i>
-                                <input type="url" id="gamepassLink" placeholder="https://www.roblox.com/game-pass/..." class="input-dark w-full p-3 pl-10 rounded-lg" required>
-                            </div>
-                        </div>
-
-                        <div class="bg-gray-800/50 p-4 rounded-lg space-y-3">
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-400">Số tiền cần thanh toán:</span>
-                                <span class="font-bold text-yellow-400 text-lg" id="vndCost">0 VNĐ</span>
-                            </div>
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-400">Robux bạn sẽ nhận (Sau thuế 30%):</span>
-                                <span class="font-bold text-cyan-400" id="robuxReceive">0 R$</span>
-                            </div>
-                        </div>
-
-                        <button type="submit" id="btnBuy" class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition shadow-lg shadow-blue-900/50 flex justify-center items-center gap-2">
-                            <i class="fas fa-check-circle"></i> THỰC HIỆN THANH TOÁN
-                        </button>
-                    </form>
+            <h5 style="font-size: 14px; color: var(--dark-grey); font-weight: 700; margin-bottom: 10px;"><i class='bx bx-coin-stack text-blue-400'></i> TỶ GIÁ VÀ KHO ROBUX</h5>
+            <div class="dashboard-grid">
+                <div class="info-card">
+                    <h4>Tỷ Giá Robux 120H <i class='bx bx-bar-chart-alt-2'></i></h4>
+                    <p>₫132.000</p>
+                    <small>10K VNĐ = 75 R$</small>
+                </div>
+                <div class="info-card">
+                    <h4>Kho Robux 120H <i class='bx bx-loader-alt text-green-400'></i></h4>
+                    <p>92,481 R$</p>
+                    <small>Giới hạn giao dịch: 28,541 R$</small>
+                </div>
+                <div class="info-card">
+                    <h4>Tỷ Giá Ingame <i class='bx bx-trending-up'></i></h4>
+                    <p>₫10.000.000</p>
+                    <small>Bảo hành vĩnh viễn</small>
+                </div>
+                <div class="info-card">
+                    <h4>Kho Ingame <i class='bx bx-package text-orange-400'></i></h4>
+                    <p>225 R$</p>
+                    <small>Sẵn sàng giao dịch</small>
                 </div>
             </div>
 
-            <div class="card p-6 rounded-xl h-fit">
-                <h3 class="font-bold mb-4 border-b border-gray-700 pb-2">Lịch Sử Mua Gần Đây</h3>
-                <div id="historyList" class="space-y-4">
-                    <p class="text-sm text-gray-500 text-center py-4">Chưa có giao dịch nào...</p>
+            <h5 style="font-size: 14px; color: var(--dark-grey); font-weight: 700; margin-bottom: 10px; margin-top: 20px;"><i class='bx bx-grid-alt text-purple-400'></i> TỔNG QUAN</h5>
+            <div class="dashboard-grid">
+                <div class="info-card">
+                    <h4>Đơn Hoàn Thành <i class='bx bxs-check-circle text-green-500'></i></h4>
+                    <p>1,204</p>
+                </div>
+                <div class="info-card">
+                    <h4>Đơn Đang Chờ <i class='bx bx-list-ul text-yellow-500'></i></h4>
+                    <p>5</p>
+                </div>
+                <div class="info-card">
+                    <h4>Tiền Đã Chi <i class='bx bx-money text-red-400'></i></h4>
+                    <p>₫19.965</p>
+                </div>
+                <div class="info-card">
+                    <h4>R$ Đã Mua <i class='bx bxs-dollar-circle text-blue-500'></i></h4>
+                    <p>2,500 R$</p>
                 </div>
             </div>
-        </div>
-    </main>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, updateDoc, collection, addDoc, serverTimestamp, query, where, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        // Cấu hình Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyBmggvvk19HmgnFxy-rAe_SvvyOwnKXprc",
-            authDomain: "kunrobux-c8aa8.firebaseapp.com",
-            projectId: "kunrobux-c8aa8",
-            storageBucket: "kunrobux-c8aa8.firebasestorage.app",
-            messagingSenderId: "1094974396607",
-            appId: "1:1094974396607:web:61cf45e19d63e31aca4e0a"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        let currentUser = null;
-        let currentBalance = 0;
-
-        // TỶ GIÁ: 10,000đ = 75 Robux => 1 Robux = 133.33đ
-        const RATE_PER_ROBUX = 10000 / 75; 
-
-        // 1. Kiểm tra đăng nhập
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                currentUser = user;
-                loadUserData(user.uid);
-                loadOrderHistory(user.uid);
-            } else {
-                alert("Bạn cần đăng nhập để mua Robux!");
-                window.location.href = "login.html"; // Đá về trang login
-            }
-        });
-
-        // 2. Tải số dư người dùng
-        async function loadUserData(uid) {
-            const userRef = doc(db, "users", uid);
-            const userSnap = await getDoc(userRef);
-            if (userSnap.exists()) {
-                currentBalance = userSnap.data().balance || 0;
-                document.getElementById('displayBalance').innerText = currentBalance.toLocaleString('vi-VN') + ' đ';
-            } else {
-                // Tạo profile mặc định nếu chưa có
-                await setDoc(userRef, { balance: 0, username: currentUser.email });
-                document.getElementById('displayBalance').innerText = '0 đ';
-            }
-        }
-
-        // 3. Logic Tự động tính tiền khi gõ số Robux
-        const robuxInput = document.getElementById('robuxAmount');
-        const vndCostDisplay = document.getElementById('vndCost');
-        const robuxReceiveDisplay = document.getElementById('robuxReceive');
-
-        robuxInput.addEventListener('input', () => {
-            const robux = parseInt(robuxInput.value) || 0;
-            const cost = Math.ceil(robux * RATE_PER_ROBUX);
-            const receive = Math.floor(robux * 0.7); // Thuế Roblox 30%
-
-            vndCostDisplay.innerText = cost.toLocaleString('vi-VN') + ' VNĐ';
-            robuxReceiveDisplay.innerText = receive.toLocaleString('vi-VN') + ' R$';
-            
-            // Đổi màu nếu không đủ tiền
-            if (cost > currentBalance) {
-                vndCostDisplay.classList.replace('text-yellow-400', 'text-red-500');
-            } else {
-                vndCostDisplay.classList.replace('text-red-500', 'text-yellow-400');
-            }
-        });
-
-        // 4. Xử lý Mua hàng (Trừ tiền & Lưu Database)
-        document.getElementById('buyForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const robux = parseInt(robuxInput.value);
-            const link = document.getElementById('gamepassLink').value;
-            const cost = Math.ceil(robux * RATE_PER_ROBUX);
-
-            if (cost > currentBalance) {
-                return alert("Thất bại: Số dư của bạn không đủ! Vui lòng nạp thêm.");
-            }
-
-            const btnBuy = document.getElementById('btnBuy');
-            btnBuy.disabled = true;
-            btnBuy.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG XỬ LÝ...';
-
-            try {
-                // Trừ tiền trong collection 'users'
-                const userRef = doc(db, "users", currentUser.uid);
-                await updateDoc(userRef, {
-                    balance: currentBalance - cost
-                });
-
-                // Lưu đơn hàng vào collection 'orders'
-                await addDoc(collection(db, "orders"), {
-                    uid: currentUser.uid,
-                    email: currentUser.email,
-                    robuxAmount: robux,
-                    costVND: cost,
-                    gamepassLink: link,
-                    status: "Đang chờ", // Trạng thái chờ admin xử lý
-                    createdAt: serverTimestamp()
-                });
-
-                alert(`Thành công! Bạn đã đặt mua ${robux} R$. Đơn hàng đang chờ xử lý.`);
-                
-                // Reset form & Tải lại dữ liệu
-                document.getElementById('buyForm').reset();
-                vndCostDisplay.innerText = '0 VNĐ';
-                robuxReceiveDisplay.innerText = '0 R$';
-                loadUserData(currentUser.uid);
-                loadOrderHistory(currentUser.uid);
-
-            } catch (error) {
-                console.error(error);
-                alert("Lỗi hệ thống: " + error.message);
-            } finally {
-                btnBuy.disabled = false;
-                btnBuy.innerHTML = '<i class="fas fa-check-circle"></i> THỰC HIỆN THANH TOÁN';
-            }
-        });
-
-        // 5. Tải lịch sử mua hàng
-        async function loadOrderHistory(uid) {
-            const historyList = document.getElementById('historyList');
-            const q = query(collection(db, "orders"), where("uid", "==", uid), orderBy("createdAt", "desc"), limit(5));
-            const querySnapshot = await getDocs(q);
-            
-            if (querySnapshot.empty) return;
-
-            historyList.innerHTML = '';
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                const statusColor = data.status === "Đang chờ" ? "text-yellow-500" : "text-green-500";
-                
-                historyList.innerHTML += `
-                    <div class="flex justify-between items-center border-b border-gray-800 pb-3 text-sm">
+            <div class="history-grid mt-6">
+                <div class="history-card">
+                    <h3>Đơn Hàng Gần Đây</h3>
+                    <div class="history-item">
                         <div>
-                            <div class="font-bold text-gray-300">${data.robuxAmount} R$</div>
-                            <div class="${statusColor} text-xs">${data.status}</div>
+                            <span class="name">nhn*****</span>
+                            <span class="time">19 minutes ago</span>
                         </div>
-                        <div class="text-right">
-                            <div class="text-red-400 font-bold">-${data.costVND.toLocaleString('vi-VN')}đ</div>
-                        </div>
+                        <span class="amount">500 R$</span>
                     </div>
-                `;
-            });
-        }
+                    <div class="history-item">
+                        <div>
+                            <span class="name">ka1***</span>
+                            <span class="time">46 minutes ago</span>
+                        </div>
+                        <span class="amount">275 R$</span>
+                    </div>
+                    <div class="history-item">
+                        <div>
+                            <span class="name">non*****</span>
+                            <span class="time">1 hour ago</span>
+                        </div>
+                        <span class="amount">345 R$</span>
+                    </div>
+                </div>
+
+                <div class="history-card">
+                    <h3>Lịch Sử Nạp Tiền</h3>
+                    <div class="history-item">
+                        <div>
+                            <span class="name">nha************</span>
+                            <span class="time">07/03/2026 09:53</span>
+                        </div>
+                        <span class="amount" style="color: var(--green); background: rgba(46, 212, 122, 0.1);">+ ₫300.000</span>
+                    </div>
+                    <div class="history-item">
+                        <div>
+                            <span class="name">Anh***********</span>
+                            <span class="time">07/03/2026 09:35</span>
+                        </div>
+                        <span class="amount" style="color: var(--green); background: rgba(46, 212, 122, 0.1);">+ ₫60.000</span>
+                    </div>
+                    <div class="history-item">
+                        <div>
+                            <span class="name">ka1***</span>
+                            <span class="time">07/03/2026 09:16</span>
+                        </div>
+                        <span class="amount" style="color: var(--green); background: rgba(46, 212, 122, 0.1);">+ ₫10.000</span>
+                    </div>
+                </div>
+
+                <div class="history-card">
+                    <h3>Top 10 Mua Robux</h3>
+                    <div class="history-item">
+                        <div style="display: flex; align-items: center;">
+                            <i class='bx bxs-crown rank-icon rank-gold'></i>
+                            <span class="name">Kur********</span>
+                        </div>
+                        <span class="amount text-yellow-500">1,800,461 R$</span>
+                    </div>
+                    <div class="history-item">
+                        <div style="display: flex; align-items: center;">
+                            <i class='bx bxs-medal rank-icon rank-silver'></i>
+                            <span class="name">ka1***</span>
+                        </div>
+                        <span class="amount text-gray-400">629,042 R$</span>
+                    </div>
+                    <div class="history-item">
+                        <div style="display: flex; align-items: center;">
+                            <i class='bx bxs-medal rank-icon rank-bronze'></i>
+                            <span class="name">hao*******</span>
+                        </div>
+                        <span class="amount text-orange-400">361,171 R$</span>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </section>
+
+    <script>
+        document.querySelector('.toggle-sidebar').addEventListener('click', function() {
+            let sidebar = document.getElementById('sidebar');
+            let content = document.getElementById('content');
+            if (sidebar.style.width === '60px') {
+                sidebar.style.width = '260px';
+                content.style.marginLeft = '260px';
+                content.style.width = 'calc(100% - 260px)';
+            } else {
+                sidebar.style.width = '60px';
+                content.style.marginLeft = '60px';
+                content.style.width = 'calc(100% - 60px)';
+            }
+        });
     </script>
 </body>
 </html>
