@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nạp Tiền - KUNROBUX</title>
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Signika:wght@500;600;700;800&family=Roboto:wght@400;500;600;700&display=swap">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        :root {
+            --light: #FFFFFF; --light-bg: #F4F6F8; --grey: #F4F6F8; --dark: #1F2937;
+            --dark-grey: #6B7280; --primary-color: #1BBEFB; --blue: #1BBEFB;
+            --green: #2ED47A; --red: #FC3B56; --border-light: #E5E7EB;
+        }
+        html.dark {
+            --light: #111111; --light-bg: #000000; --grey: #222222; --dark: #F9F9F9;
+            --dark-grey: #AAB0CC; --border-light: #222222;
+        }
+        body { background: var(--light-bg); color: var(--dark); font-family: 'Signika', sans-serif; overflow-x: hidden; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--light-bg); }
+        ::-webkit-scrollbar-thumb { background: var(--grey); border-radius: 10px; }
+        
+        /* Sidebar & Layout */
+        #sidebar { position: fixed; width: 260px; height: 100vh; background: var(--light); border-right: 1px solid var(--border-light); z-index: 100; display: flex; flex-direction: column; transition: 0.3s; overflow-x: hidden; white-space: nowrap; }
+        #content { margin-left: 260px; width: calc(100% - 260px); min-height: 100vh; transition: 0.3s;}
+        
+        .brand { padding: 20px; display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 800; color: var(--dark); text-decoration: none; }
+        .brand img { width: 32px; height: 32px; filter: brightness(0); }
+        html.dark .brand img { filter: brightness(0) invert(1); }
+        
+        .side-menu { padding: 10px; flex: 1; overflow-y: auto; list-style: none; }
+        .side-menu li.category { font-size: 11px; font-weight: 700; color: var(--dark-grey); text-transform: uppercase; margin: 15px 10px 5px; opacity: 0.7;}
+        .side-menu a { display: flex; align-items: center; padding: 12px 15px; color: var(--dark-grey); text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 15px; transition: 0.2s; margin-bottom: 4px; }
+        .side-menu a i { font-size: 20px; margin-right: 10px; min-width: 25px; text-align: center; }
+        .side-menu a:hover, .side-menu a.active { background: var(--grey); color: var(--dark); }
+        .side-menu a.active-gradient { background: linear-gradient(135deg, #6A67FE 0%, #4F80E2 100%); color: white !important; box-shadow: 0 4px 10px rgba(0,0,0,0.2); position: relative; }
+        .side-menu a.active-gradient::after { content: ''; position: absolute; right: 15px; top: 50%; transform: translateY(-50%); width: 8px; height: 8px; border-radius: 50%; background: white; }
+
+        /* Code CSS Thu Nhỏ Menu */
+        #sidebar.collapsed { width: 76px !important; }
+        #sidebar.collapsed .brand { font-size: 0; justify-content: center; padding: 20px 0; } 
+        #sidebar.collapsed .side-menu li.category { display: none; }
+        #sidebar.collapsed .side-menu a { font-size: 0; justify-content: center; padding: 16px 0; }
+        #sidebar.collapsed .side-menu a i { font-size: 24px; margin-right: 0; }
+        #sidebar.collapsed .side-menu a.active-gradient::after { display: none; }
+        #sidebar.collapsed .sidebar-user { display: none; }
+
+        nav { height: 64px; background: var(--light); padding: 0 24px; display: flex; align-items: center; gap: 20px; position: sticky; top: 0; z-index: 99; }
+        main { padding: 24px; }
+
+        .sidebar-user { padding: 15px; margin-top: auto; border-top: 1px solid var(--border-light); }
+        .balance-box { background: var(--grey); padding: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;}
+        .user-profile { display: flex; align-items: center; gap: 10px; padding: 10px; background: var(--grey); border-radius: 8px;}
+        .user-profile img { width: 35px; height: 35px; border-radius: 5px; }
+
+        /* Form Nạp Thẻ CSS */
+        .recharge-card { background: var(--light); padding: 25px; border-radius: 15px; border: 1px solid var(--border-light); }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 13px; font-weight: 700; color: var(--dark-grey); margin-bottom: 8px; text-transform: uppercase; }
+        .input-group select, .input-group input { width: 100%; background: var(--grey); border: 1px solid var(--border-light); color: var(--dark); padding: 12px 15px; border-radius: 8px; outline: none; font-size: 15px; font-weight: 600; transition: 0.3s; }
+        .input-group select:focus, .input-group input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(27,190,251,0.1); }
+    </style>
+</head>
+<body>
+
+    <section id="sidebar">
+        <a href="index.html" class="brand"><img src="https://autorobux.vn/icon/logo.png" alt="Logo"> KUNROBUX</a>
+
+        <ul class="side-menu">
+            <li class="category">Main</li>
+            <li><a href="index.html"><i class='bx bxs-home'></i> Trang chủ</a></li>
+            
+            <li class="category">Chức năng chính</li>
+            <li><a href="robux-120h.html"><i class='bx bx-trending-up'></i> Robux 120H</a></li>
+            <li><a href="ingame.html"><i class='bx bx-purchase-tag-alt'></i> Ingame Gamepasses</a></li>
+            <li><a href="group.html"><i class='bx bxs-group'></i> Robux Group</a></li>
+            <li><a href="giftcard.html"><i class='bx bx-code'></i> Gift Card</a></li>
+            <li><a href="account.html"><i class='bx bx-link'></i> Tài Khoản Robux</a></li>
+
+            <li class="category">Quản lý tài khoản</li>
+            <li><a href="history.html"><i class='bx bx-cart'></i> Lịch sử mua hàng</a></li>
+            <li><a href="nap-tien.html" class="active-gradient"><i class='bx bx-dollar'></i> Nạp tiền</a></li>
+            <li><a href="transactions.html"><i class='bx bx-credit-card'></i> Biến động số dư</a></li>
+        </ul>
+
+       <div class="sidebar-user">
+            <div id="auth-guest" style="display: flex; flex-direction: column; gap: 10px;">
+                <a href="login.html" style="background: var(--blue); color: white; text-align: center; padding: 10px; border-radius: 8px; font-weight: 700; text-decoration: none;">
+                    <i class='bx bx-log-in-circle'></i> Đăng Nhập
+                </a>
+                <a href="login.html" style="background: var(--grey); color: var(--dark); text-align: center; padding: 10px; border-radius: 8px; font-weight: 700; text-decoration: none; border: 1px solid var(--border-light);">
+                    Đăng Ký Tài Khoản
+                </a>
+            </div>
+
+            <div id="auth-user" style="display: none;">
+                <div class="balance-box">
+                    <span style="color: var(--dark-grey); font-size: 13px; font-weight: 600;">Số dư:</span>
+                    <span id="user-balance" style="color: #00BCD4; font-weight: 700;">₫0</span>
+                </div>
+                <div class="user-profile">
+                    <img src="https://placehold.co/40x40/222222/FFFFFF?text=U" alt="Avatar">
+                    <div style="flex: 1; overflow: hidden;">
+                        <div style="font-size: 10px; color: #2ED47A; font-weight: 800;">MEMBER <i class='bx bx-check-circle'></i></div>
+                        <div id="user-name" style="font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Đang tải...</div>
+                    </div>
+                    <i id="btn-logout" class='bx bx-log-out text-xl text-gray-500 hover:text-red-500 cursor-pointer' title="Đăng xuất"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="content">
+        <nav>
+            <i class='bx bx-menu toggle-sidebar'></i>
+            <div class="nav-title text-xl text-[#1BBEFB]">NẠP TIỀN VÀO TÀI KHOẢN</div>
+            <div style="display: flex; gap: 15px; margin-left: auto; align-items: center;">
+                <i class='bx bxs-sun text-2xl text-gray-500 cursor-pointer' onclick="document.documentElement.classList.toggle('dark')"></i>
+            </div>
+        </nav>
+
+        <main>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="recharge-card">
+                    <h2 class="text-2xl font-bold mb-4 border-b border-gray-700 pb-4"><i class='bx bx-wallet text-[#1BBEFB]'></i> Nạp Thẻ Tự Động</h2>
+                    
+                    <div class="input-group">
+                        <label>Loại thẻ</label>
+                        <select id="card-type">
+                            <option value="VIETTEL">Viettel (Khuyên dùng)</option>
+                            <option value="VINAPHONE">Vinaphone</option>
+                            <option value="MOBIFONE">Mobifone</option>
+                            <option value="ZING">Zing</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Mệnh giá (Vui lòng chọn đúng mệnh giá)</label>
+                        <select id="card-value">
+                            <option value="10000">10.000 VNĐ</option>
+                            <option value="20000">20.000 VNĐ</option>
+                            <option value="50000">50.000 VNĐ</option>
+                            <option value="100000">100.000 VNĐ</option>
+                            <option value="200000">200.000 VNĐ</option>
+                            <option value="500000">500.000 VNĐ</option>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="input-group">
+                            <label>Số Serial</label>
+                            <input type="text" id="card-serial" placeholder="Nhập Serial...">
+                        </div>
+                        <div class="input-group">
+                            <label>Mã Thẻ (PIN)</label>
+                            <input type="text" id="card-pin" placeholder="Nhập mã thẻ...">
+                        </div>
+                    </div>
+
+                    <button id="btn-recharge" class="w-full bg-[#1BBEFB] text-white font-bold text-lg py-3 rounded-xl hover:opacity-90 transition shadow-[0_4px_15px_rgba(27,190,251,0.4)] mt-2">
+                        <i class='bx bx-send'></i> GỬI THẺ NẠP
+                    </button>
+                </div>
+
+                <div class="flex flex-col gap-6">
+                    <div class="recharge-card border-l-4 border-l-red-500 bg-gradient-to-br from-[#151a23] to-[#251515]">
+                        <h3 class="font-bold text-lg mb-3 text-red-500"><i class='bx bxs-error'></i> Lưu ý quan trọng</h3>
+                        <ul class="text-sm text-gray-400 list-disc pl-4 space-y-2">
+                            <li>Vui lòng chọn <b>ĐÚNG MỆNH GIÁ</b> thẻ. Nếu chọn sai mệnh giá sẽ bị mất thẻ và không được cộng tiền.</li>
+                            <li>Thẻ nạp thành công sẽ được cộng tiền vào tài khoản trong vòng 5 giây đến 1 phút.</li>
+                            <li>Nạp thẻ sai 3 lần liên tiếp sẽ bị khóa chức năng nạp tiền trong 24 giờ.</li>
+                            <li>Hỗ trợ xử lý lỗi thẻ qua Fanpage hoặc Discord KUNROBUX.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </section>
+
+    <script>
+        // Xử lý nút thu nhỏ Sidebar
+        document.querySelector('.toggle-sidebar').addEventListener('click', function() {
+            let sidebar = document.getElementById('sidebar');
+            let content = document.getElementById('content');
+            sidebar.classList.toggle('collapsed');
+            if (sidebar.classList.contains('collapsed')) {
+                content.style.marginLeft = '76px';
+                content.style.width = 'calc(100% - 76px)';
+            } else {
+                content.style.marginLeft = '260px';
+                content.style.width = 'calc(100% - 260px)';
+            }
+        });
+    </script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBmggevk19HmgnFxy-rAe_SvvyOwnKXprc",
+            authDomain: "kunrobux-c8aa8.firebaseapp.com",
+            databaseURL: "https://kunrobux-c8aa8-default-rtdb.firebaseio.com",
+            projectId: "kunrobux-c8aa8",
+            storageBucket: "kunrobux-c8aa8.firebasestorage.app",
+            messagingSenderId: "1094974396607",
+            appId: "1:1094974396607:web:61cf45e19d63e31aca4e0a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+
+        // Xử lý thông tin user
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('auth-guest').style.display = 'none';
+                document.getElementById('auth-user').style.display = 'block'; 
+                try {
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    if (userDoc.exists()) {
+                        document.getElementById('user-name').innerText = userDoc.data().username || user.email.split('@')[0];
+                        document.getElementById('user-balance').innerText = '₫' + (userDoc.data().balance || 0).toLocaleString('vi-VN');
+                    }
+                } catch (error) { console.log(error); }
+            } else {
+                currentUser = null;
+                document.getElementById('auth-guest').style.display = 'flex';
+                document.getElementById('auth-user').style.display = 'none';
+            }
+        });
+
+        document.getElementById('btn-logout').addEventListener('click', () => {
+            if(confirm("Bạn có chắc chắn muốn đăng xuất?")) { signOut(auth).then(() => window.location.href = "index.html"); }
+        });
+
+        // Xử lý khi bấm nút Gửi Thẻ
+        document.getElementById('btn-recharge').addEventListener('click', async () => {
+            if(!currentUser) {
+                return Swal.fire({ icon: 'warning', title: 'Chưa đăng nhập!', text: 'Vui lòng đăng nhập để nạp thẻ.', background: '#151a23', color: '#fff', confirmButtonColor: '#1BBEFB' });
+            }
+
+            const type = document.getElementById('card-type').value;
+            const amount = document.getElementById('card-value').value;
+            const serial = document.getElementById('card-serial').value.trim();
+            const pin = document.getElementById('card-pin').value.trim();
+
+            if(!serial || !pin) {
+                return Swal.fire({ icon: 'error', title: 'Lỗi', text: 'Vui lòng nhập đầy đủ Serial và Mã thẻ!', background: '#151a23', color: '#fff' });
+            }
+
+            Swal.fire({ title: 'Đang xử lý...', background: '#151a23', color: '#fff', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+            // Ghi thẻ lên Database với trạng thái Pending (Đang chờ duyệt)
+            try {
+                await addDoc(collection(db, "recharge_history"), {
+                    userId: currentUser.uid,
+                    cardType: type,
+                    cardAmount: Number(amount),
+                    serial: serial,
+                    pin: pin,
+                    status: "pending", // pending: chờ duyệt, success: thành công, error: thẻ sai
+                    time: serverTimestamp()
+                });
+
+                Swal.fire({ 
+                    icon: 'success', 
+                    title: 'Đã gửi thẻ!', 
+                    text: 'Thẻ của bạn đã được gửi lên hệ thống. Vui lòng chờ admin duyệt (1-5 phút).', 
+                    background: '#151a23', color: '#fff' 
+                }).then(() => {
+                    // Xóa form sau khi gửi
+                    document.getElementById('card-serial').value = '';
+                    document.getElementById('card-pin').value = '';
+                });
+            } catch (error) {
+                console.error("Lỗi gửi thẻ:", error);
+                Swal.fire({ icon: 'error', title: 'Có lỗi xảy ra', text: 'Không thể gửi thẻ lúc này!', background: '#151a23', color: '#fff' });
+            }
+        });
+    </script>
+</body>
+</html>
