@@ -189,7 +189,9 @@
                     Swal.fire({ icon: 'success', title: 'Thành công!', text: 'Đang vào trang chủ...', background: '#151a23', color: '#fff', showConfirmButton: false, timer: 1500 }).then(() => {
                         window.location.href = "index.html"; 
                     });
-                } else {
+                }
+                
+                else {
                     const userCredential = await createUserWithEmailAndPassword(auth, authEmail, password);
                     
                     // Ghi thông tin vào Database Firestore
@@ -206,14 +208,12 @@
                         window.location.href = "index.html";
                     });
                 }
-            } catch (error) {
-                let errorMsg = "Có lỗi xảy ra, vui lòng thử lại!";
-                if(error.code === 'auth/email-already-in-use') errorMsg = "Tên đăng nhập hoặc Email này đã tồn tại!";
-                if(error.code === 'auth/invalid-credential') errorMsg = "Sai tên đăng nhập hoặc mật khẩu!";
-                if(error.code === 'auth/weak-password') errorMsg = "Mật khẩu quá yếu (cần ít nhất 6 ký tự)!";
-                if(error.code === 'auth/invalid-email') errorMsg = "Định dạng không hợp lệ!";
-                
-                showAlert('error', 'Thất bại!', errorMsg);
+            } 
+            
+           } catch (error) {
+                // Cho nó hiện thẳng nguyên văn cái mã lỗi gốc của Firebase ra luôn!
+                showAlert('error', 'Lỗi rồi!', 'lỗi: ' + error.code + ' - ' + error.message);
+                console.error("Lỗi chi tiết:", error);
             }
         });
     </script>
