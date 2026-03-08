@@ -86,7 +86,34 @@
         /* Main Content Cards */
         main { padding: 24px; }
         .filter-bar { background: var(--light); padding: 15px 20px; border-radius: 10px; margin-bottom: 20px; display: flex; gap: 15px; }
-        .filter-bar select { background: var(--grey); color: var(--dark); border: 1px solid var(--border-light); padding: 8px 15px; border-radius: 6px; outline: none; }
+       /* Nâng cấp giao diện nút chọn (Dropdown) */
+        .filter-bar select { 
+            background-color: #151a23; 
+            color: #ffffff; 
+            border: 1px solid #1F2937; 
+            padding: 10px 40px 10px 15px; 
+            border-radius: 8px; 
+            outline: none; 
+            cursor: pointer; 
+            font-weight: 600;
+            appearance: none; /* Xóa cái mũi tên xấu xí mặc định */
+            /* Vẽ mũi tên xịn xò mới */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' style='fill: %231BBEFB;'%3E%3Cpath d='M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            transition: all 0.3s ease;
+            color-scheme: dark; /* Bắt buộc menu xổ xuống phải màu tối */
+        }
+        .filter-bar select:hover, .filter-bar select:focus {
+            border-color: #1BBEFB;
+            box-shadow: 0 0 10px rgba(27, 190, 251, 0.2);
+        }
+        .filter-bar select option {
+            background-color: #151a23;
+            color: #ffffff;
+            font-weight: 600;
+            padding: 10px;
+        }
         
         .dashboard-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px; }
         .info-card { background: var(--light); padding: 20px; border-radius: 12px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
