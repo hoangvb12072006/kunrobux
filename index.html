@@ -522,6 +522,48 @@
             
             chart.updateSeries([{ data: trafficData }]);
         }, 3000);
+
+        // Hàm đóng thông báo
+    function closeNotice() {
+        document.getElementById('notice-modal').classList.add('hidden');
+    }
+
+    // Tự động hiện sau 1 giây khi vào trang
+    window.onload = function() {
+        setTimeout(() => {
+            document.getElementById('notice-modal').classList.remove('hidden');
+        }, 1000);
+    };
     </script>
+
+    <div id="notice-modal" class="fixed inset-0 z-[999] flex items-center justify-center bg-black/80 hidden">
+        <div class="bg-[#151a23] w-[90%] max-w-[500px] rounded-2xl border border-gray-800 overflow-hidden shadow-[0_0_50px_rgba(27,190,251,0.2)] animate-modal-in">
+            <div class="bg-gradient-to-r from-[#1BBEFB] to-[#4F80E2] p-4 flex justify-between items-center text-white">
+                <h3 class="font-bold text-lg flex items-center gap-2"><i class='bx bxs-bell-ring animate-tada'></i> THÔNG BÁO HỆ THỐNG</h3>
+                <i class='bx bx-x text-2xl cursor-pointer hover:rotate-90 transition' onclick="closeNotice()"></i>
+            </div>
+            <div class="p-6 text-gray-300">
+                <div class="text-center mb-4">
+                    <img src="https://autorobux.vn/icon/logo.png" width="60" class="mx-auto mb-2">
+                    <h2 class="text-[#1BBEFB] font-extrabold text-xl">CHÀO MỪNG BẠN ĐẾN VỚI KUNROBUX</h2>
+                </div>
+                <div class="space-y-3 text-sm font-semibold">
+                    <p class="flex items-center gap-2 border-b border-gray-800 pb-2"><i class='bx bx-check-circle text-green-500'></i> Hệ thống nạp Robux 120H tự động 100%.</p>
+                    <p class="flex items-center gap-2 border-b border-gray-800 pb-2"><i class='bx bx-check-circle text-green-500'></i> Robux Ingame duyệt siêu tốc trong 5 phút.</p>
+                    <p class="flex items-center gap-2 border-b border-gray-800 pb-2"><i class='bx bx-gift text-yellow-500'></i> Đang có khuyến mãi +10% giá trị nạp thẻ.</p>
+                    <p class="text-red-400 italic font-bold text-xs">* Lưu ý: Vui lòng tham gia Group đủ 15 ngày mới nạp được Robux Group.</p>
+                </div>
+                <button onclick="closeNotice()" class="w-full mt-6 bg-[#1BBEFB] text-white font-bold py-3 rounded-xl hover:opacity-90 shadow-lg">TÔI ĐÃ HIỂU</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes modal-in {
+            from { opacity: 0; transform: scale(0.8) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .animate-modal-in { animation: modal-in 0.3s ease-out forwards; }
+    </style>
 </body>
 </html>
