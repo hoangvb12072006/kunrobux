@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mua Robux 120H - KUNROBUX</title>
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Signika:wght@500;600;700;800&family=Roboto:wght@400;500;600;700&display=swap">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        /* GIỮ NGUYÊN CSS KHUNG CỦA TRANG CHỦ */
+        :root {
+            --light: #FFFFFF; --light-bg: #F4F6F8; --grey: #F4F6F8; --dark: #1F2937;
+            --dark-grey: #6B7280; --primary-color: #1BBEFB; --blue: #1BBEFB;
+            --green: #2ED47A; --red: #FC3B56; --border-light: #E5E7EB;
+        }
+        html.dark {
+            --light: #111111; --light-bg: #000000; --grey: #222222; --dark: #F9F9F9;
+            --dark-grey: #AAB0CC; --border-light: #222222;
+        }
+        body { background: var(--light-bg); color: var(--dark); font-family: 'Signika', sans-serif; overflow-x: hidden; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--light-bg); }
+        ::-webkit-scrollbar-thumb { background: var(--grey); border-radius: 10px; }
+        
+        #sidebar { position: fixed; width: 260px; height: 100vh; background: var(--light); border-right: 1px solid var(--border-light); z-index: 100; display: flex; flex-direction: column; }
+        #content { margin-left: 260px; width: calc(100% - 260px); min-height: 100vh; }
+        .brand { padding: 20px; display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 800; color: var(--dark); text-decoration: none; }
+        .brand img { width: 32px; height: 32px; filter: brightness(0); }
+        html.dark .brand img { filter: brightness(0) invert(1); }
+        
+        .side-menu { padding: 10px; flex: 1; overflow-y: auto; list-style: none; }
+        .side-menu li.category { font-size: 11px; font-weight: 700; color: var(--dark-grey); text-transform: uppercase; margin: 15px 10px 5px; opacity: 0.7;}
+        .side-menu a { display: flex; align-items: center; padding: 12px 15px; color: var(--dark-grey); text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 15px; transition: 0.2s; margin-bottom: 4px; }
+        .side-menu a i { font-size: 20px; margin-right: 10px; min-width: 25px; text-align: center; }
+        .side-menu a:hover, .side-menu a.active { background: var(--grey); color: var(--dark); }
+        .side-menu a.active-gradient { background: linear-gradient(135deg, #6A67FE 0%, #4F80E2 100%); color: white !important; box-shadow: 0 4px 10px rgba(0,0,0,0.2); position: relative; }
+        .side-menu a.active-gradient::after { content: ''; position: absolute; right: 15px; top: 50%; transform: translateY(-50%); width: 8px; height: 8px; border-radius: 50%; background: white; }
+
+        nav { height: 64px; background: var(--light); padding: 0 24px; display: flex; align-items: center; gap: 20px; position: sticky; top: 0; z-index: 99; }
+        main { padding: 24px; }
+
+        .sidebar-user { padding: 15px; margin-top: auto; border-top: 1px solid var(--border-light); }
+        .balance-box { background: var(--grey); padding: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;}
+        .user-profile { display: flex; align-items: center; gap: 10px; padding: 10px; background: var(--grey); border-radius: 8px;}
+        .user-profile img { width: 35px; height: 35px; border-radius: 5px; }
+
+        /* CSS RIÊNG CHO TRANG MUA ROBUX */
+        .buy-card { background: var(--light); padding: 25px; border-radius: 15px; border: 1px solid var(--border-light); }
+        .input-group label { display: block; font-size: 13px; font-weight: 700; color: var(--dark-grey); margin-bottom: 8px; text-transform: uppercase; }
+        .input-group input { width: 100%; background: var(--grey); border: 1px solid var(--border-light); color: var(--dark); padding: 12px 15px; border-radius: 8px; outline: none; font-size: 16px; font-weight: 600; transition: 0.3s; }
+        .input-group input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(27,190,251,0.1); }
+        .price-display { background: rgba(27, 190, 251, 0.1); border: 1px dashed var(--blue); padding: 15px; border-radius: 8px; text-align: center; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <section id="sidebar">
+        <a href="index.html" class="brand">
+            <img src="https://autorobux.vn/icon/logo.png" alt="Logo"> KUNROBUX
+        </a>
+
+        <ul class="side-menu">
+            <li class="category">Main</li>
+            <li><a href="index.html"><i class='bx bxs-home'></i> Trang chủ</a></li>
+            
+            <li class="category">Chức năng chính</li>
+            <li><a href="robux-120h.html" class="active-gradient"><i class='bx bx-trending-up'></i> Robux 120H</a></li>
+            <li><a href="#"><i class='bx bx-purchase-tag-alt'></i> Ingame Gamepasses</a></li>
+            <li><a href="#"><i class='bx bxs-group'></i> Robux Group</a></li>
+            <li><a href="#"><i class='bx bx-code'></i> Gift Card</a></li>
+            <li><a href="#"><i class='bx bx-link'></i> Tài Khoản Robux</a></li>
+
+            <li class="category">Quản lý tài khoản</li>
+            <li><a href="#"><i class='bx bx-cart'></i> Lịch sử mua hàng</a></li>
+            <li><a href="#"><i class='bx bx-dollar'></i> Nạp tiền</a></li>
+            <li><a href="#"><i class='bx bx-credit-card'></i> Biến động số dư</a></li>
+        </ul>
+
+       <div class="sidebar-user">
+            <div id="auth-guest" style="display: flex; flex-direction: column; gap: 10px;">
+                <a href="login.html" style="background: var(--blue); color: white; text-align: center; padding: 10px; border-radius: 8px; font-weight: 700; text-decoration: none; box-shadow: 0 4px 10px rgba(27, 190, 251, 0.3);">
+                    <i class='bx bx-log-in-circle'></i> Đăng Nhập
+                </a>
+                <a href="login.html" style="background: var(--grey); color: var(--dark); text-align: center; padding: 10px; border-radius: 8px; font-weight: 700; text-decoration: none; border: 1px solid var(--border-light);">
+                    Đăng Ký Tài Khoản
+                </a>
+            </div>
+
+            <div id="auth-user" style="display: none;">
+                <div class="balance-box">
+                    <span style="color: var(--dark-grey); font-size: 13px; font-weight: 600;">Số dư:</span>
+                    <span id="user-balance" style="color: #00BCD4; font-weight: 700;">₫0</span>
+                </div>
+                <div class="user-profile">
+                    <img src="https://placehold.co/40x40/222222/FFFFFF?text=U" alt="Avatar">
+                    <div style="flex: 1; overflow: hidden;">
+                        <div style="font-size: 10px; color: #2ED47A; font-weight: 800;">MEMBER <i class='bx bx-check-circle'></i></div>
+                        <div id="user-name" style="font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Đang tải...</div>
+                    </div>
+                    <i id="btn-logout" class='bx bx-log-out text-xl text-gray-500 hover:text-red-500 cursor-pointer' title="Đăng xuất"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="content">
+        <nav>
+            <div class="nav-title text-xl text-[#1BBEFB]">MUA ROBUX 120H (GAMEPASS)</div>
+            <div style="display: flex; gap: 15px; margin-left: auto; align-items: center;">
+                <i class='bx bxs-sun text-2xl text-gray-500 cursor-pointer' onclick="document.documentElement.classList.toggle('dark')"></i>
+            </div>
+        </nav>
+
+        <main>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <div class="md:col-span-2 buy-card">
+                    <h2 class="text-2xl font-bold mb-1 border-b border-gray-700 pb-4"><i class='bx bx-cart text-[#1BBEFB]'></i> Tạo đơn mua Robux</h2>
+                    <p class="text-gray-400 text-sm mb-6 mt-2">Hệ thống xử lý tự động. Robux sẽ về tài khoản sau 120 tiếng (5 ngày).</p>
+
+                    <div class="flex flex-col gap-5">
+                        <div class="input-group">
+                            <label><i class='bx bx-user'></i> Tên nhân vật Roblox</label>
+                            <input type="text" id="roblox-username" placeholder="Nhập chính xác username Roblox của bạn...">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label><i class='bx bx-diamond'></i> Số lượng Robux cần mua</label>
+                            <input type="number" id="robux-amount" placeholder="Ví dụ: 750" oninput="calculatePrice()">
+                        </div>
+
+                        <div class="price-display">
+                            <span class="text-gray-400 text-sm font-bold uppercase">Tổng thanh toán</span><br>
+                            <span id="total-price" class="text-3xl font-extrabold text-[#1BBEFB]">₫0</span>
+                        </div>
+
+                        <button id="btn-buy" class="w-full bg-[#1BBEFB] text-white font-bold text-lg py-4 rounded-xl hover:opacity-90 transition shadow-[0_4px_15px_rgba(27,190,251,0.4)] mt-2">
+                            <i class='bx bx-check-shield'></i> THANH TOÁN NGAY
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-6">
+                    <div class="buy-card bg-gradient-to-br from-[#151a23] to-[#1a2235]">
+                        <h3 class="font-bold text-lg mb-4 text-[#1BBEFB]"><i class='bx bx-line-chart'></i> Tỷ giá máy chủ</h3>
+                        <div class="flex justify-between items-center border-b border-gray-700 pb-2 mb-2">
+                            <span class="text-gray-400">Tỷ giá</span>
+                            <span class="font-bold text-green-400">10.000 VNĐ = 75 R$</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-gray-700 pb-2 mb-2">
+                            <span class="text-gray-400">Kho hiện tại</span>
+                            <span class="font-bold">92,481 R$</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-400">Trạng thái</span>
+                            <span class="font-bold text-green-400">Hoạt động</span>
+                        </div>
+                    </div>
+
+                    <div class="buy-card border-l-4 border-l-yellow-500">
+                        <h3 class="font-bold text-lg mb-3 text-yellow-500"><i class='bx bxs-error-circle'></i> Lưu ý quan trọng</h3>
+                        <ul class="text-sm text-gray-400 list-disc pl-4 space-y-2">
+                            <li>Bạn phải tạo Gamepass đúng với số lượng Robux cần mua.</li>
+                            <li>Robux sẽ ở trạng thái Pending (Đang chờ) trong 5 ngày.</li>
+                            <li>Nếu nhập sai tên nhân vật, hệ thống không chịu trách nhiệm hoàn tiền.</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </section>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // MÃ API CHUẨN XÁC
+        const firebaseConfig = {
+            apiKey: "AIzaSyBmggevk19HmgnFxy-rAe_SvvyOwnKXprc",
+            authDomain: "kunrobux-c8aa8.firebaseapp.com",
+            databaseURL: "https://kunrobux-c8aa8-default-rtdb.firebaseio.com",
+            projectId: "kunrobux-c8aa8",
+            storageBucket: "kunrobux-c8aa8.firebasestorage.app",
+            messagingSenderId: "1094974396607",
+            appId: "1:1094974396607:web:61cf45e19d63e31aca4e0a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // --- XỬ LÝ HIỂN THỊ TÀI KHOẢN (GIỮ NGUYÊN TỪ INDEX) ---
+        let currentUser = null; // Biến lưu thông tin user để dùng cho lúc bấm mua
+        let userDbData = null;
+
+        const authGuest = document.getElementById('auth-guest');
+        const authUser = document.getElementById('auth-user');
+        const userNameDisplay = document.getElementById('user-name');
+        const userBalanceDisplay = document.getElementById('user-balance');
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                authGuest.style.display = 'none';
+                authUser.style.display = 'block'; 
+                try {
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    if (userDoc.exists()) {
+                        userDbData = userDoc.data();
+                        userNameDisplay.innerText = userDbData.username || user.email.split('@')[0];
+                        userBalanceDisplay.innerText = '₫' + (userDbData.balance || 0).toLocaleString('vi-VN');
+                    }
+                } catch (error) { console.log(error); }
+            } else {
+                currentUser = null;
+                authGuest.style.display = 'flex';
+                authUser.style.display = 'none';
+            }
+        });
+
+        document.getElementById('btn-logout').addEventListener('click', () => {
+            if(confirm("Bạn có chắc chắn muốn đăng xuất?")) {
+                signOut(auth).then(() => window.location.href = "index.html");
+            }
+        });
+
+        // --- XỬ LÝ LOGIC MUA ROBUX ---
+        // Biến function ra global để HTML oninput gọi được
+        window.calculatePrice = function() {
+            const amountInput = document.getElementById('robux-amount').value;
+            const priceDisplay = document.getElementById('total-price');
+            
+            if(!amountInput || amountInput <= 0) {
+                priceDisplay.innerText = '₫0';
+                return;
+            }
+
+            // Công thức: (Số Robux / 75) * 10,000
+            const calculatedPrice = Math.ceil((amountInput / 75) * 10000);
+            priceDisplay.innerText = '₫' + calculatedPrice.toLocaleString('vi-VN');
+        };
+
+        // Bấm nút Mua
+        document.getElementById('btn-buy').addEventListener('click', () => {
+            // 1. Kiểm tra đăng nhập
+            if(!currentUser) {
+                return Swal.fire({ icon: 'warning', title: 'Khoan đã!', text: 'Bạn cần đăng nhập để mua Robux.', background: '#151a23', color: '#fff', confirmButtonColor: '#1BBEFB' });
+            }
+
+            const robloxName = document.getElementById('roblox-username').value.trim();
+            const robuxAmount = document.getElementById('robux-amount').value;
+
+            // 2. Kiểm tra điền đủ thông tin
+            if(!robloxName || !robuxAmount || robuxAmount <= 0) {
+                return Swal.fire({ icon: 'error', title: 'Lỗi', text: 'Vui lòng điền đúng tên Roblox và số lượng!', background: '#151a23', color: '#fff', confirmButtonColor: '#1BBEFB' });
+            }
+
+            const priceToPay = Math.ceil((robuxAmount / 75) * 10000);
+
+            // 3. Kiểm tra số dư (Fake thông báo nạp tiền vì mình chưa làm chức năng nạp)
+            if(userDbData && userDbData.balance < priceToPay) {
+                return Swal.fire({ 
+                    icon: 'error', 
+                    title: 'Số dư không đủ!', 
+                    html: `Bạn cần thanh toán <b>₫${priceToPay.toLocaleString('vi-VN')}</b> nhưng số dư chỉ có <b>₫${(userDbData.balance||0).toLocaleString('vi-VN')}</b>. Vui lòng nạp thêm tiền!`, 
+                    background: '#151a23', color: '#fff', confirmButtonText: 'Nạp Tiền Ngay', confirmButtonColor: '#2ED47A' 
+                });
+            }
+
+            // Nếu đủ tiền thì sẽ code logic trừ tiền ở đây (Làm ở bước sau)
+            Swal.fire({ icon: 'success', title: 'Thành công!', text: 'Xác nhận tạo đơn hàng...', background: '#151a23', color: '#fff' });
+        });
+    </script>
+</body>
+</html>
