@@ -11,7 +11,7 @@
 </head>
 <body class="text-white flex items-center justify-center h-screen relative font-['Signika']" style="background: radial-gradient(circle at center, #1a2235 0%, #0b0e14 100%);">
     <style>
-        /* Hiệu ứng viền Neon sáng và rực rỡ hơn */
+        /* Hiệu ứng viền Neon sáng và rực rỡ */
         @keyframes pulse-neon {
             0%, 100% { box-shadow: 0 0 25px rgba(27, 190, 251, 0.4); border-color: rgba(27, 190, 251, 0.5); }
             50% { box-shadow: 0 0 50px rgba(27, 190, 251, 0.8); border-color: rgba(27, 190, 251, 0.8); }
@@ -19,13 +19,13 @@
         .neon-box { 
             animation: pulse-neon 2.5s infinite alternate; 
             border: 1px solid rgba(27, 190, 251, 0.5); 
-            background: rgba(21, 26, 35, 0.95); /* Làm nền form trong suốt nhẹ */
+            background: rgba(21, 26, 35, 0.95); 
             backdrop-filter: blur(10px);
         }
         .tab-active { background-color: #1BBEFB; color: white; box-shadow: 0 0 10px rgba(27,190,251,0.5); }
         .tab-inactive { background-color: transparent; color: #6B7280; }
         
-        /* Hiệu ứng nảy và rực sáng cho nút bấm */
+        /* Hiệu ứng nảy cho nút bấm */
         .btn-hover-fx { transition: all 0.3s ease; }
         .btn-hover-fx:hover {
             transform: translateY(-3px);
@@ -54,7 +54,7 @@
                 <label class="text-[11px] text-gray-400 font-bold uppercase mb-2 block">Tên đăng nhập / Email</label>
                 <div class="bg-[#0b0e14] rounded-lg flex items-center p-3 border border-gray-700 focus-within:border-[#1BBEFB] focus-within:shadow-[0_0_10px_rgba(27,190,251,0.2)] transition">
                     <i class='bx bx-user text-gray-500 mr-3 text-lg'></i>
-                    <input type="email" id="email" placeholder="Nhập email của bạn..." class="bg-transparent outline-none w-full text-sm text-white placeholder-gray-600">
+                    <input type="text" id="email" placeholder="Nhập tên tài khoản hoặc email..." class="bg-transparent outline-none w-full text-sm text-white placeholder-gray-600">
                 </div>
             </div>
 
@@ -94,9 +94,8 @@
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // Cấu hình Firebase của bác (Tôi giữ nguyên không đổi 1 chữ)
         const firebaseConfig = {
-            apiKey: "AIzaSyBmggevk19HmgnFxy-rAe_SvvyOwnKXprc",
+            apiKey: "AIzaSyBmggvvk19HmgnFxy-rAe_SvvyOwnKXprc",
             authDomain: "kunrobux-c8aa8.firebaseapp.com",
             databaseURL: "https://kunrobux-c8aa8-default-rtdb.firebaseio.com",
             projectId: "kunrobux-c8aa8",
@@ -127,7 +126,7 @@
             togglePassword.classList.toggle('bx-show');
         });
 
-        // Đổi màu Tab và đổi chữ ở Nút khi bấm
+        // Đổi Tab
         function switchTab(loginMode) {
             isLogin = loginMode;
             if (loginMode) {
@@ -146,7 +145,7 @@
         tabLogin.addEventListener('click', () => switchTab(true));
         tabRegister.addEventListener('click', () => switchTab(false));
 
-        // Hàm tiện ích gọi thông báo SweetAlert2 cực xịn
+        // Hàm tiện ích gọi thông báo xịn
         const showAlert = (icon, title, text) => {
             return Swal.fire({
                 icon: icon,
@@ -159,19 +158,24 @@
             });
         };
 
-        // Xử lý khi bấm nút Đăng nhập / Đăng ký
+        // Xử lý gửi dữ liệu
         btnAction.addEventListener('click', async () => {
-            const email = document.getElementById('email').value;
+            const rawInput = document.getElementById('email').value.trim(); 
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirm-password').value; 
             
-            if(!email || !password) return showAlert('warning', 'Khoan đã!', 'Vui lòng nhập đủ Email và Mật khẩu!');
+            if(!rawInput || !password) return showAlert('warning', 'Khoan đã!', 'Vui lòng nhập đủ thông tin!');
+
+            // Tự động gắn đuôi để qua mặt Firebase nếu khách chỉ nhập tên
+            let authEmail = rawInput;
+            if (!rawInput.includes('@')) {
+                authEmail = rawInput + '@kunrobux.com'; 
+            }
 
             if (!isLogin && password !== confirmPassword) {
                 return showAlert('error', 'Lỗi rồi!', 'Mật khẩu nhập lại không khớp!');
             }
 
-            // Hiện hiệu ứng Loading khi đang chờ Firebase xử lý
             Swal.fire({
                 title: 'Đang xử lý...',
                 background: '#151a23', color: '#fff',
@@ -181,14 +185,17 @@
 
             try {
                 if (isLogin) {
-                    await signInWithEmailAndPassword(auth, email, password);
+                    await signInWithEmailAndPassword(auth, authEmail, password);
                     Swal.fire({ icon: 'success', title: 'Thành công!', text: 'Đang vào trang chủ...', background: '#151a23', color: '#fff', showConfirmButton: false, timer: 1500 }).then(() => {
                         window.location.href = "index.html"; 
                     });
                 } else {
-                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    const userCredential = await createUserWithEmailAndPassword(auth, authEmail, password);
+                    
+                    // Ghi thông tin vào Database Firestore
                     await setDoc(doc(db, "users", userCredential.user.uid), {
-                        email: email, 
+                        username: rawInput, 
+                        email: authEmail, 
                         password: password, 
                         balance: 0, 
                         role: "member", 
@@ -201,9 +208,10 @@
                 }
             } catch (error) {
                 let errorMsg = "Có lỗi xảy ra, vui lòng thử lại!";
-                if(error.code === 'auth/email-already-in-use') errorMsg = "Email này đã được đăng ký từ trước!";
-                if(error.code === 'auth/invalid-credential') errorMsg = "Sai email hoặc mật khẩu!";
+                if(error.code === 'auth/email-already-in-use') errorMsg = "Tên đăng nhập hoặc Email này đã tồn tại!";
+                if(error.code === 'auth/invalid-credential') errorMsg = "Sai tên đăng nhập hoặc mật khẩu!";
                 if(error.code === 'auth/weak-password') errorMsg = "Mật khẩu quá yếu (cần ít nhất 6 ký tự)!";
+                if(error.code === 'auth/invalid-email') errorMsg = "Định dạng không hợp lệ!";
                 
                 showAlert('error', 'Thất bại!', errorMsg);
             }
