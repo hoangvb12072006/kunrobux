@@ -235,23 +235,23 @@
                 </div>
             </div>
 
-            <h5 style="font-size: 14px; color: var(--dark-grey); font-weight: 700; margin-bottom: 10px; margin-top: 20px;"><i class='bx bx-grid-alt text-purple-400'></i> TỔNG QUAN</h5>
+           <h5 style="font-size: 14px; color: var(--dark-grey); font-weight: 700; margin-bottom: 10px; margin-top: 20px;"><i class='bx bx-grid-alt text-purple-400'></i> TỔNG QUAN TÀI KHOẢN</h5>
             <div class="dashboard-grid">
-                <div class="info-card">
-                    <h4>Đơn Hoàn Thành <i class='bx bxs-check-circle text-green-500'></i></h4>
-                    <p>1,204</p>
+                <div class="info-card border border-gray-800" style="background: #151a23;">
+                    <h4 class="text-gray-400">Đơn Hoàn Thành <i class='bx bxs-check-circle text-green-500'></i></h4>
+                    <p id="stat-completed" class="text-white">0</p>
                 </div>
-                <div class="info-card">
-                    <h4>Đơn Đang Chờ <i class='bx bx-list-ul text-yellow-500'></i></h4>
-                    <p>5</p>
+                <div class="info-card border border-gray-800" style="background: #151a23;">
+                    <h4 class="text-gray-400">Đơn Đang Chờ <i class='bx bx-list-ul text-yellow-500'></i></h4>
+                    <p id="stat-pending" class="text-white">0</p>
                 </div>
-                <div class="info-card">
-                    <h4>Tiền Đã Chi <i class='bx bx-money text-red-400'></i></h4>
-                    <p>₫19.965</p>
+                <div class="info-card border border-gray-800" style="background: #151a23;">
+                    <h4 class="text-gray-400">Tiền Đã Chi <i class='bx bx-money text-red-400'></i></h4>
+                    <p id="stat-spent" class="text-white">₫0</p>
                 </div>
-                <div class="info-card">
-                    <h4>R$ Đã Mua <i class='bx bxs-dollar-circle text-blue-500'></i></h4>
-                    <p>2,500 R$</p>
+                <div class="info-card border border-gray-800" style="background: #151a23;">
+                    <h4 class="text-gray-400">R$ Đã Mua <i class='bx bxs-dollar-circle text-blue-500'></i></h4>
+                    <p id="stat-robux" class="text-[#1BBEFB]">0 R$</p>
                 </div>
             </div>
             
@@ -394,34 +394,46 @@
         const userBalanceDisplay = document.getElementById('user-balance');
         const btnLogout = document.getElementById('btn-logout');
 
+        // Các biến thống kê
+        const statCompleted = document.getElementById('stat-completed');
+        const statPending = document.getElementById('stat-pending');
+        const statSpent = document.getElementById('stat-spent');
+        const statRobux = document.getElementById('stat-robux');
+
         // Lắng nghe trạng thái người dùng
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // NẾU CÓ NGƯỜI ĐĂNG NHẬP: Ẩn nút Đăng nhập, Hiện thông tin khối user
                 authGuest.style.display = 'none';
-                authUser.style.display = 'block'; // Đổi thành block để nó bung ra đúng form
+                authUser.style.display = 'block'; 
                 
-                // Móc dữ liệu thật từ Database ra
                 try {
                     const userDoc = await getDoc(doc(db, "users", user.uid));
                     if (userDoc.exists()) {
                         const data = userDoc.data();
-                        // Ưu tiên hiện tên ngắn gọn (username) mà lúc đăng ký đã lưu
                         userNameDisplay.innerText = data.username || data.email.split('@')[0];
                         userBalanceDisplay.innerText = '₫' + (data.balance || 0).toLocaleString('vi-VN');
+
+                        // Cập nhật thống kê cá nhân (Nếu chưa có dữ liệu thì mặc định là 0)
+                        if (statCompleted) statCompleted.innerText = (data.totalCompleted || 0).toLocaleString('vi-VN');
+                        if (statPending) statPending.innerText = (data.totalPending || 0).toLocaleString('vi-VN');
+                        if (statSpent) statSpent.innerText = '₫' + (data.totalSpent || 0).toLocaleString('vi-VN');
+                        if (statRobux) statRobux.innerText = (data.totalRobux || 0).toLocaleString('vi-VN') + ' R$';
                     } else {
-                        // Dự phòng nếu lỗi db
                         userNameDisplay.innerText = user.email.split('@')[0];
                         userBalanceDisplay.innerText = '₫0';
                     }
                 } catch (error) {
                     console.log("Lỗi lấy thông tin:", error);
-                    userNameDisplay.innerText = user.email.split('@')[0];
                 }
             } else {
-                // NẾU CHƯA ĐĂNG NHẬP: Trả lại nút Đăng Nhập / Đăng Ký
                 authGuest.style.display = 'flex';
                 authUser.style.display = 'none';
+                
+                // Nếu chưa đăng nhập thì trả về 0 hết
+                if (statCompleted) statCompleted.innerText = '0';
+                if (statPending) statPending.innerText = '0';
+                if (statSpent) statSpent.innerText = '₫0';
+                if (statRobux) statRobux.innerText = '0 R$';
             }
         });
 
