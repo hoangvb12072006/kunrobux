@@ -116,6 +116,25 @@
         .balance-box { background: var(--grey); padding: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;}
         .user-profile { display: flex; align-items: center; gap: 10px; padding: 10px; background: var(--grey); border-radius: 8px;}
         .user-profile img { width: 35px; height: 35px; border-radius: 5px; }
+
+        /* --- CODE SỬA LỖI THU NHỎ MENU --- */
+        #sidebar { overflow-x: hidden; white-space: nowrap; }
+        #sidebar.collapsed { width: 76px !important; }
+        
+        /* Ẩn chữ KUNROBUX, căn giữa Logo */
+        #sidebar.collapsed .brand { font-size: 0; justify-content: center; padding: 20px 0; } 
+        
+        /* Ẩn các tiêu đề phụ (Main, Chức năng...) */
+        #sidebar.collapsed .side-menu li.category { display: none; }
+        
+        /* Ẩn chữ menu, phóng to và căn giữa Icon */
+        #sidebar.collapsed .side-menu a { font-size: 0; justify-content: center; padding: 16px 0; }
+        #sidebar.collapsed .side-menu a i { font-size: 24px; margin-right: 0; }
+        #sidebar.collapsed .side-menu a.active-gradient::after { display: none; }
+        
+        /* Ẩn hẳn cục thông tin User bên dưới cho đỡ vỡ khung */
+        #sidebar.collapsed .sidebar-user { display: none; }
+        
     </style>
 </head>
 <body>
@@ -314,21 +333,25 @@
         </main>
     </section>
 
-    <script>
+   <script>
         document.querySelector('.toggle-sidebar').addEventListener('click', function() {
             let sidebar = document.getElementById('sidebar');
             let content = document.getElementById('content');
-            if (sidebar.style.width === '60px') {
-                sidebar.style.width = '260px';
+            
+            // Bật/tắt class collapsed để CSS tự động làm việc
+            sidebar.classList.toggle('collapsed');
+            
+            // Chỉnh lại lề của phần nội dung
+            if (sidebar.classList.contains('collapsed')) {
+                content.style.marginLeft = '76px';
+                content.style.width = 'calc(100% - 76px)';
+            } else {
                 content.style.marginLeft = '260px';
                 content.style.width = 'calc(100% - 260px)';
-            } else {
-                sidebar.style.width = '60px';
-                content.style.marginLeft = '60px';
-                content.style.width = 'calc(100% - 60px)';
             }
         });
     </script>
+    
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
