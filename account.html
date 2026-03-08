@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mua Tài Khoản Robux - KUNROBUX</title>
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Signika:wght@500;600;700;800&family=Roboto:wght@400;500;600;700&display=swap">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        /* CSS KHUNG CHUẨN ĐÃ ĐƯỢC TỐI ƯU */
+        :root {
+            --light: #FFFFFF; --light-bg: #F4F6F8; --grey: #F4F6F8; --dark: #1F2937;
+            --dark-grey: #6B7280; --primary-color: #1BBEFB; --blue: #1BBEFB;
+            --green: #2ED47A; --red: #FC3B56; --border-light: #E5E7EB;
+        }
+        html.dark {
+            --light: #111111; --light-bg: #000000; --grey: #222222; --dark: #F9F9F9;
+            --dark-grey: #AAB0CC; --border-light: #222222;
+        }
+        body { background: var(--light-bg); color: var(--dark); font-family: 'Signika', sans-serif; overflow-x: hidden; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--light-bg); }
+        ::-webkit-scrollbar-thumb { background: var(--grey); border-radius: 10px; }
+        
+        #sidebar { position: fixed; width: 260px; height: 100vh; background: var(--light); border-right: 1px solid var(--border-light); z-index: 100; display: flex; flex-direction: column; transition: 0.3s; overflow-x: hidden; white-space: nowrap; }
+        #content { margin-left: 260px; width: calc(100% - 260px); min-height: 100vh; transition: 0.3s; }
+        .brand { padding: 20px; display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 800; color: var(--dark); text-decoration: none; }
+        .brand img { width: 32px; height: 32px; filter: brightness(0); }
+        html.dark .brand img { filter: brightness(0) invert(1); }
+        
+        .side-menu { padding: 10px; flex: 1; overflow-y: auto; list-style: none; }
+        .side-menu li.category { font-size: 11px; font-weight: 700; color: var(--dark-grey); text-transform: uppercase; margin: 15px 10px 5px; opacity: 0.7;}
+        .side-menu a { display: flex; align-items: center; padding: 12px 15px; color: var(--dark-grey); text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 15px; transition: 0.2s; margin-bottom: 4px; }
+        .side-menu a i { font-size: 20px; margin-right: 10px; min-width: 25px; text-align: center; }
+        .side-menu a:hover, .side-menu a.active { background: var(--grey); color: var(--dark); }
+        .side-menu a.active-gradient { background: linear-gradient(135deg, #6A67FE 0%, #4F80E2 100%); color: white !important; box-shadow: 0 4px 10px rgba(0,0,0,0.2); position: relative; }
+        .side-menu a.active-gradient::after { content: ''; position: absolute; right: 15px; top: 50%; transform: translateY(-50%); width: 8px; height: 8px; border-radius: 50%; background: white; }
+
+        /* Sidebar collapsed */
+        #sidebar.collapsed { width: 76px !important; }
+        #sidebar.collapsed .brand { font-size: 0; justify-content: center; padding: 20px 0; } 
+        #sidebar.collapsed .side-menu li.category { display: none; }
+        #sidebar.collapsed .side-menu a { font-size: 0; justify-content: center; padding: 16px 0; }
+        #sidebar.collapsed .side-menu a i { font-size: 24px; margin-right: 0; }
+        #sidebar.collapsed .side-menu a.active-gradient::after { display: none; }
+        #sidebar.collapsed .sidebar-user { display: none; }
+
+        nav { height: 64px; background: var(--light); padding: 0 24px; display: flex; align-items: center; gap: 20px; position: sticky; top: 0; z-index: 99; }
+        main { padding: 24px; }
+
+        .sidebar-user { padding: 15px; margin-top: auto; border-top: 1px solid var(--border-light); }
+        .balance-box { background: var(--grey); padding: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;}
+        .user-profile { display: flex; align-items: center; gap: 10px; padding: 10px; background: var(--grey); border-radius: 8px;}
+        .user-profile img { width: 35px; height: 35px; border-radius: 5px; }
+
+        /* --- CSS CHO DANH SÁCH TÀI KHOẢN --- */
+        .account-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .account-card { 
+            background: var(--light); border-radius: 15px; border: 1px solid var(--border-light); 
+            overflow: hidden; transition: all 0.3s ease; position: relative;
+        }
+        .account-card:hover { transform: translateY(-8px); box-shadow: 0 10px 25px rgba(0,0,0,0.3); border-color: var(--blue); }
+        
+        .account-thumb { position: relative; height: 160px; background: #000; overflow: hidden; }
+        .account-thumb img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: 0.5s; }
+        .account-card:hover .account-thumb img { transform: scale(1.1); opacity: 1; }
+        
+        .account-id { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.7); color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+        .account-tag { position: absolute; bottom: 10px; right: 10px; background: var(--blue); color: white; padding: 2px 10px; border-radius: 4px; font-size: 11px; font-weight: 800; }
+        
+        .account-info { padding: 15px; }
+        .account-title { font-size: 16px; font-weight: 800; color: var(--dark); margin-bottom: 10px; height: 44px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        
+        .detail-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--dark-grey); margin-bottom: 5px; border-bottom: 1px dashed var(--border-light); padding-bottom: 5px; }
+        .detail-row b { color: var(--dark); }
+
+        .account-price { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding-top: 10px; border-top: 1px solid var(--border-light); }
+        .old-price { font-size: 12px; text-decoration: line-through; color: var(--red); opacity: 0.7; }
+        .new-price { font-size: 18px; font-weight: 800; color: var(--green); }
+    </style>
+</head>
+<body>
+
+    <section id="sidebar">
+        <a href="index.html" class="brand"><img src="https://autorobux.vn/icon/logo.png" alt="Logo"> KUNROBUX</a>
+        <ul class="side-menu">
+            <li class="category">Main</li>
+            <li><a href="index.html"><i class='bx bxs-home'></i> Trang chủ</a></li>
+            <li class="category">Chức năng chính</li>
+            <li><a href="robux-120h.html"><i class='bx bx-trending-up'></i> Robux 120H</a></li>
+            <li><a href="ingame.html"><i class='bx bx-purchase-tag-alt'></i> Ingame Gamepasses</a></li>
+            <li><a href="group.html"><i class='bx bxs-group'></i> Robux Group</a></li>
+            <li><a href="giftcard.html"><i class='bx bx-code'></i> Gift Card</a></li>
+            <li><a href="account.html" class="active-gradient"><i class='bx bx-link'></i> Tài Khoản Robux</a></li>
+            <li class="category">Quản lý tài khoản</li>
+            <li><a href="history.html"><i class='bx bx-cart'></i> Lịch sử mua hàng</a></li>
+            <li><a href="nap-tien.html"><i class='bx bx-dollar'></i> Nạp tiền</a></li>
+            <li><a href="transactions.html"><i class='bx bx-credit-card'></i> Biến động số dư</a></li>
+        </ul>
+
+       <div class="sidebar-user">
+            <div id="auth-guest" style="display: flex; flex-direction: column; gap: 10px;">
+                <a href="login.html" style="background: var(--blue); color: white; text-align: center; padding: 10px; border-radius: 8px; font-weight: 700; text-decoration: none;">Đăng Nhập</a>
+                <a href="login.html" style="background: var(--grey); color: var(--dark); text-align: center; padding: 10px; border-radius: 8px; font-weight: 700; border: 1px solid var(--border-light);">Đăng Ký</a>
+            </div>
+            <div id="auth-user" style="display: none;">
+                <div class="balance-box">
+                    <span style="font-size: 13px;">Số dư:</span>
+                    <span id="user-balance" style="color: #00BCD4; font-weight: 700;">₫0</span>
+                </div>
+                <div class="user-profile">
+                    <img src="https://placehold.co/40x40/222222/FFFFFF?text=U" alt="Avatar">
+                    <div style="flex: 1; overflow: hidden;">
+                        <div style="font-size: 10px; color: #2ED47A; font-weight: 800;">MEMBER</div>
+                        <div id="user-name" style="font-size: 13px; font-weight: 700; overflow: hidden; text-overflow: ellipsis;">Đang tải...</div>
+                    </div>
+                    <i id="btn-logout" class='bx bx-log-out text-xl text-gray-500 hover:text-red-500 cursor-pointer'></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="content">
+        <nav>
+            <i class='bx bx-menu toggle-sidebar'></i>
+            <div class="nav-title text-xl text-[#1BBEFB]">KHO TÀI KHOẢN ROBUX GIÁ RẺ</div>
+            <div style="margin-left: auto;"><i class='bx bxs-sun text-2xl text-gray-500 cursor-pointer' onclick="document.documentElement.classList.toggle('dark')"></i></div>
+        </nav>
+
+        <main>
+            <div class="flex flex-wrap gap-4 mb-8 bg-[#151a23] p-4 rounded-xl border border-gray-800">
+                <select class="bg-black text-white border border-gray-700 p-2 rounded-lg outline-none"><option>Giá: Từ thấp đến cao</option></select>
+                <select class="bg-black text-white border border-gray-700 p-2 rounded-lg outline-none"><option>Loại Nick: Blox Fruit</option></select>
+                <input type="text" placeholder="Tìm theo mã số..." class="bg-black text-white border border-gray-700 p-2 rounded-lg outline-none flex-1">
+            </div>
+
+            <div class="account-grid">
+                <div class="account-card">
+                    <div class="account-thumb">
+                        <span class="account-id">#1204</span>
+                        <span class="account-tag">Blox Fruit</span>
+                        <img src="https://placehold.co/400x250/151a23/1BBEFB?text=Blox+Fruit+Acc">
+                    </div>
+                    <div class="account-info">
+                        <h3 class="account-title">Nick Blox Fruit Max Level, Có Kitsune và Leopard Full Mastery</h3>
+                        <div class="detail-row"><span>Số Robux:</span> <b>250 R$</b></div>
+                        <div class="detail-row"><span>Level:</span> <b>2550 (Max)</b></div>
+                        <div class="detail-row"><span>Haki:</span> <b>Full Full</b></div>
+                        <div class="account-price">
+                            <div>
+                                <div class="old-price">150.000đ</div>
+                                <div class="new-price">120.000đ</div>
+                            </div>
+                            <button onclick="buyAccount(120000, 1204)" class="bg-[#1BBEFB] text-white font-bold py-2 px-4 rounded-lg hover:opacity-80 transition">MUA NGAY</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="account-card">
+                    <div class="account-thumb">
+                        <span class="account-id">#1205</span>
+                        <span class="account-tag">Robux Acc</span>
+                        <img src="https://placehold.co/400x250/151a23/1BBEFB?text=Robux+Account">
+                    </div>
+                    <div class="account-info">
+                        <h3 class="account-title">Acc Trắng Thông Tin Có Sẵn 5,000 Robux Pending</h3>
+                        <div class="detail-row"><span>Số Robux:</span> <b>5,000 R$</b></div>
+                        <div class="detail-row"><span>Năm tạo:</span> <b>2021</b></div>
+                        <div class="detail-row"><span>Thông tin:</span> <b>Chưa liên kết</b></div>
+                        <div class="account-price">
+                            <div>
+                                <div class="old-price">500.000đ</div>
+                                <div class="new-price">350.000đ</div>
+                            </div>
+                            <button onclick="buyAccount(350000, 1205)" class="bg-[#1BBEFB] text-white font-bold py-2 px-4 rounded-lg hover:opacity-80 transition">MUA NGAY</button>
+                        </div>
+                    </div>
+                </div>
+                
+                </div>
+        </main>
+    </section>
+
+    <script>
+        document.querySelector('.toggle-sidebar').addEventListener('click', function() {
+            let sidebar = document.getElementById('sidebar');
+            let content = document.getElementById('content');
+            sidebar.classList.toggle('collapsed');
+            if (sidebar.classList.contains('collapsed')) {
+                content.style.marginLeft = '76px'; content.style.width = 'calc(100% - 76px)';
+            } else {
+                content.style.marginLeft = '260px'; content.style.width = 'calc(100% - 260px)';
+            }
+        });
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBmggevk19HmgnFxy-rAe_SvvyOwnKXprc",
+            authDomain: "kunrobux-c8aa8.firebaseapp.com",
+            databaseURL: "https://kunrobux-c8aa8-default-rtdb.firebaseio.com",
+            projectId: "kunrobux-c8aa8",
+            storageBucket: "kunrobux-c8aa8.firebasestorage.app",
+            messagingSenderId: "1094974396607",
+            appId: "1:1094974396607:web:61cf45e19d63e31aca4e0a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null; 
+        let userDbData = null;
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('auth-guest').style.display = 'none';
+                document.getElementById('auth-user').style.display = 'block'; 
+                try {
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    if (userDoc.exists()) {
+                        userDbData = userDoc.data();
+                        document.getElementById('user-name').innerText = userDbData.username || user.email.split('@')[0];
+                        document.getElementById('user-balance').innerText = '₫' + (userDbData.balance || 0).toLocaleString('vi-VN');
+                    }
+                } catch (error) { console.log(error); }
+            }
+        });
+
+        document.getElementById('btn-logout').addEventListener('click', () => {
+            signOut(auth).then(() => window.location.href = "index.html");
+        });
+
+        window.buyAccount = function(price, id) {
+            if(!currentUser) return Swal.fire({ icon: 'warning', title: 'Chưa đăng nhập!', text: 'Vui lòng đăng nhập để mua nick.', background: '#151a23', color: '#fff' });
+            
+            if(userDbData && userDbData.balance < price) {
+                return Swal.fire({ icon: 'error', title: 'Số dư không đủ!', text: `Nick này giá ₫${price.toLocaleString()} nhưng bạn chỉ có ₫${userDbData.balance.toLocaleString()}.`, background: '#151a23', color: '#fff' });
+            }
+
+            Swal.fire({ title: 'Xác nhận mua nick #' + id, text: `Bạn có chắc chắn muốn bỏ ra ₫${price.toLocaleString()} để sở hữu tài khoản này?`, icon: 'question', showCancelButton: true, confirmButtonColor: '#1BBEFB', cancelButtonColor: '#FC3B56', confirmButtonText: 'MUA NGAY', background: '#151a23', color: '#fff' })
+            .then((result) => { if (result.isConfirmed) { Swal.fire({ icon: 'success', title: 'Thành công!', text: 'Đang xử lý trừ tiền và gửi thông tin nick...', background: '#151a23', color: '#fff' }); } });
+        };
+    </script>
+</body>
+</html>
