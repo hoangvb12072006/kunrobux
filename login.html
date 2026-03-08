@@ -7,33 +7,36 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Signika:wght@500;600;700;800&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<body class="bg-[#0b0e14] text-white flex items-center justify-center h-screen relative font-['Signika']">
+<body class="text-white flex items-center justify-center h-screen relative font-['Signika']" style="background: radial-gradient(circle at center, #1a2235 0%, #0b0e14 100%);">
     <style>
-        /* Hiệu ứng viền Neon nhấp nháy êm ái */
+        /* Hiệu ứng viền Neon sáng và rực rỡ hơn */
         @keyframes pulse-neon {
-            0%, 100% { box-shadow: 0 0 20px rgba(27, 190, 251, 0.2); border-color: rgba(27, 190, 251, 0.3); }
-            50% { box-shadow: 0 0 40px rgba(27, 190, 251, 0.5); border-color: rgba(27, 190, 251, 0.6); }
+            0%, 100% { box-shadow: 0 0 25px rgba(27, 190, 251, 0.4); border-color: rgba(27, 190, 251, 0.5); }
+            50% { box-shadow: 0 0 50px rgba(27, 190, 251, 0.8); border-color: rgba(27, 190, 251, 0.8); }
         }
         .neon-box { 
-            animation: pulse-neon 2.5s infinite alternate; /* Gọi hiệu ứng thở */
-            border: 1px solid rgba(27, 190, 251, 0.3); 
+            animation: pulse-neon 2.5s infinite alternate; 
+            border: 1px solid rgba(27, 190, 251, 0.5); 
+            background: rgba(21, 26, 35, 0.95); /* Làm nền form trong suốt nhẹ */
+            backdrop-filter: blur(10px);
         }
-        .tab-active { background-color: #1BBEFB; color: white; }
+        .tab-active { background-color: #1BBEFB; color: white; box-shadow: 0 0 10px rgba(27,190,251,0.5); }
         .tab-inactive { background-color: transparent; color: #6B7280; }
         
         /* Hiệu ứng nảy và rực sáng cho nút bấm */
         .btn-hover-fx { transition: all 0.3s ease; }
         .btn-hover-fx:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(27,190,251,0.5);
+            box-shadow: 0 8px 25px rgba(27,190,251,0.6);
         }
     </style>
 
-    <div class="neon-box bg-[#151a23] p-8 rounded-2xl w-[400px]">
+    <div class="neon-box p-8 rounded-2xl w-[400px]">
         <div class="text-center mb-6">
-            <h2 class="text-2xl font-extrabold text-[#1BBEFB] flex items-center justify-center gap-2">
-                <i class='bx bx-cube-alt text-3xl'></i> KUNROBUX
+            <h2 class="text-3xl font-extrabold text-[#1BBEFB] flex items-center justify-center gap-2 drop-shadow-[0_0_10px_rgba(27,190,251,0.8)]">
+                <i class='bx bx-cube-alt text-4xl'></i> KUNROBUX
             </h2>
         </div>
 
@@ -49,7 +52,7 @@
         <div class="flex flex-col gap-4">
             <div>
                 <label class="text-[11px] text-gray-400 font-bold uppercase mb-2 block">Tên đăng nhập / Email</label>
-                <div class="bg-[#0b0e14] rounded-lg flex items-center p-3 border border-gray-800 focus-within:border-[#1BBEFB] transition">
+                <div class="bg-[#0b0e14] rounded-lg flex items-center p-3 border border-gray-700 focus-within:border-[#1BBEFB] focus-within:shadow-[0_0_10px_rgba(27,190,251,0.2)] transition">
                     <i class='bx bx-user text-gray-500 mr-3 text-lg'></i>
                     <input type="email" id="email" placeholder="Nhập email của bạn..." class="bg-transparent outline-none w-full text-sm text-white placeholder-gray-600">
                 </div>
@@ -58,18 +61,18 @@
             <div>
                 <div class="flex justify-between items-center mb-2">
                     <label class="text-[11px] text-gray-400 font-bold uppercase block">Mật khẩu</label>
-                    <a href="#" class="text-[11px] text-[#1BBEFB] hover:underline">Quên mật khẩu?</a>
+                    <a href="#" class="text-[11px] text-[#1BBEFB] hover:text-white transition">Quên mật khẩu?</a>
                 </div>
-                <div class="bg-[#0b0e14] rounded-lg flex items-center p-3 border border-gray-800 focus-within:border-[#1BBEFB] transition">
+                <div class="bg-[#0b0e14] rounded-lg flex items-center p-3 border border-gray-700 focus-within:border-[#1BBEFB] focus-within:shadow-[0_0_10px_rgba(27,190,251,0.2)] transition">
                     <i class='bx bx-lock-alt text-gray-500 mr-3 text-lg'></i>
                     <input type="password" id="password" placeholder="Nhập mật khẩu..." class="bg-transparent outline-none w-full text-sm text-white placeholder-gray-600">
-                    <i id="toggle-password" class='bx bx-hide text-gray-500 cursor-pointer hover:text-white text-lg'></i>
+                    <i id="toggle-password" class='bx bx-hide text-gray-500 cursor-pointer hover:text-[#1BBEFB] transition text-lg'></i>
                 </div>
             </div>
 
             <div id="confirm-pass-block" style="display: none;">
                 <label class="text-[11px] text-gray-400 font-bold uppercase mb-2 block">Nhập lại mật khẩu</label>
-                <div class="bg-[#0b0e14] rounded-lg flex items-center p-3 border border-gray-800 focus-within:border-[#1BBEFB] transition">
+                <div class="bg-[#0b0e14] rounded-lg flex items-center p-3 border border-gray-700 focus-within:border-[#1BBEFB] focus-within:shadow-[0_0_10px_rgba(27,190,251,0.2)] transition">
                     <i class='bx bx-check-shield text-gray-500 mr-3 text-lg'></i>
                     <input type="password" id="confirm-password" placeholder="Xác nhận lại mật khẩu..." class="bg-transparent outline-none w-full text-sm text-white placeholder-gray-600">
                 </div>
@@ -77,10 +80,10 @@
 
             <div class="flex items-center gap-2 mt-2">
                 <input type="checkbox" id="remember" class="accent-[#1BBEFB] w-4 h-4 rounded cursor-pointer">
-                <label for="remember" class="text-xs text-gray-400 cursor-pointer font-semibold">Nhớ mật khẩu</label>
+                <label for="remember" class="text-xs text-gray-400 cursor-pointer font-semibold hover:text-white transition">Nhớ mật khẩu</label>
             </div>
 
-            <button id="btn-action" class="w-full bg-[#1BBEFB] text-white font-bold py-3.5 rounded-lg hover:opacity-90 transition mt-2 shadow-[0_0_15px_rgba(27,190,251,0.3)]">
+            <button id="btn-action" class="w-full bg-[#1BBEFB] text-white font-bold py-3.5 rounded-lg btn-hover-fx mt-2">
                 Đăng nhập
             </button>
         </div>
@@ -91,19 +94,17 @@
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-       const firebaseConfig = {
-
-  apiKey: "AIzaSyBmggevk19HmgnFxy-rAe_SvvyOwnKXprc",
-  authDomain: "kunrobux-c8aa8.firebaseapp.com",
-  databaseURL: "https://kunrobux-c8aa8-default-rtdb.firebaseio.com",
-  projectId: "kunrobux-c8aa8",
-  storageBucket: "kunrobux-c8aa8.firebasestorage.app",
-  messagingSenderId: "1094974396607",
-  appId: "1:1094974396607:web:61cf45e19d63e31aca4e0a",
-  measurementId: "G-2M9RLL689T"
-
-};
-
+        // Cấu hình Firebase của bác (Tôi giữ nguyên không đổi 1 chữ)
+        const firebaseConfig = {
+            apiKey: "AIzaSyBmggevk19HmgnFxy-rAe_SvvyOwnKXprc",
+            authDomain: "kunrobux-c8aa8.firebaseapp.com",
+            databaseURL: "https://kunrobux-c8aa8-default-rtdb.firebaseio.com",
+            projectId: "kunrobux-c8aa8",
+            storageBucket: "kunrobux-c8aa8.firebasestorage.app",
+            messagingSenderId: "1094974396607",
+            appId: "1:1094974396607:web:61cf45e19d63e31aca4e0a",
+            measurementId: "G-2M9RLL689T"
+        };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -122,8 +123,6 @@
         togglePassword.addEventListener('click', () => {
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
-            
-            // Đổi hình icon qua lại giữa ẩn và hiện
             togglePassword.classList.toggle('bx-hide');
             togglePassword.classList.toggle('bx-show');
         });
@@ -135,41 +134,59 @@
                 tabLogin.className = "flex-1 py-2 tab-active rounded-lg font-bold transition flex justify-center items-center gap-2";
                 tabRegister.className = "flex-1 py-2 tab-inactive hover:text-white rounded-lg font-bold transition flex justify-center items-center gap-2";
                 btnAction.innerText = "Đăng nhập";
-                confirmPassBlock.style.display = "none"; // Ẩn ô nhập lại MK
+                confirmPassBlock.style.display = "none"; 
             } else {
                 tabRegister.className = "flex-1 py-2 tab-active rounded-lg font-bold transition flex justify-center items-center gap-2";
                 tabLogin.className = "flex-1 py-2 tab-inactive hover:text-white rounded-lg font-bold transition flex justify-center items-center gap-2";
                 btnAction.innerText = "Đăng ký";
-                confirmPassBlock.style.display = "block"; // Hiện ô nhập lại MK
+                confirmPassBlock.style.display = "block"; 
             }
         }
 
         tabLogin.addEventListener('click', () => switchTab(true));
         tabRegister.addEventListener('click', () => switchTab(false));
 
-        // Xử lý khi bấm nút
+        // Hàm tiện ích gọi thông báo SweetAlert2 cực xịn
+        const showAlert = (icon, title, text) => {
+            return Swal.fire({
+                icon: icon,
+                title: title,
+                text: text,
+                background: '#151a23',
+                color: '#fff',
+                confirmButtonColor: '#1BBEFB',
+                customClass: { popup: 'border border-gray-700 rounded-xl' }
+            });
+        };
+
+        // Xử lý khi bấm nút Đăng nhập / Đăng ký
         btnAction.addEventListener('click', async () => {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirm-password').value; 
             
-            if(!email || !password) return alert("Vui lòng nhập đủ Email và Mật khẩu!");
+            if(!email || !password) return showAlert('warning', 'Khoan đã!', 'Vui lòng nhập đủ Email và Mật khẩu!');
 
-            // Kiểm tra mật khẩu khớp nhau khi Đăng ký
             if (!isLogin && password !== confirmPassword) {
-                return alert("Mật khẩu nhập lại không khớp!");
+                return showAlert('error', 'Lỗi rồi!', 'Mật khẩu nhập lại không khớp!');
             }
+
+            // Hiện hiệu ứng Loading khi đang chờ Firebase xử lý
+            Swal.fire({
+                title: 'Đang xử lý...',
+                background: '#151a23', color: '#fff',
+                allowOutsideClick: false,
+                didOpen: () => { Swal.showLoading() }
+            });
 
             try {
                 if (isLogin) {
-                    // Chức năng Đăng nhập
                     await signInWithEmailAndPassword(auth, email, password);
-                    window.location.href = "index.html"; // Trở về trang chủ
+                    Swal.fire({ icon: 'success', title: 'Thành công!', text: 'Đang vào trang chủ...', background: '#151a23', color: '#fff', showConfirmButton: false, timer: 1500 }).then(() => {
+                        window.location.href = "index.html"; 
+                    });
                 } else {
-                    // Chức năng Đăng ký & Lưu Database
                     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                    
-                    // Ghi thông tin vào Firestore
                     await setDoc(doc(db, "users", userCredential.user.uid), {
                         email: email, 
                         password: password, 
@@ -178,11 +195,17 @@
                         createdAt: new Date().toLocaleString('vi-VN')
                     });
                     
-                    alert("Đăng ký thành công!");
-                    window.location.href = "index.html";
+                    Swal.fire({ icon: 'success', title: 'Tuyệt vời!', text: 'Đăng ký thành công!', background: '#151a23', color: '#fff', showConfirmButton: false, timer: 1500 }).then(() => {
+                        window.location.href = "index.html";
+                    });
                 }
             } catch (error) {
-                alert("Lỗi: " + error.message);
+                let errorMsg = "Có lỗi xảy ra, vui lòng thử lại!";
+                if(error.code === 'auth/email-already-in-use') errorMsg = "Email này đã được đăng ký từ trước!";
+                if(error.code === 'auth/invalid-credential') errorMsg = "Sai email hoặc mật khẩu!";
+                if(error.code === 'auth/weak-password') errorMsg = "Mật khẩu quá yếu (cần ít nhất 6 ký tự)!";
+                
+                showAlert('error', 'Thất bại!', errorMsg);
             }
         });
     </script>
