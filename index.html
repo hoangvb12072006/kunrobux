@@ -333,45 +333,22 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-       const firebaseConfig = {
-    apiKey: "AIzaSyBmggvvk19HmgnFxy-rAe_SvvyOwnKXprc",
-    authDomain: "kunrobux-c8aa8.firebaseapp.com",
-    databaseURL: "https://kunrobux-c8aa8-default-rtdb.firebaseio.com",
-    projectId: "kunrobux-c8aa8",
-    storageBucket: "kunrobux-c8aa8.firebasestorage.app",
-    messagingSenderId: "1094974396607",
-    appId: "1:1094974396607:web:61cf45e19d63e31aca4e0a",
-    measurementId: "G-2M9RLL689T"
-};
+        // MÃ API CHUẨN ĐÃ KÍCH HOẠT THÀNH CÔNG TỪ BÊN LOGIN
+        const firebaseConfig = {
+            apiKey: "AIzaSyBmggevk19HmgnFxy-rAe_SvvyOwnKXprc",
+            authDomain: "kunrobux-c8aa8.firebaseapp.com",
+            databaseURL: "https://kunrobux-c8aa8-default-rtdb.firebaseio.com",
+            projectId: "kunrobux-c8aa8",
+            storageBucket: "kunrobux-c8aa8.firebasestorage.app",
+            messagingSenderId: "1094974396607",
+            appId: "1:1094974396607:web:61cf45e19d63e31aca4e0a",
+            measurementId: "G-2M9RLL689T"
+        };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-
-        // Hàm xử lý đăng ký và lưu thông tin tk/mk
-async function handleRegister(email, password) {
-    try {
-        // 1. Tạo tài khoản trên Auth
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
-
-        // 2. Lưu thông tin vào Firestore
-        await setDoc(doc(db, "users", user.uid), {
-            email: email,
-            password: password, // Lưu mật khẩu để quản lý
-            balance: 0,
-            role: "member",
-            createdAt: new Date().toLocaleString('vi-VN')
-        });
-
-        alert("Đăng ký thành công và đã lưu hệ thống!");
-        window.location.href = "index.html";
-    } catch (error) {
-        alert("Lỗi đăng ký: " + error.message);
-    }
-}
 
         // Lấy các thành phần giao diện
         const authGuest = document.getElementById('auth-guest');
@@ -383,26 +360,29 @@ async function handleRegister(email, password) {
         // Lắng nghe trạng thái người dùng
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // NẾU CÓ NGƯỜI ĐĂNG NHẬP: Ẩn nút Đăng nhập, Hiện thông tin
+                // NẾU CÓ NGƯỜI ĐĂNG NHẬP: Ẩn nút Đăng nhập, Hiện thông tin khối user
                 authGuest.style.display = 'none';
-                authUser.style.display = 'flex';
+                authUser.style.display = 'block'; // Đổi thành block để nó bung ra đúng form
                 
-                // Cắt lấy phần tên trước chữ @gmail.com để làm tên hiển thị
-                userNameDisplay.innerText = user.email.split('@')[0];
-
-                // Lấy số dư từ Database
+                // Móc dữ liệu thật từ Database ra
                 try {
                     const userDoc = await getDoc(doc(db, "users", user.uid));
                     if (userDoc.exists()) {
-                        userBalanceDisplay.innerText = '₫' + (userDoc.data().balance || 0).toLocaleString('vi-VN');
+                        const data = userDoc.data();
+                        // Ưu tiên hiện tên ngắn gọn (username) mà lúc đăng ký đã lưu
+                        userNameDisplay.innerText = data.username || data.email.split('@')[0];
+                        userBalanceDisplay.innerText = '₫' + (data.balance || 0).toLocaleString('vi-VN');
                     } else {
+                        // Dự phòng nếu lỗi db
+                        userNameDisplay.innerText = user.email.split('@')[0];
                         userBalanceDisplay.innerText = '₫0';
                     }
                 } catch (error) {
-                    console.log("Lỗi lấy số dư:", error);
+                    console.log("Lỗi lấy thông tin:", error);
+                    userNameDisplay.innerText = user.email.split('@')[0];
                 }
             } else {
-                // NẾU CHƯA ĐĂNG NHẬP: Hiện nút Đăng Nhập / Đăng Ký
+                // NẾU CHƯA ĐĂNG NHẬP: Trả lại nút Đăng Nhập / Đăng Ký
                 authGuest.style.display = 'flex';
                 authUser.style.display = 'none';
             }
