@@ -11,6 +11,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
+        /* CSS KHUNG CHUẨN */
         :root {
             --light: #FFFFFF;
             --light-bg: #F4F6F8;
@@ -46,7 +47,7 @@
         ::-webkit-scrollbar-track { background: var(--light-bg); }
         ::-webkit-scrollbar-thumb { background: var(--grey); border-radius: 10px; }
 
-        /* Layout */
+        /* Layout Mặc định (PC) */
         #sidebar {
             position: fixed; width: 260px; height: 100vh; background: var(--light);
             border-right: 1px solid var(--border-light); z-index: 100;
@@ -85,35 +86,17 @@
 
         /* Main Content Cards */
         main { padding: 24px; }
-        .filter-bar { background: var(--light); padding: 15px 20px; border-radius: 10px; margin-bottom: 20px; display: flex; gap: 15px; }
-       /* Nâng cấp giao diện nút chọn (Dropdown) */
+        .filter-bar { background: var(--light); padding: 15px 20px; border-radius: 10px; margin-bottom: 20px; display: flex; gap: 15px; flex-wrap: wrap;}
+        
+        /* Dropdown */
         .filter-bar select { 
-            background-color: #151a23; 
-            color: #ffffff; 
-            border: 1px solid #1F2937; 
-            padding: 10px 40px 10px 15px; 
-            border-radius: 8px; 
-            outline: none; 
-            cursor: pointer; 
-            font-weight: 600;
-            appearance: none; /* Xóa cái mũi tên xấu xí mặc định */
-            /* Vẽ mũi tên xịn xò mới */
+            background-color: #151a23; color: #ffffff; border: 1px solid #1F2937; padding: 10px 40px 10px 15px; 
+            border-radius: 8px; outline: none; cursor: pointer; font-weight: 600; appearance: none; 
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' style='fill: %231BBEFB;'%3E%3Cpath d='M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z'%3E%3C/path%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            transition: all 0.3s ease;
-            color-scheme: dark; /* Bắt buộc menu xổ xuống phải màu tối */
+            background-repeat: no-repeat; background-position: right 10px center; transition: all 0.3s ease; color-scheme: dark; flex-grow: 1;
         }
-        .filter-bar select:hover, .filter-bar select:focus {
-            border-color: #1BBEFB;
-            box-shadow: 0 0 10px rgba(27, 190, 251, 0.2);
-        }
-        .filter-bar select option {
-            background-color: #151a23;
-            color: #ffffff;
-            font-weight: 600;
-            padding: 10px;
-        }
+        .filter-bar select:hover, .filter-bar select:focus { border-color: #1BBEFB; box-shadow: 0 0 10px rgba(27, 190, 251, 0.2); }
+        .filter-bar select option { background-color: #151a23; color: #ffffff; font-weight: 600; padding: 10px; }
         
         .dashboard-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px; }
         .info-card { background: var(--light); padding: 20px; border-radius: 12px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
@@ -144,24 +127,41 @@
         .user-profile { display: flex; align-items: center; gap: 10px; padding: 10px; background: var(--grey); border-radius: 8px;}
         .user-profile img { width: 35px; height: 35px; border-radius: 5px; }
 
-        /* --- CODE SỬA LỖI THU NHỎ MENU --- */
+        /* --- CODE THU NHỎ MENU TRÊN PC --- */
         #sidebar { overflow-x: hidden; white-space: nowrap; }
         #sidebar.collapsed { width: 76px !important; }
-        
-        /* Ẩn chữ KUNROBUX, căn giữa Logo */
         #sidebar.collapsed .brand { font-size: 0; justify-content: center; padding: 20px 0; } 
-        
-        /* Ẩn các tiêu đề phụ (Main, Chức năng...) */
         #sidebar.collapsed .side-menu li.category { display: none; }
-        
-        /* Ẩn chữ menu, phóng to và căn giữa Icon */
         #sidebar.collapsed .side-menu a { font-size: 0; justify-content: center; padding: 16px 0; }
         #sidebar.collapsed .side-menu a i { font-size: 24px; margin-right: 0; }
         #sidebar.collapsed .side-menu a.active-gradient::after { display: none; }
-        
-        /* Ẩn hẳn cục thông tin User bên dưới cho đỡ vỡ khung */
         #sidebar.collapsed .sidebar-user { display: none; }
+
+        /* ============================================================ */
+        /* --- ĐÂY LÀ PHẦN TỐI ƯU CỰC MẠNH DÀNH RIÊNG CHO ĐIỆN THOẠI --- */
+        /* ============================================================ */
+        @media screen and (max-width: 768px) {
+            /* 1. Mặc định ẨN Sidebar đi bằng cách kéo nó ra ngoài màn hình */
+            #sidebar { left: -260px; z-index: 1000; }
+            
+            /* 2. Đẩy nội dung ra chiếm toàn bộ màn hình */
+            #content { margin-left: 0; width: 100%; }
+            
+            /* 3. Khi bấm nút Menu, Sidebar trượt vào và có bóng đen */
+            #sidebar.mobile-open { left: 0; box-shadow: 10px 0 30px rgba(0,0,0,0.5); }
+            
+            /* 4. Chỉnh sửa chữ trên thanh Nav (Trang chủ) nhỏ lại cho vừa đt */
+            nav .nav-title { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+            
+            /* 5. Gộp các cột thành 1 cột dọc (Bảng thống kê, Lịch sử) */
+            .dashboard-grid { grid-template-columns: repeat(2, 1fr); } /* Chia 2 ô nhỏ thay vì 4 ô dài */
+            .history-grid { grid-template-columns: 1fr; } /* Lịch sử thành 1 cột dài */
+        }
         
+        /* Điện thoại màn hình quá nhỏ (iPhone SE...) */
+        @media screen and (max-width: 480px) {
+            .dashboard-grid { grid-template-columns: 1fr; } /* Ép xuống 1 cột luôn */
+        }
     </style>
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
